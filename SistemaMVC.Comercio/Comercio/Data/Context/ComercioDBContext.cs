@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Sistema.Comercio.Data.Context
+namespace Comercio.Data.Context
 {
     public class ComercioDBContext : DbContext
     {
