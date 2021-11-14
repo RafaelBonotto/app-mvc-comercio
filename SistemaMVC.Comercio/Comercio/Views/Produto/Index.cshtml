@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Comercio.Models.Produto>
+
+@{
+    ViewData["Title"] = "Produto/index";
+}
+
+<h4 class="display-4">PRODUTO</h4>
+
+<hr />
+<div class="col">
+    <a asp-controller="Produto" asp-action="Filtro" class="btn btn-outline-primary btn-lg"><strong>FILTRAR</strong></a>
+</div>
+<hr />
+<div class="col">
+    <a asp-controller="Produto" asp-action="Create" class="btn btn-outline-primary btn-lg"><strong>NOVO</strong></a>
+</div>
+<hr />
+<div class="col">
+    <a asp-controller="Setor" asp-action="Index" class="btn btn-outline-primary btn-lg"><strong>SETOR</strong></a>
+</div>
+<hr />
+<a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
