@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Comercio.Interfaces
+namespace Comercio.Interfaces.Base
 {
     public interface IRepositoryBase<T>
     {
