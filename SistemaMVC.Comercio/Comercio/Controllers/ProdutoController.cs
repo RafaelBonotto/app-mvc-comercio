@@ -32,10 +32,10 @@ namespace Comercio.Controllers
         {
             try
             {
+                var produtos = await _context.GetAllAsync();
                 //var produtos = await _produtoService.FiltrarProdutos(codigo, descricao, setor);
-                var produtosBanco = await _context.GetAllAsync();
-                var produtos = produtosBanco.Where(x => x.Codigo == codigo || x.Descricao == descricao || x.Setor == setor).ToList();
-                if (produtos is null) return NotFound("Nenhum produto encontrado no sistema para esse filtro");
+                //var produtos = produtosBanco.Where(x => x.Codigo == codigo || x.Descricao == descricao || x.Setor == setor).ToList();
+                //if (produtos is null) return NotFound("Nenhum produto encontrado no sistema para esse filtro");
 
                 return View(produtos);
             }
