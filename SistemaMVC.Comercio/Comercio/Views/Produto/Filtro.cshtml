@@ -1,0 +1,42 @@
+﻿
+<h4 class="display-4">FILTRAR PRODUTOS</h4>
+<hr />
+
+<div class="w-50 p-3" style="background-color: #eee;">
+
+    <form asp-action="filtrar">
+
+        <div class="form-group">
+            <label for="codigo" class="control-label"><strong>CÓDIGO</strong></label>
+            <input type="text" class="form-control" name="codigo" placeholder="Código do produto">
+        </div>
+        <hr />
+        <div class="form-group">
+            <label for="descricao"><strong>DESCRIÇÃO</strong></label>
+            <input type="text" class="form-control" name="descricao" placeholder="Descrição do produto">
+        </div>
+        <hr />
+        <div class="form-group">
+            <div class="form-group col-md-4">
+                <label for="setor"><strong>SETOR</strong></label>
+                <select name="setor" class="form-control">
+                    <option selected>SETORES...</option>
+                    <option value=1>ALIMENTOS</option>
+                    <option value=2>ELETRÔNICOS</option>
+                    <option value=3>FERRAMENTAS</option>
+                    <option value=4>LIMPEZA</option>
+                    <option value=5>CAIXA</option>
+                </select>
+            </div>
+        </div>
+        <hr />
+        <div>
+            <input type="submit" value="FILTRAR" class="btn btn-success btn-lg">
+        </div>
+    </form>
+
+</div>
+
+<hr />
+
+<a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>

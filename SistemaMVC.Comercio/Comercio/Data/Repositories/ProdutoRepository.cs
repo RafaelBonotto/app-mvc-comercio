@@ -66,7 +66,7 @@ namespace Comercio.Data.Repositories
         public async Task<List<Produto>> GetAllAsync()
         {
             try
-            {
+            {               
                 return await _context.TB_PRODUTO.Where(x => x.Ativo == 1).ToListAsync();
             }
             catch (Exception)
