@@ -36,7 +36,7 @@ namespace Comercio.Models
         [Display(Name = "VALIDADE")]
         [DataType(DataType.Date)]
         public DateTime Data_validade { get; set; }
-        public int Setor_id { get; set; }
+        public int? Setor_id { get; set; }
         public sbyte Ativo { get; set; }
         public DateTime Data_criacao { get; set; }
         public DateTime Data_alteracao { get; set; }
