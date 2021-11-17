@@ -1,20 +1,16 @@
-﻿using Comercio.Data.Context;
-using Comercio.Data.Repositories;
-using Comercio.Interfaces.Base;
-using Comercio.Models;
+﻿using Comercio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Comercio.Controllers
 {
     public class ProdutoController : Controller
     {
-        public IRepositoryBase<Produto> _context;
+        public IProdutoService _produtoService;
 
-        public ProdutoController(IRepositoryBase<Produto> context)
+        public ProdutoController(IProdutoService produtoService)
         {
-            _context = context;
+            _produtoService = produtoService;
         }
 
         public IActionResult Index()
@@ -32,16 +28,16 @@ namespace Comercio.Controllers
         {
             try
             {
-                var produtos = await _context.GetAllAsync();
-                //var produtos = await _produtoService.FiltrarProdutos(codigo, descricao, setor);
-                //var produtos = produtosBanco.Where(x => x.Codigo == codigo || x.Descricao == descricao || x.Setor == setor).ToList();
-                //if (produtos is null) return NotFound("Nenhum produto encontrado no sistema para esse filtro");
+                var produtos = await _produtoService.FiltrarProdutos(codigo, descricao, setor);
+
+                if (produtos.Count == 0) 
+                    return NotFound("Não foram encontrados produtos para esse filtro");
 
                 return View(produtos);
             }
-            catch (System.Exception)
+            catch (System.Exception error)
             {
-                throw;
+                return NotFound(error.Message);
             }
         }
     }
