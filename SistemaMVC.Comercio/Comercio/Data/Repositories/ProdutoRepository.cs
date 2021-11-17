@@ -75,6 +75,35 @@ namespace Comercio.Data.Repositories
             }
         }
 
+        public async Task<List<Produto>> GetAllFilteredAsync(Produto produto)
+        {
+            try
+            {
+                var produtosBanco = new List<Produto>();
+
+                if (!string.IsNullOrEmpty(produto.Codigo))// Caso recebe código filtra apenas pelo código
+                {
+                    return await _context.TB_PRODUTO.Where(x => x.Codigo.Equals(produto.Codigo)).ToListAsync();
+                }
+
+                if (!string.IsNullOrEmpty(produto.Descricao))
+                {
+                    produtosBanco = await _context.TB_PRODUTO.Where(x => x.Descricao.Replace(" ", "").ToUpper().Contains(produto.Descricao.Replace(" ", "").ToUpper())).ToListAsync();
+                }
+                
+                if (string.IsNullOrEmpty(produto.Setor))
+                {
+                    produtosBanco = produtosBanco.Where(x => x.Setor.Equals(produto.Setor)).ToList();
+                }
+
+                return produtosBanco;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<Produto> GetByIdAsync(int id)
         {
             try
