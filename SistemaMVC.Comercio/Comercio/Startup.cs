@@ -1,7 +1,9 @@
 using Comercio.Data.Context;
 using Comercio.Data.Repositories;
+using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
 using Comercio.Models;
+using Comercio.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +29,13 @@ namespace Comercio
             services.AddControllers();
             services.AddCors();
 
+
+            #region Injeção de Dependencia
+            services.AddScoped<ComercioDBContext>();
+            services.AddScoped(typeof(IRepositoryBase<Produto>), typeof(ProdutoRepository));
+            services.AddScoped(typeof(IProdutoService), typeof(ProdutoService));
+            #endregion
+
             #region Configuração Banco de dados
             var connectionString = Configuration.GetSection("ConnectionStrings:conn").Value;
 
@@ -34,12 +43,6 @@ namespace Comercio
             {
                 x.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             });
-            #endregion
-
-            #region Injeção de Dependencia
-            services.AddScoped<ComercioDBContext>();
-            services.AddScoped(typeof(IRepositoryBase<Produto>), typeof(ProdutoRepository));
-
             #endregion
         }
 
