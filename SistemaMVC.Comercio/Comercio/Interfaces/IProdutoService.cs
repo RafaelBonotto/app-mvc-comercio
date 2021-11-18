@@ -8,7 +8,7 @@ namespace Comercio.Interfaces
     {
         Task<List<Produto>> ListarProdutos();
         Task<List<Produto>> FiltrarProdutos(string codigo, string descricao, string setor);
-        Task<Produto> DetalhesDoProduto(int id);        
+        Task<Produto> DetalhesProduto(int id);        
         Task<Produto> InserirProduto(Produto produto);
         Task<Produto> AtualizarProduto(Produto produto);
         Task<bool> ExcluirProduto(int produtoId);
