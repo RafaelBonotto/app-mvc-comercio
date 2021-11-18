@@ -40,5 +40,23 @@ namespace Comercio.Controllers
                 return NotFound(error.Message);
             }
         }
+
+        [Route("[controller]/Detalhes/{id}")]
+        public async Task<IActionResult> Detalhes(int id)
+        {
+            try
+            {
+                var produto = await _produtoService.DetalhesProduto(id);
+
+                if (produto is null) 
+                    return NotFound("Nenhum produto encontrado");
+
+                return View(produto);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
     }
 }
