@@ -27,9 +27,16 @@ namespace Comercio.Services
             throw new NotImplementedException();
         }
 
-        public Task<Produto> DetalhesDoProduto(int id)
+        public Task<Produto> DetalhesProduto(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _repositoryProduto.GetByIdAsync(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<List<Fornecedor>> ExcluirFornecedor(int produtoId, int fornecedorId)
