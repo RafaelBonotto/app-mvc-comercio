@@ -1,0 +1,60 @@
+﻿@model Comercio.Models.Produto
+
+@{
+    ViewData["Title"] = "Produtos/editar";
+}
+
+<h4 class="display-4">EDITAR</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+
+        <form asp-action="atualizar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Codigo" class="control-label"></label>
+                <input asp-for="Codigo" class="form-control" />
+                <span asp-validation-for="Codigo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Setor" class="control-label"></label>
+                <input asp-for="Setor" class="form-control" />
+                <span asp-validation-for="Setor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Preco_custo" class="control-label"></label>
+                <input asp-for="Preco_custo" class="form-control" />
+                <span asp-validation-for="Preco_custo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Preco_venda" class="control-label"></label>
+                <input asp-for="Preco_venda" class="form-control" />
+                <span asp-validation-for="Preco_venda" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="SALVAR" class="btn btn-success " />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<hr />
+
+<div>
+    <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
