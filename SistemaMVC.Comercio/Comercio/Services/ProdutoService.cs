@@ -22,9 +22,16 @@ namespace Comercio.Services
             throw new NotImplementedException();
         }
 
-        public Task<Produto> AtualizarProduto(Produto produto)
+        public async Task<Produto> AtualizarProduto(Produto produto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _repositoryProduto.UpdateAsync(produto);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public Task<Produto> DetalhesProduto(int id)
@@ -44,9 +51,21 @@ namespace Comercio.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> ExcluirProduto(int produtoId)
+        public async Task<bool> ExcluirProduto(int produtoId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var produto = await _repositoryProduto.DeleteAsync(produtoId);
+
+                if (produto.Id == produtoId) 
+                    return true;
+
+                else return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<List<Produto>> FiltrarProdutos(string codigo, string descricao, string setor)
