@@ -83,17 +83,17 @@ namespace Comercio.Data.Repositories
 
                 if (!string.IsNullOrEmpty(produto.Codigo))// Caso recebe código filtra apenas pelo código
                 {
-                    return await _context.TB_PRODUTO.Where(x => x.Codigo.Equals(produto.Codigo)).ToListAsync();
+                    return await _context.TB_PRODUTO.Where(x => x.Ativo == 1 && x.Codigo.Equals(produto.Codigo)).ToListAsync();
                 }
 
                 if (!string.IsNullOrEmpty(produto.Descricao))
                 {
-                    produtosBanco = await _context.TB_PRODUTO.Where(x => x.Descricao.Replace(" ", "").ToUpper().Contains(produto.Descricao.Replace(" ", "").ToUpper())).ToListAsync();
+                    produtosBanco = await _context.TB_PRODUTO.Where(x => x.Ativo == 1 && x.Descricao.Replace(" ", "").ToUpper().Contains(produto.Descricao.Replace(" ", "").ToUpper())).ToListAsync();
                 }
                 
                 if (string.IsNullOrEmpty(produto.Setor))
                 {
-                    produtosBanco = produtosBanco.Where(x => x.Setor.Equals(produto.Setor)).ToList();
+                    produtosBanco = produtosBanco.Where(x => x.Ativo == 1 && x.Setor.Equals(produto.Setor)).ToList();
                 }
 
                 return produtosBanco;
@@ -134,7 +134,7 @@ namespace Comercio.Data.Repositories
             {
                 try
                 {
-                    var produtoBanco = await _context.TB_PRODUTO.FindAsync(produto.Id);
+                    var produtoBanco = await _context.TB_PRODUTO.Where(x => x.Codigo.Equals(produto.Codigo)).FirstAsync();
                     produtoBanco.Ativo = 1;
                     produtoBanco.Data_alteracao = DateTime.Now;
                     produtoBanco.Descricao = produto.Descricao;
