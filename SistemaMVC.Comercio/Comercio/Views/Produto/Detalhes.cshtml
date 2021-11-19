@@ -39,7 +39,7 @@
 </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success">Editar</a>
+    <a asp-action="editar" asp-route-id="@Model.Id" class="btn btn-success">Editar</a>
     <!-- Botão para acionar modal Excluir-->
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExcluir">
         Excluir
@@ -49,7 +49,7 @@
 <hr />
 
 <div>
-    <a asp-controller="Produto" asp-action="Fornecedores" asp-route-produtoId="@Model.Id" class="btn btn-info btn-lg">Fornecedor</a>
+    <a asp-controller="Produto" asp-action="fornecedores" asp-route-produtoId="@Model.Id" class="btn btn-info btn-lg">Fornecedor</a>
 </div>
 
 <hr />
@@ -68,7 +68,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form asp-controller="Produto" asp-action="AdicionarFornecedor" asp-route-produtoId="@Model.Id">
+                    <form asp-controller="Produto" asp-action="adicionarFornecedor" asp-route-produtoId="@Model.Id">
                         <h6>NOME DO FORNECEDOR: <input type="text" name="fornecedorDescricao" /></h6>
                         <input type="submit" value="ADICIONAR" class="btn-danger" />
                     </form>
@@ -98,7 +98,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <a asp-controller="Produto" asp-action="Delete" asp-route-produtoId="@Model.Id" class="btn btn-danger">Excluir</a>
+                <a asp-controller="Produto" asp-action="excluir" asp-route-produtoId="@Model.Id" class="btn btn-danger">Excluir</a>
             </div>
         </div>
     </div>
