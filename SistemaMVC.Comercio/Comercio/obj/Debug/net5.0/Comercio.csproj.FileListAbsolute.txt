@@ -50,3 +50,5 @@ C:\Users\rbonotto\Documents\Pessoal\Projetos\Git\appMVC.Comercio\SistemaMVC.Come
 C:\Users\rbonotto\Documents\Pessoal\Projetos\Git\appMVC.Comercio\SistemaMVC.Comercio\Comercio\obj\Debug\net5.0\Razor\Views\Produto\Index.cshtml.g.cs
 C:\Users\rbonotto\Documents\Pessoal\Projetos\Git\appMVC.Comercio\SistemaMVC.Comercio\Comercio\obj\Debug\net5.0\Razor\Views\Produto\Filtro.cshtml.g.cs
 C:\Users\rbonotto\Documents\Pessoal\Projetos\Git\appMVC.Comercio\SistemaMVC.Comercio\Comercio\obj\Debug\net5.0\Razor\Views\Produto\Produtos.cshtml.g.cs
+C:\Users\rbonotto\Documents\Pessoal\Projetos\Git\appMVC.Comercio\SistemaMVC.Comercio\Comercio\obj\Debug\net5.0\Razor\Views\Produto\Detalhes.cshtml.g.cs
+C:\Users\rbonotto\Documents\Pessoal\Projetos\Git\appMVC.Comercio\SistemaMVC.Comercio\Comercio\obj\Debug\net5.0\Razor\Views\Produto\Editar.cshtml.g.cs
