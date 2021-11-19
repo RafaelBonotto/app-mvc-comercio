@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Comercio.Models.Produto>
 
 @{
-    ViewData["Title"] = "Produtos/Filtrar";
+    ViewData["Title"] = "Produtos/filtrar";
 }
 
 <h4 class="display-4">PRODUTOS</h4>
@@ -41,7 +41,7 @@
                     @Html.DisplayFor(modelItem => item.Preco_venda)
                 </td>
                 <td>
-                    <a asp-controller="Produto" asp-action="Detalhes" asp-route-id="@item.Id" class="btn btn-success btn-sm">Detalhes</a>
+                    <a asp-controller="Produto" asp-action="detalhes" asp-route-id="@item.Id" class="btn btn-success btn-sm">Detalhes</a>
                 </td>
             </tr>
 
