@@ -7,6 +7,6 @@ namespace Comercio.Interfaces
     public interface IProdutoRepository
     {
         Task<List<Produto>> FiltrarPorDescricao(string descricao);
-        Task<List<Produto>> FiltrarPorsetor(int setor_id);
+        Task<List<Produto>> FiltrarPorSetor(int setor_id);
     }
 }
