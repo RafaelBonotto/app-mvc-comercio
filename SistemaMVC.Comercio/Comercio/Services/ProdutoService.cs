@@ -10,11 +10,13 @@ namespace Comercio.Services
 {
     public class ProdutoService : IProdutoService
     {
-        public IRepositoryBase<Produto> _repositoryProduto;
+        public IRepositoryBase<Produto> _repositoryBase;
+        public IProdutoRepository _repository;
 
-        public ProdutoService(IRepositoryBase<Produto> context)
+        public ProdutoService(IRepositoryBase<Produto> context, IProdutoRepository repository)
         {
-            _repositoryProduto = context;
+            _repositoryBase = context;
+            _repository = repository;
         }
 
         public Task<Produto> AdicionarFornecedor(int produtoId, string fornecedorDescricao)
@@ -26,7 +28,7 @@ namespace Comercio.Services
         {
             try
             {
-                return await _repositoryProduto.UpdateAsync(produto);
+                return await _repositoryBase.UpdateAsync(produto);
             }
             catch (System.Exception)
             {
@@ -38,7 +40,7 @@ namespace Comercio.Services
         {
             try
             {
-                return _repositoryProduto.GetByIdAsync(id);
+                return _repositoryBase.GetByIdAsync(id);
             }
             catch (Exception)
             {
@@ -55,7 +57,7 @@ namespace Comercio.Services
         {
             try
             {
-                var produto = await _repositoryProduto.DeleteAsync(produtoId);
+                var produto = await _repositoryBase.DeleteAsync(produtoId);
 
                 if (produto.Id == produtoId) 
                     return true;
@@ -68,12 +70,35 @@ namespace Comercio.Services
             }
         }
 
-        public async Task<List<Produto>> FiltrarProdutoPorCodigo(string codigo)
+        public async Task<List<Produto>> FiltrarPorCodigo(string codigo)
         {
-            // ALTERADO ...
             try
             {
-                return await _repositoryProduto.GetByKeyAsync(codigo);
+                return await _repositoryBase.GetByKeyAsync(codigo);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<Produto>> FiltrarPorDescricao(string descricao)
+        {
+            try
+            {
+                return await _repository.FiltrarPorDescricao(descricao);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<Produto>> FiltrarPorSetor(int setor_id)
+        {
+            try
+            {
+                return await _repository.FiltrarPorsetor(setor_id);
             }
             catch (System.Exception)
             {
