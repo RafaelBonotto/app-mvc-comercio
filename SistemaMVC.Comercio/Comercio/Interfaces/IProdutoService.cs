@@ -7,7 +7,7 @@ namespace Comercio.Interfaces
     public interface IProdutoService
     {
         Task<List<Produto>> ListarProdutos();
-        Task<List<Produto>> FiltrarProdutos(string codigo, string descricao, string setor);
+        Task<List<Produto>> FiltrarProdutoPorCodigo(string codigo);
         Task<Produto> DetalhesProduto(int id);        
         Task<Produto> InserirProduto(Produto produto);
         Task<Produto> AtualizarProduto(Produto produto);
