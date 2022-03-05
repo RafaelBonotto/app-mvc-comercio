@@ -14,15 +14,9 @@ namespace Comercio.Controllers
             _produtoService = produtoService;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Filtro()
-        {
-            return View();
-        }
+        public IActionResult Index()=> View();
+        public IActionResult Filtro()=> View();
+        public IActionResult Novo()=> View();
 
         [Route("[controller]/filtrarPorCodigo")]
         public async Task<IActionResult> FiltrarPorCodigo(string codigo)
