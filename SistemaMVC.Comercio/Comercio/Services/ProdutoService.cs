@@ -68,17 +68,12 @@ namespace Comercio.Services
             }
         }
 
-        public async Task<List<Produto>> FiltrarProdutos(string codigo, string descricao, string setor)
+        public async Task<List<Produto>> FiltrarProdutoPorCodigo(string codigo)
         {
+            // ALTERADO ...
             try
             {
-                var produto = new Produto()
-                {
-                    Codigo = codigo,
-                    Descricao = descricao,
-                    Setor = setor
-                };
-                return await _repositoryProduto.GetAllFilteredAsync(produto);
+                return await _repositoryProduto.GetByKeyAsync(codigo);
             }
             catch (System.Exception)
             {
