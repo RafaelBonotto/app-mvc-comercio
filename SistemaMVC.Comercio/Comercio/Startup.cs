@@ -30,6 +30,7 @@ namespace Comercio
 
             #region Injeção de Dependencia
             services.AddScoped(typeof(IRepositoryBase<Produto>), typeof(ProdutoRepository));
+            services.AddScoped(typeof(IProdutoRepository), typeof(ProdutoRepository));
             services.AddScoped(typeof(IProdutoService), typeof(ProdutoService));
             services.AddScoped(typeof(IMySqlConnectionManager), typeof(MySqlConnectionManager));
             #endregion
