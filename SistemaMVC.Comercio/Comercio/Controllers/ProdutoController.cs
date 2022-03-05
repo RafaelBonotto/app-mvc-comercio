@@ -25,16 +25,52 @@ namespace Comercio.Controllers
         }
 
         [Route("[controller]/filtrarPorCodigo")]
-        public async Task<IActionResult> Produtos(string codigo, string descricao, string setor)
+        public async Task<IActionResult> FiltrarPorCodigo(string codigo)
         {
             try
             {
-                var produtos = await _produtoService.FiltrarProdutoPorCodigo(codigo);
+                var produtos = await _produtoService.FiltrarPorCodigo(codigo);
 
                 if (produtos.Count == 0) 
                     return NotFound("Não foram encontrados produtos para esse filtro");
 
-                return View(produtos);
+                return View("Produtos", produtos);
+            }
+            catch (System.Exception error)
+            {
+                return NotFound(error.Message);
+            }
+        }
+
+        [Route("[controller]/filtrarPorDescricao")]
+        public async Task<IActionResult> FiltrarPorDescricao(string descricao)
+        {
+            try
+            {
+                var produtos = await _produtoService.FiltrarPorDescricao(descricao);
+
+                if (produtos.Count == 0)
+                    return NotFound("Não foram encontrados produtos para esse filtro");
+
+                return View("Produtos", produtos);
+            }
+            catch (System.Exception error)
+            {
+                return NotFound(error.Message);
+            }
+        }
+
+        [Route("[controller]/filtrarPorSetor")]
+        public async Task<IActionResult> FiltrarPorSetor(int setor)
+        {
+            try
+            {
+                var produtos = await _produtoService.FiltrarPorSetor(setor);
+
+                if (produtos.Count == 0)
+                    return NotFound("Não foram encontrados produtos para esse filtro");
+
+                return View("Produtos", produtos);
             }
             catch (System.Exception error)
             {
