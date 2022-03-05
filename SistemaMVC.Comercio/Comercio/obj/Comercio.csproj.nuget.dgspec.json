@@ -46,19 +46,13 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
-            "Microsoft.EntityFrameworkCore": {
+            "Dapper": {
               "target": "Package",
-              "version": "[5.0.12, )"
+              "version": "[2.0.123, )"
             },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
+            "MySqlConnector": {
               "target": "Package",
-              "version": "[5.0.12, )"
-            },
-            "Pomelo.EntityFrameworkCore.MySql": {
-              "target": "Package",
-              "version": "[5.0.3, )"
+              "version": "[2.1.7, )"
             }
           },
           "imports": [
