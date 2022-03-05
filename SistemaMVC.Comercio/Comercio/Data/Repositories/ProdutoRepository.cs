@@ -1,4 +1,5 @@
 ﻿using Comercio.Data.ConnectionManager;
+using Comercio.Data.Querys;
 using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
 using Comercio.Models;
@@ -31,11 +32,10 @@ namespace Comercio.Data.Repositories
 
         public async Task<List<Produto>> FiltrarPorDescricao(string descricao)
         {
-            var sql = $"SELECT * FROM tb_produto WHERE descricao LIKE '%{descricao}%'";
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var response = connection.Query<Produto>(sql).ToList();
+                var response = connection.Query<Produto>(ProdutoQuery.SELECT_POR_DESCRICAO, param: new { descricao }).ToList();
                 return response;
             }
             catch (Exception)
@@ -44,13 +44,12 @@ namespace Comercio.Data.Repositories
             }
         }
 
-        public async Task<List<Produto>> FiltrarPorsetor(int setor_id)
+        public async Task<List<Produto>> FiltrarPorSetor(int setor_id)
         {
-            var sql = $"SELECT * FROM tb_produto WHERE setor_id = {setor_id}";
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var response = connection.Query<Produto>(sql).ToList();
+                var response = connection.Query<Produto>(ProdutoQuery.SELECT_POR_SETOR_ID, param:  new { setor_id }).ToList();
                 return response;
             }
             catch (Exception)
@@ -64,18 +63,26 @@ namespace Comercio.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Produto> GetByIdAsync(int id)
+        public async Task<Produto> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<Produto>> GetByKeyAsync(string key)
-        {
-            var sql = $"SELECT * FROM tb_produto WHERE codigo = {key}";
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var response = connection.Query<Produto>(sql).ToList();
+                var response = connection.QueryFirstOrDefault<Produto>(ProdutoQuery.SELECT_POR_ID, param:  new { id });
+                return response;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<Produto>> GetByKeyAsync(string codigo)
+        {
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                var response = connection.Query<Produto>(ProdutoQuery.SELECT_POR_CODIGO, param: new { codigo }).ToList();
                 return response;
             }
             catch (Exception)
