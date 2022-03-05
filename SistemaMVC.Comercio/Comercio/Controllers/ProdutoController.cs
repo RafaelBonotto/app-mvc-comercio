@@ -24,12 +24,12 @@ namespace Comercio.Controllers
             return View();
         }
 
-        [Route("[controller]/filtrar")]
+        [Route("[controller]/filtrarPorCodigo")]
         public async Task<IActionResult> Produtos(string codigo, string descricao, string setor)
         {
             try
             {
-                var produtos = await _produtoService.FiltrarProdutos(codigo, descricao, setor);
+                var produtos = await _produtoService.FiltrarProdutoPorCodigo(codigo);
 
                 if (produtos.Count == 0) 
                     return NotFound("Não foram encontrados produtos para esse filtro");
