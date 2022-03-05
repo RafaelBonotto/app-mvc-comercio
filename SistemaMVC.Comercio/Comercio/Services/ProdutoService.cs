@@ -98,7 +98,7 @@ namespace Comercio.Services
         {
             try
             {
-                return await _repository.FiltrarPorsetor(setor_id);
+                return await _repository.FiltrarPorSetor(setor_id);
             }
             catch (System.Exception)
             {
