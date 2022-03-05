@@ -5,39 +5,60 @@
 <h4 class="display-4">FILTRAR PRODUTOS</h4>
 <hr />
 
-<div class="w-50 p-3" style="background-color: #eee;">
+<div class="w-50 p-3" style="background-color: #C0C0C0;">
 
     <form asp-action="filtrarPorCodigo">
 
         <div class="form-group">
-            <label for="codigo" class="control-label"><strong>CÓDIGO</strong></label>
+            <label for="codigo" class="control-label"><strong>FILTRAR POR CÓDIGO</strong></label>
             <input type="text" class="form-control" name="codigo" placeholder="Código do produto">
         </div>
         <hr />
+        <div>
+            <input type="submit" value="FILTRAR" class="btn btn-success btn-group-lg">
+        </div>
+    </form>
+</div>
+<hr />
+<div class="w-50 p-3" style="background-color: #eee; ">
+
+    <form asp-action="filtrarPorDescricao">
+
         <div class="form-group">
-            <label for="descricao"><strong>DESCRIÇÃO</strong></label>
+            <label for="descricao"><strong>FILTRAR POR DESCRIÇÃO</strong></label>
             <input type="text" class="form-control" name="descricao" placeholder="Descrição do produto">
         </div>
         <hr />
+        <div>
+            <input type="submit" value="FILTRAR" class="btn btn-success btn-group-lg">
+        </div>
+    </form>
+</div>
+<hr />
+<div class="w-50 p-3" style="background-color: #C0C0C0; ">
+
+    <form asp-action="filtrarPorSetor">
+
         <div class="form-group">
             <div class="form-group col-md-4">
-                <label for="setor"><strong>SETOR</strong></label>
+                <label for="setor"><strong>FILTRAR POR SETOR</strong></label>
                 <select name="setor" class="form-control">
                     <option selected>SETORES...</option>
-                    <option value=1>ALIMENTOS</option>
-                    <option value=2>ELETRÔNICOS</option>
-                    <option value=3>FERRAMENTAS</option>
-                    <option value=4>LIMPEZA</option>
-                    <option value=5>CAIXA</option>
+                    <option typeof="Number" value=2>ALIMENTOS</option>
+                    <option typeof="Number" value=3>ELETRÔNICOS</option>
+                    <option typeof="Number" value=4>UTILIDADES</option>
+                    <option typeof="Number" value=5>FERRAMENTAS</option>
+                    <option typeof="Number" value=6>BRINQUEDOS</option>
+                    <option typeof="Number" value=7>PRESENTES</option>
+                    <option typeof="Number" value=8>PERFUMARIA</option>
                 </select>
             </div>
         </div>
         <hr />
         <div>
-            <input type="submit" value="FILTRAR" class="btn btn-success btn-lg">
+            <input type="submit" value="FILTRAR" class="btn btn-success btn-group-lg">
         </div>
     </form>
-
 </div>
 
 <hr />
