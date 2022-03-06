@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Dapper.Contrib.Extensions;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Comercio.Models
 {
+    [Table("tb_produto")]
     public class Produto
     {
         public int Id { get; set; }
@@ -14,10 +16,7 @@ namespace Comercio.Models
 
         [Display(Name = "PRODUTO")]
         [Required(ErrorMessage = ("A descrição do produto é obrigatória"))]
-        public string Descricao { get; set; }
-
-        [Display(Name = "SETOR")]
-        public string Setor { get; set; }
+        public string Descricao { get; set; }        
 
         [Display(Name = "CUSTO")]
         [Required(ErrorMessage = ("O preço de custo do produto é obrigatório"))]
@@ -29,16 +28,14 @@ namespace Comercio.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
         public decimal Preco_venda { get; set; }
 
-        [Display(Name = "FABRICAÇÃO")]
-        [DataType(DataType.Date)]
-        public DateTime Data_fabricacao { get; set; }
-
-        [Display(Name = "VALIDADE")]
-        [DataType(DataType.Date)]
-        public DateTime Data_validade { get; set; }
-        public int? Setor_id { get; set; }
+        [Required(ErrorMessage = "Campo Setor_id obrigatório")]
+        public int Setor_id { get; set; }
         public sbyte Ativo { get; set; }
         public DateTime Data_criacao { get; set; }
         public DateTime Data_alteracao { get; set; }
+
+        [Display(Name = "SETOR")]
+        [Write(false)]
+        public virtual Setor Setor { get; set; } 
     }
 }
