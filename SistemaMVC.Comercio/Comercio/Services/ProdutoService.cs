@@ -28,7 +28,14 @@ namespace Comercio.Services
         {
             try
             {
-                return await _repositoryBase.UpdateAsync(produto);
+                var produtoRepository = await _repositoryBase.GetByIdAsync(produto.Id);
+                produtoRepository.Descricao = produto.Descricao;
+                produtoRepository.Preco_custo = produto.Preco_custo;
+                produtoRepository.Preco_venda = produto.Preco_venda;
+                produtoRepository.Setor_id = produto.Setor_id;
+                produtoRepository.Ativo = 1;
+                produtoRepository.Data_alteracao = DateTime.Now;                
+                return await _repositoryBase.UpdateAsync(produtoRepository);
             }
             catch (System.Exception)
             {
