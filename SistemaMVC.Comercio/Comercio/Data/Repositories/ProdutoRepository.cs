@@ -1,9 +1,11 @@
 ﻿using Comercio.Data.ConnectionManager;
 using Comercio.Data.Querys;
+using Comercio.Data.Repositories.Request;
 using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
 using Comercio.Models;
 using Dapper;
+using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +22,19 @@ namespace Comercio.Data.Repositories
             _connection = connection;
         }
 
-        public Task<Produto> AddAsync(Produto entity)
+        public async Task<Produto> AddAsync(Produto produto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                var response = await connection.InsertAsync<Produto>(produto);
+                produto.Id = response;
+                return produto;
+            }
+            catch (Exception)
+            {
+                throw;
+            }            
         }
 
         public Task<Produto> DeleteAsync(int id)
@@ -35,7 +47,14 @@ namespace Comercio.Data.Repositories
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var response = connection.Query<Produto>(ProdutoQuery.SELECT_POR_DESCRICAO, param: new { descricao }).ToList();
+                var response = connection.Query<Produto, Setor, Produto>(
+                    sql: ProdutoQuery.SELECT_POR_DESCRICAO, 
+                    (produto, setor) =>
+                    {
+                        produto.Setor = setor;
+                        return produto;
+                    },
+                    param: new { descricao }).ToList();
                 return response;
             }
             catch (Exception)
@@ -49,7 +68,14 @@ namespace Comercio.Data.Repositories
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var response = connection.Query<Produto>(ProdutoQuery.SELECT_POR_SETOR_ID, param:  new { setor_id }).ToList();
+                var response = connection.Query<Produto, Setor, Produto>(
+                                    sql: ProdutoQuery.SELECT_POR_SETOR_ID,
+                                    (produto, setor) =>
+                                    {
+                                        produto.Setor = setor;
+                                        return produto;
+                                    },
+                                    param: new { setor_id }).ToList(); 
                 return response;
             }
             catch (Exception)
@@ -63,12 +89,19 @@ namespace Comercio.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<Produto> GetByIdAsync(int id)
+        public async Task<Produto> GetByIdAsync(int produto_id)
         {
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var response = connection.QueryFirstOrDefault<Produto>(ProdutoQuery.SELECT_POR_ID, param:  new { id });
+                var response = connection.Query<Produto, Setor, Produto>(
+                                   sql: ProdutoQuery.SELECT_POR_ID,
+                                   (produto, setor) =>
+                                   {
+                                       produto.Setor = setor;
+                                       return produto;
+                                   },
+                                   param: new { produto_id }).FirstOrDefault();
                 return response;
             }
             catch (Exception)
@@ -82,7 +115,14 @@ namespace Comercio.Data.Repositories
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var response = connection.Query<Produto>(ProdutoQuery.SELECT_POR_CODIGO, param: new { codigo }).ToList();
+                var response = connection.Query<Produto, Setor, Produto>(
+                                                    sql: ProdutoQuery.SELECT_POR_CODIGO,
+                                                    (produto, setor) =>
+                                                    {
+                                                        produto.Setor = setor;
+                                                        return produto;
+                                                    },
+                                                    param: new { codigo }).ToList(); 
                 return response;
             }
             catch (Exception)
@@ -91,9 +131,21 @@ namespace Comercio.Data.Repositories
             }
         }
 
-        public Task<Produto> UpdateAsync(Produto entity)
+        public async Task<Produto> UpdateAsync(Produto produto)
         {
-            throw new NotImplementedException();
+            try
+            {                
+                using var connection = await _connection.GetConnectionAsync();
+                var response = await connection.UpdateAsync<Produto>(produto);
+                if (!response)
+                    return null;
+
+                return produto;
+            }
+            catch (Exception)
+            {
+                throw;
+            }            
         }
     }
 }
