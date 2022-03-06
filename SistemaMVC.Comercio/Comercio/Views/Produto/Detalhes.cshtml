@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.Setor)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Setor)
+            @Html.DisplayFor(model => model.Setor.Descricao)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Preco_custo)
@@ -98,7 +98,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <a asp-controller="Produto" asp-action="excluir" asp-route-produtoId="@Model.Id" class="btn btn-danger">Excluir</a>
+                <a asp-controller="Produto" asp-action="excluir" asp-route-id="@Model.Id" class="btn btn-danger">Excluir</a>
             </div>
         </div>
     </div>
