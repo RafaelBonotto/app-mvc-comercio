@@ -1,6 +1,7 @@
 ﻿using Comercio.Interfaces;
 using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Comercio.Controllers
@@ -82,7 +83,7 @@ namespace Comercio.Controllers
                 if (produto is null) 
                     return NotFound("Nenhum produto encontrado");
 
-                return View(produto);
+                return View("Detalhes", produto);
             }
             catch (System.Exception)
             {
@@ -108,17 +109,20 @@ namespace Comercio.Controllers
         }
 
         [HttpPost]
-        [Route("[controller]/atualizar")]
+        [Route("[controller]/atualizar/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Atualizar([Bind
-            ("Codigo, Descricao, Setor, Preco_custo, Preco_venda")] Produto produto)
+            ("Id, Codigo, Descricao, Setor_id, Preco_custo, Preco_venda")] Produto produto)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await _produtoService.AtualizarProduto(produto);
-                    return RedirectToAction(nameof(Index));
+                    var produtoResponse = await _produtoService.AtualizarProduto(produto);
+                    if (produtoResponse is null)
+                        return NotFound("Erro ao tentar atualizar o produto");
+
+                    return View("Detalhes", produtoResponse);
                 }
                 catch (System.Exception)
                 {
@@ -131,12 +135,12 @@ namespace Comercio.Controllers
             }
         }
 
-        [Route("[controller]/excluir/{produtoId}")]
-        public async Task<IActionResult> Excluir(int produtoId)
+        [Route("[controller]/excluir/{id}")]
+        public async Task<IActionResult> Excluir(int id)
         {
             try
             {
-                var delete = await _produtoService.ExcluirProduto(produtoId);
+                var delete = await _produtoService.ExcluirProduto(id);
 
                 if (!delete) return NotFound("Erro ao excluir o produto");
 
