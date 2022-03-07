@@ -30,6 +30,8 @@ namespace Comercio.Models
 
         [Required(ErrorMessage = "Campo Setor_id obrigatório")]
         public int Setor_id { get; set; }
+
+        [Display(Name = "STATUS")]
         public sbyte Ativo { get; set; }
         public DateTime Data_criacao { get; set; }
         public DateTime Data_alteracao { get; set; }
