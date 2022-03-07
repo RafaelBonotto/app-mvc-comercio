@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Comercio.Mapper;
 
 namespace Comercio.Services
 {
@@ -28,13 +29,10 @@ namespace Comercio.Services
         {
             try
             {
-                var produtoRepository = await _repositoryBase.GetByIdAsync(produto.Id);
-                produtoRepository.Descricao = produto.Descricao;
-                produtoRepository.Preco_custo = produto.Preco_custo;
-                produtoRepository.Preco_venda = produto.Preco_venda;
-                produtoRepository.Setor_id = produto.Setor_id;
-                produtoRepository.Ativo = 1;
-                produtoRepository.Data_alteracao = DateTime.Now;                
+                Produto produtoRepository = await _repositoryBase.GetByIdAsync(produto.Id);
+                produtoRepository = Adapter.MontaProdutoUpdateRepositorio(
+                                                            produtoRequest: produto, 
+                                                            produtoRepositorio: produtoRepository);          
                 return await _repositoryBase.UpdateAsync(produtoRepository);
             }
             catch (System.Exception)
@@ -64,12 +62,10 @@ namespace Comercio.Services
         {
             try
             {
-                var produto = await _repositoryBase.DeleteAsync(produtoId);
-
-                if (produto.Id == produtoId) 
-                    return true;
-
-                else return false;
+                Produto response = await _repositoryBase.DeleteAsync(produtoId);
+                if (response is null)
+                    return false;
+                return true;
             }
             catch (Exception)
             {
