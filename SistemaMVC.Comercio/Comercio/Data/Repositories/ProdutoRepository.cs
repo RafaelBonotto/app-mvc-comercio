@@ -1,6 +1,5 @@
 ﻿using Comercio.Data.ConnectionManager;
 using Comercio.Data.Querys;
-using Comercio.Data.Repositories.Request;
 using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
 using Comercio.Models;
@@ -37,9 +36,16 @@ namespace Comercio.Data.Repositories
             }            
         }
 
-        public Task<Produto> DeleteAsync(int id)
+        public async Task<Produto> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            using var connection = await _connection.GetConnectionAsync();
+            var produto = await this.GetByIdAsync(id);
+            produto.Ativo = 0;
+            produto.Data_alteracao = DateTime.Now;
+            var response = connection.Update<Produto>(produto);
+            if (!response) 
+                return null;
+            return produto;
         }
 
         public async Task<List<Produto>> FiltrarPorDescricao(string descricao)
@@ -139,7 +145,6 @@ namespace Comercio.Data.Repositories
                 var response = await connection.UpdateAsync<Produto>(produto);
                 if (!response)
                     return null;
-
                 return produto;
             }
             catch (Exception)
