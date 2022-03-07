@@ -144,7 +144,7 @@ namespace Comercio.Controllers
 
                 if (!delete) return NotFound("Erro ao excluir o produto");
 
-                return RedirectToAction(nameof(Index));
+                return View("Index");
             }
             catch (System.Exception)
             {
