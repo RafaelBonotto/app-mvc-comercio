@@ -20,13 +20,13 @@ namespace Comercio.Models
 
         [Display(Name = "CUSTO")]
         [Required(ErrorMessage = ("O preço de custo do produto é obrigatório"))]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
-        public decimal Preco_custo { get; set; }
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        public double Preco_custo { get; set; }
 
         [Display(Name = "VENDA")]
         [Required(ErrorMessage = ("O preço de venda do produto é obrigatório"))]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
-        public decimal Preco_venda { get; set; }
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        public double Preco_venda { get; set; }
 
         [Required(ErrorMessage = "Campo Setor_id obrigatório")]
         public int Setor_id { get; set; }
