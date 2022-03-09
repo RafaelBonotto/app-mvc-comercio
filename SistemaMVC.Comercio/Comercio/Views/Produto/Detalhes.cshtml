@@ -1,4 +1,4 @@
-﻿@model Comercio.Models.Produto
+﻿@model Comercio.Models.ProdutoViewModel
 @{
     ViewData["Title"] = "Produto/detalhes";
 }
@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.Setor)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Setor.Descricao)
+            @Html.DisplayFor(model => model.Setor)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Preco_custo)
