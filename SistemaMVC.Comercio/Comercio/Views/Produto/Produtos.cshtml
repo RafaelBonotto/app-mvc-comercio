@@ -1,11 +1,10 @@
-﻿@model IEnumerable<Comercio.Models.Produto>
+﻿@model IEnumerable<Comercio.Models.ProdutoViewModel>
 
 @{
     ViewData["Title"] = "Produtos/filtrar";
 }
 
 <h4 class="display-4">PRODUTOS</h4>
-@*@{ var status = "ATIVO";}*@
 
 <table class="table">
     <thead>
@@ -39,14 +38,10 @@
                     @Html.DisplayFor(modelItem => item.Descricao)
                 </td>
                 <th>
-                    @*@if (@item.Ativo == 0)
-                    {
-                       @status = "INATIVO";
-                    }*@
-                    @Html.Display("INATIVO")
+                    @Html.DisplayFor(modelItem => item.Ativo)
                 </th>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Setor.Descricao)
+                    @Html.DisplayFor(modelItem => item.Setor)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Preco_venda)
