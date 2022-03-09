@@ -28,8 +28,22 @@ namespace Comercio.Controllers
 
                 if (produtos.Count == 0) 
                     return NotFound("Não foram encontrados produtos para esse filtro");
-
-                return View("Produtos", produtos);
+                var listaViewModel = new List<ProdutoViewModel>();
+                foreach (var produto in produtos)
+                {
+                    var produtoVM = new ProdutoViewModel()
+                    {
+                        Id = produto.Id,
+                        Codigo = produto.Codigo,
+                        Descricao = produto.Descricao,
+                        Preco_custo = produto.Preco_custo.ToString("N2"),
+                        Preco_venda = produto.Preco_venda.ToString("N2"),
+                        Ativo = produto.Ativo == 0 ? "Inativo " : "Ativo",
+                        Setor = produto.Setor.Descricao
+                    };
+                    listaViewModel.Add(produtoVM);
+                }
+                return View("Produtos", listaViewModel);
             }
             catch (System.Exception error)
             {
@@ -82,8 +96,18 @@ namespace Comercio.Controllers
 
                 if (produto is null) 
                     return NotFound("Nenhum produto encontrado");
+                var viewModel = new ProdutoViewModel()
+                {
+                    Id = produto.Id,
+                    Codigo = produto.Codigo,
+                    Descricao = produto.Descricao,
+                    Preco_custo = produto.Preco_custo.ToString("N2"),
+                    Preco_venda = produto.Preco_venda.ToString("N2"),
+                    Ativo = produto.Ativo == 0 ? "Inativo " : "Ativo",
+                    Setor = produto.Setor.Descricao
+                };
 
-                return View("Detalhes", produto);
+                return View("Detalhes", viewModel);
             }
             catch (System.Exception)
             {
@@ -100,7 +124,18 @@ namespace Comercio.Controllers
 
                 if (produto is null) return NotFound("Produto não encontrado no sistema");
 
-                return View(produto);
+                var viewModel = new ProdutoViewModel()
+                {
+                    Id = produto.Id,
+                    Codigo = produto.Codigo,
+                    Descricao = produto.Descricao,
+                    Preco_custo = produto.Preco_custo.ToString("N2"),
+                    Preco_venda = produto.Preco_venda.ToString("N2"),
+                    Ativo = produto.Ativo == 0 ? "Inativo " : "Ativo",
+                    Setor = produto.Setor.Descricao
+                };
+
+                return View("Editar", viewModel);
             }
             catch (System.Exception)
             {
@@ -111,8 +146,7 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/atualizar/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Atualizar([Bind
-            ("Id, Codigo, Descricao, Setor_id, Preco_custo, Preco_venda")] Produto produto)
+        public async Task<IActionResult> Atualizar(ProdutoViewModel produto)// VALIDAÇÃO DO CAMPOS STRINGS QUE VÃO SE TORNAR DOUBLE
         {
             if (ModelState.IsValid)
             {
@@ -122,7 +156,18 @@ namespace Comercio.Controllers
                     if (produtoResponse is null)
                         return NotFound("Erro ao tentar atualizar o produto");
 
-                    return View("Detalhes", produtoResponse);
+                    var viewModel = new ProdutoViewModel()
+                    {
+                        Id = produtoResponse.Id,
+                        Codigo = produtoResponse.Codigo,
+                        Descricao = produtoResponse.Descricao,
+                        Preco_custo = produtoResponse.Preco_custo.ToString("N2"),
+                        Preco_venda = produtoResponse.Preco_venda.ToString("N2"),
+                        Ativo = produtoResponse.Ativo == 0 ? "Inativo " : "Ativo",
+                        Setor = produtoResponse.Setor.Descricao
+                    };
+
+                    return View("Detalhes", viewModel);
                 }
                 catch (System.Exception)
                 {
@@ -134,6 +179,7 @@ namespace Comercio.Controllers
                 return View(produto);
             }
         }
+        //[Bind("Id, Codigo, Descricao, Setor_id, Preco_custo, Preco_venda")]
 
         [Route("[controller]/excluir/{id}")]
         public async Task<IActionResult> Excluir(int id)
