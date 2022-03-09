@@ -5,12 +5,12 @@ namespace Comercio.Mapper
 {
     public static class Adapter
     {
-        public static Produto MontaProdutoUpdateRepositorio(Produto produtoRequest, Produto produtoRepositorio)
+        public static Produto MontaProdutoUpdateRepositorio(ProdutoViewModel produtoViewModel, Produto produtoRepositorio)
         {
-            produtoRepositorio.Descricao = produtoRequest.Descricao;
-            produtoRepositorio.Preco_custo = produtoRequest.Preco_custo;
-            produtoRepositorio.Preco_venda = produtoRequest.Preco_venda;
-            produtoRepositorio.Setor_id = produtoRequest.Setor_id;
+            produtoRepositorio.Descricao = produtoViewModel.Descricao;
+            produtoRepositorio.Preco_custo = double.Parse(produtoViewModel.Preco_custo.Replace(".", ","));
+            produtoRepositorio.Preco_venda = double.Parse(produtoViewModel.Preco_venda.Replace(".", ","));
+            produtoRepositorio.Setor_id = produtoViewModel.Setor_id;
             produtoRepositorio.Ativo = 1;
             produtoRepositorio.Data_alteracao = DateTime.Now;
             return produtoRepositorio;
