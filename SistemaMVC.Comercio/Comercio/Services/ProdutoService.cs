@@ -25,13 +25,13 @@ namespace Comercio.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Produto> AtualizarProduto(Produto produto)
+        public async Task<Produto> AtualizarProduto(ProdutoViewModel produto)
         {
             try
             {
                 Produto produtoRepository = await _repositoryBase.GetByIdAsync(produto.Id);
                 produtoRepository = Adapter.MontaProdutoUpdateRepositorio(
-                                                            produtoRequest: produto, 
+                                                            produtoViewModel: produto, 
                                                             produtoRepositorio: produtoRepository);          
                 return await _repositoryBase.UpdateAsync(produtoRepository);
             }
