@@ -1,11 +1,11 @@
-﻿using Comercio.Interfaces;
+﻿using Comercio.Entities;
+using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
+using Comercio.Mapper;
 using Comercio.Models;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Comercio.Mapper;
 
 namespace Comercio.Services
 {
