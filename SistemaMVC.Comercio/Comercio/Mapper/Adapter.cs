@@ -1,4 +1,5 @@
-﻿using Comercio.Models;
+﻿using Comercio.Entities;
+using Comercio.Models;
 using System;
 
 namespace Comercio.Mapper
