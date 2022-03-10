@@ -1,4 +1,4 @@
-﻿using Comercio.Models;
+﻿using Comercio.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
