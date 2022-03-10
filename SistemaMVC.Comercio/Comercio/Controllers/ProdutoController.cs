@@ -146,7 +146,7 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/atualizar/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Atualizar(ProdutoViewModel produto)// VALIDAÇÃO DO CAMPOS STRINGS QUE VÃO SE TORNAR DOUBLE
+        public async Task<IActionResult> Atualizar([Bind("Id, Codigo, Descricao, Setor_id, Preco_custo, Preco_venda")] ProdutoViewModel produto, int id)// VALIDAÇÃO DO CAMPOS STRINGS QUE VÃO SE TORNAR DOUBLE
         {
             if (ModelState.IsValid)
             {
@@ -176,10 +176,10 @@ namespace Comercio.Controllers
             }
             else
             {
-                return View(produto);
+                return NotFound("Erro ao tentar atualizar o produto - Dados inválidos!");
             }
         }
-        //[Bind("Id, Codigo, Descricao, Setor_id, Preco_custo, Preco_venda")]
+        //
 
         [Route("[controller]/excluir/{id}")]
         public async Task<IActionResult> Excluir(int id)
