@@ -1,5 +1,5 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Dapper.Contrib.Extensions;
+using System;
 
 namespace Comercio.Entities
 {
@@ -15,6 +15,8 @@ namespace Comercio.Entities
         public sbyte Ativo { get; set; }
         public DateTime Data_criacao { get; set; }
         public DateTime Data_alteracao { get; set; }
+
+        [Write(false)] 
         public virtual Setor Setor { get; set; }
     }
 }
