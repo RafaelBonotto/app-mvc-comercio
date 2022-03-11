@@ -11,17 +11,17 @@
     <div class="col-md-4">
 
         <form asp-action="atualizar" asp-route-id="@Model.Id">
-            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
-            @*<input type="hidden" asp-for="Id" />*@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label><strong>CÓDIGO</strong></label>
                 <input asp-for="Codigo" class="form-control" />
-                @*<span><strong asp-validation-for="Codigo" class="text-danger"></strong></span>*@
+                <span><strong asp-validation-for="Codigo" class="text-danger"></strong></span>
             </div>
             <div class="form-group">
                 <label><strong>DESCRIÇÃO</strong></label>
                 <input asp-for="Descricao" class="form-control" />
-                @*<span asp-validation-for="Descricao" class="text-danger"></span>*@
+                <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label><strong>CUSTO</strong></label>
@@ -36,7 +36,6 @@
             <div class="form-group">
                 <label><strong>SETOR</strong></label>
                 <select name="Setor_id" class="form-control">
-                    @*<option selected>@Model.Setor.Descricao</option>*@
                     <option selected typeof="Number" value=2>ALIMENTOS</option>
                     <option typeof="Number" value=3>ELETRÔNICOS</option>
                     <option typeof="Number" value=4>UTILIDADES</option>
