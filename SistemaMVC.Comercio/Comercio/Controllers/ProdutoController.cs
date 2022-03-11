@@ -15,9 +15,9 @@ namespace Comercio.Controllers
             _produtoService = produtoService;
         }
 
-        public IActionResult Index()=> View();
-        public IActionResult Filtro()=> View();
-        public IActionResult Novo()=> View();
+        public IActionResult Index() => View();
+        public IActionResult Filtro() => View();
+        public IActionResult Novo() => View();
 
         [Route("[controller]/filtrarPorCodigo")]
         public async Task<IActionResult> FiltrarPorCodigo(string codigo)
@@ -26,7 +26,7 @@ namespace Comercio.Controllers
             {
                 var produtos = await _produtoService.FiltrarPorCodigo(codigo);
 
-                if (produtos.Count == 0) 
+                if (produtos.Count == 0)
                     return NotFound("Não foram encontrados produtos para esse filtro");
                 var listaViewModel = new List<ProdutoViewModel>();
                 foreach (var produto in produtos)
@@ -94,7 +94,7 @@ namespace Comercio.Controllers
             {
                 var produto = await _produtoService.DetalhesProduto(id);
 
-                if (produto is null) 
+                if (produto is null)
                     return NotFound("Nenhum produto encontrado");
                 var viewModel = new ProdutoViewModel()
                 {
@@ -146,7 +146,7 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/atualizar/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Atualizar([Bind("Id, Codigo, Descricao, Setor_id, Preco_custo, Preco_venda")] ProdutoViewModel produto, int id)// VALIDAÇÃO DO CAMPOS STRINGS QUE VÃO SE TORNAR DOUBLE
+        public async Task<IActionResult> Atualizar([Bind("Id, Codigo, Descricao, Setor_id, Preco_custo, Preco_venda")] ProdutoViewModel produto)//]VALIDAÇÃO DO CAMPOS STRINGS QUE VÃO SE TORNAR DOUBLE
         {
             if (ModelState.IsValid)
             {
@@ -176,10 +176,10 @@ namespace Comercio.Controllers
             }
             else
             {
-                return NotFound("Erro ao tentar atualizar o produto - Dados inválidos!");
+                return NotFound($"Erro de validação -  { ModelState.Values }");
             }
         }
-        //
+
 
         [Route("[controller]/excluir/{id}")]
         public async Task<IActionResult> Excluir(int id)
