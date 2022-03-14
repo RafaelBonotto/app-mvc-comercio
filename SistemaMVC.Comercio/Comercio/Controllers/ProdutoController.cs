@@ -1,4 +1,5 @@
 ﻿using Comercio.Interfaces;
+using Comercio.Mapper;
 using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -25,24 +26,13 @@ namespace Comercio.Controllers
             try
             {
                 var produtos = await _produtoService.FiltrarPorCodigo(codigo);
-
                 if (produtos.Count == 0)
                     return NotFound("Não foram encontrados produtos para esse filtro");
+
                 var listaViewModel = new List<ProdutoViewModel>();
                 foreach (var produto in produtos)
-                {
-                    var produtoVM = new ProdutoViewModel()
-                    {
-                        Id = produto.Id,
-                        Codigo = produto.Codigo,
-                        Descricao = produto.Descricao,
-                        Preco_custo = produto.Preco_custo.ToString("N2"),
-                        Preco_venda = produto.Preco_venda.ToString("N2"),
-                        Ativo = produto.Ativo == 0 ? "Inativo " : "Ativo",
-                        Setor = produto.Setor.Descricao
-                    };
-                    listaViewModel.Add(produtoVM);
-                }
+                    listaViewModel.Add(Adapter.MontaProdutoViewModel(produto));
+
                 return View("Produtos", listaViewModel);
             }
             catch (System.Exception error)
@@ -57,11 +47,14 @@ namespace Comercio.Controllers
             try
             {
                 var produtos = await _produtoService.FiltrarPorDescricao(descricao);
+                var listaViewModel = new List<ProdutoViewModel>();
+                foreach (var produto in produtos)
+                    listaViewModel.Add(Adapter.MontaProdutoViewModel(produto));
 
                 if (produtos.Count == 0)
                     return NotFound("Não foram encontrados produtos para esse filtro");
 
-                return View("Produtos", produtos);
+                return View("Produtos", listaViewModel);
             }
             catch (System.Exception error)
             {
@@ -75,11 +68,14 @@ namespace Comercio.Controllers
             try
             {
                 var produtos = await _produtoService.FiltrarPorSetor(setor);
+                var listaViewModel = new List<ProdutoViewModel>();
+                foreach (var produto in produtos)
+                    listaViewModel.Add(Adapter.MontaProdutoViewModel(produto));
 
                 if (produtos.Count == 0)
                     return NotFound("Não foram encontrados produtos para esse filtro");
 
-                return View("Produtos", produtos);
+                return View("Produtos", listaViewModel);
             }
             catch (System.Exception error)
             {
@@ -93,21 +89,11 @@ namespace Comercio.Controllers
             try
             {
                 var produto = await _produtoService.DetalhesProduto(id);
-
                 if (produto is null)
                     return NotFound("Nenhum produto encontrado");
-                var viewModel = new ProdutoViewModel()
-                {
-                    Id = produto.Id,
-                    Codigo = produto.Codigo,
-                    Descricao = produto.Descricao,
-                    Preco_custo = produto.Preco_custo.ToString("N2"),
-                    Preco_venda = produto.Preco_venda.ToString("N2"),
-                    Ativo = produto.Ativo == 0 ? "Inativo " : "Ativo",
-                    Setor = produto.Setor.Descricao
-                };
 
-                return View("Detalhes", viewModel);
+                var produtoViewModel = Adapter.MontaProdutoViewModel(produto);
+                return View("Detalhes", produtoViewModel);
             }
             catch (System.Exception)
             {
@@ -122,20 +108,11 @@ namespace Comercio.Controllers
             {
                 var produto = await _produtoService.DetalhesProduto(id);
 
-                if (produto is null) return NotFound("Produto não encontrado no sistema");
+                if (produto is null) 
+                    return NotFound("Produto não encontrado no sistema");
 
-                var viewModel = new ProdutoViewModel()
-                {
-                    Id = produto.Id,
-                    Codigo = produto.Codigo,
-                    Descricao = produto.Descricao,
-                    Preco_custo = produto.Preco_custo.ToString("N2"),
-                    Preco_venda = produto.Preco_venda.ToString("N2"),
-                    Ativo = produto.Ativo == 0 ? "Inativo " : "Ativo",
-                    Setor = produto.Setor.Descricao
-                };
-
-                return View("Editar", viewModel);
+                var produtoViewModel = Adapter.MontaProdutoViewModel(produto);
+                return View("Editar", produtoViewModel);
             }
             catch (System.Exception)
             {
@@ -154,20 +131,10 @@ namespace Comercio.Controllers
                 {
                     var produtoResponse = await _produtoService.AtualizarProduto(produto);
                     if (produtoResponse is null)
-                        return NotFound("Erro ao tentar atualizar o produto");
-
-                    var viewModel = new ProdutoViewModel()
-                    {
-                        Id = produtoResponse.Id,
-                        Codigo = produtoResponse.Codigo,
-                        Descricao = produtoResponse.Descricao,
-                        Preco_custo = produtoResponse.Preco_custo.ToString("N2"),
-                        Preco_venda = produtoResponse.Preco_venda.ToString("N2"),
-                        Ativo = produtoResponse.Ativo == 0 ? "Inativo " : "Ativo",
-                        Setor = produtoResponse.Setor.Descricao
-                    };
-
-                    return View("Detalhes", viewModel);
+                        return NotFound("Erro ao tentar atualizar o produto"); 
+                    
+                    var produtoViewModel = Adapter.MontaProdutoViewModel(produtoResponse);
+                    return View("Detalhes", produtoViewModel);
                 }
                 catch (System.Exception)
                 {
@@ -188,7 +155,8 @@ namespace Comercio.Controllers
             {
                 var delete = await _produtoService.ExcluirProduto(id);
 
-                if (!delete) return NotFound("Erro ao excluir o produto");
+                if (!delete) 
+                    return NotFound("Erro ao excluir o produto");
 
                 return View("Index");
             }
