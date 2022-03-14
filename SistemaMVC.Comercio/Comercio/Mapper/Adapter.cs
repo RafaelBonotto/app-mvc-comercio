@@ -16,5 +16,19 @@ namespace Comercio.Mapper
             produtoRepositorio.Data_alteracao = DateTime.Now;
             return produtoRepositorio;
         }
+
+        public static ProdutoViewModel MontaProdutoViewModel(Produto produto)
+        {
+            return new ProdutoViewModel()
+            {
+                Id = produto.Id,
+                Codigo = produto.Codigo,
+                Descricao = produto.Descricao,
+                Preco_custo = produto.Preco_custo.ToString("N2"),
+                Preco_venda = produto.Preco_venda.ToString("N2"),
+                Ativo = produto.Ativo == 0 ? "Inativo " : "Ativo",
+                Setor = produto.Setor.Descricao
+            };
+        }
     }
 }
