@@ -3,7 +3,6 @@ using Comercio.Data.Querys;
 using Comercio.Entities;
 using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
-using Comercio.Models;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using System;
@@ -55,13 +54,13 @@ namespace Comercio.Data.Repositories
             {
                 using var connection = await _connection.GetConnectionAsync();
                 var response = connection.Query<Produto, Setor, Produto>(
-                    sql: ProdutoQuery.SELECT_POR_DESCRICAO, 
-                    (produto, setor) =>
-                    {
-                        produto.Setor = setor;
-                        return produto;
-                    },
-                    param: new { descricao }).ToList();
+                                sql: ProdutoQuery.SELECT_POR_DESCRICAO, 
+                                (produto, setor) =>
+                                {
+                                    produto.Setor = setor;
+                                    return produto;
+                                },
+                                param: new { descricao }).ToList();
                 return response;
             }
             catch (Exception)
@@ -76,13 +75,13 @@ namespace Comercio.Data.Repositories
             {
                 using var connection = await _connection.GetConnectionAsync();
                 var response = connection.Query<Produto, Setor, Produto>(
-                                    sql: ProdutoQuery.SELECT_POR_SETOR_ID,
-                                    (produto, setor) =>
-                                    {
-                                        produto.Setor = setor;
-                                        return produto;
-                                    },
-                                    param: new { setor_id }).ToList(); 
+                                sql: ProdutoQuery.SELECT_POR_SETOR_ID,
+                                (produto, setor) =>
+                                {
+                                    produto.Setor = setor;
+                                    return produto;
+                                },
+                                param: new { setor_id }).ToList(); 
                 return response;
             }
             catch (Exception)
@@ -102,13 +101,13 @@ namespace Comercio.Data.Repositories
             {
                 using var connection = await _connection.GetConnectionAsync();
                 var response = connection.Query<Produto, Setor, Produto>(
-                                   sql: ProdutoQuery.SELECT_POR_ID,
-                                   (produto, setor) =>
-                                   {
-                                       produto.Setor = setor;
-                                       return produto;
-                                   },
-                                   param: new { produto_id }).FirstOrDefault();
+                            sql: ProdutoQuery.SELECT_POR_ID,
+                            (produto, setor) =>
+                            {
+                                produto.Setor = setor;
+                                return produto;
+                            },
+                            param: new { produto_id }).FirstOrDefault();
                 return response;
             }
             catch (Exception)
@@ -123,13 +122,13 @@ namespace Comercio.Data.Repositories
             {
                 using var connection = await _connection.GetConnectionAsync();
                 var response = connection.Query<Produto, Setor, Produto>(
-                                                    sql: ProdutoQuery.SELECT_POR_CODIGO,
-                                                    (produto, setor) =>
-                                                    {
-                                                        produto.Setor = setor;
-                                                        return produto;
-                                                    },
-                                                    param: new { codigo }).ToList(); 
+                                    sql: ProdutoQuery.SELECT_POR_CODIGO,
+                                    (produto, setor) =>
+                                    {
+                                        produto.Setor = setor;
+                                        return produto;
+                                    },
+                                    param: new { codigo }).ToList(); 
                 return response;
             }
             catch (Exception)
