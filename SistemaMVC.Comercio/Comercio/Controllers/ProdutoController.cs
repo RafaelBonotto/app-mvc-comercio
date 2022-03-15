@@ -155,7 +155,7 @@ namespace Comercio.Controllers
         [Route("[controller]/atualizar/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Atualizar(
-            [Bind("Id, Codigo, Descricao, Setor_id, Preco_custo, Preco_venda")]
+            [Bind("Id, Codigo, Descricao, Setor, Preco_custo, Preco_venda")]
             ProdutoViewModel produto)//]VALIDAÇÃO DO CAMPOS STRINGS QUE VÃO SE TORNAR DOUBLE
         {
             if (ModelState.IsValid)
