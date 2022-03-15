@@ -9,16 +9,18 @@ namespace Comercio.Controllers
 {
     public class ProdutoController : Controller
     {
-        public IProdutoService _produtoService;
+        private readonly IProdutoService _produtoService;
+        private readonly IAdapter _mapper;
 
-        public ProdutoController(IProdutoService produtoService)
+        public ProdutoController(IProdutoService produtoService, IAdapter adaper)
         {
             _produtoService = produtoService;
+            _mapper = adaper;
         }
 
         public IActionResult Index() => View();
         public IActionResult Filtro() => View();
-        public IActionResult Novo() => View();
+        public IActionResult Inserir() => View();
 
         [Route("[controller]/filtrarPorCodigo")]
         public async Task<IActionResult> FiltrarPorCodigo(string codigo)
@@ -31,7 +33,7 @@ namespace Comercio.Controllers
 
                 var listaViewModel = new List<ProdutoViewModel>();
                 foreach (var produto in produtos)
-                    listaViewModel.Add(Adapter.MontaProdutoViewModel(produto));
+                    listaViewModel.Add(_mapper.MontaProdutoViewModel(produto));
 
                 return View("Produtos", listaViewModel);
             }
@@ -49,7 +51,7 @@ namespace Comercio.Controllers
                 var produtos = await _produtoService.FiltrarPorDescricao(descricao);
                 var listaViewModel = new List<ProdutoViewModel>();
                 foreach (var produto in produtos)
-                    listaViewModel.Add(Adapter.MontaProdutoViewModel(produto));
+                    listaViewModel.Add(_mapper.MontaProdutoViewModel(produto));
 
                 if (produtos.Count == 0)
                     return NotFound("Não foram encontrados produtos para esse filtro");
@@ -70,7 +72,7 @@ namespace Comercio.Controllers
                 var produtos = await _produtoService.FiltrarPorSetor(setor);
                 var listaViewModel = new List<ProdutoViewModel>();
                 foreach (var produto in produtos)
-                    listaViewModel.Add(Adapter.MontaProdutoViewModel(produto));
+                    listaViewModel.Add(_mapper.MontaProdutoViewModel(produto));
 
                 if (produtos.Count == 0)
                     return NotFound("Não foram encontrados produtos para esse filtro");
@@ -92,7 +94,7 @@ namespace Comercio.Controllers
                 if (produto is null)
                     return NotFound("Nenhum produto encontrado");
 
-                var produtoViewModel = Adapter.MontaProdutoViewModel(produto);
+                var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
                 return View("Detalhes", produtoViewModel);
             }
             catch (System.Exception)
@@ -111,7 +113,7 @@ namespace Comercio.Controllers
                 if (produto is null) 
                     return NotFound("Produto não encontrado no sistema");
 
-                var produtoViewModel = Adapter.MontaProdutoViewModel(produto);
+                var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
                 return View("Editar", produtoViewModel);
             }
             catch (System.Exception)
@@ -121,9 +123,40 @@ namespace Comercio.Controllers
         }
 
         [HttpPost]
+        [Route("[controller]/adicionar/")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Adicionar(
+            [Bind("Id, Codigo, Descricao, Setor_id, Preco_custo, Preco_venda")]
+            ProdutoViewModel produto)//]VALIDAÇÃO DO CAMPOS STRINGS QUE VÃO SE TORNAR DOUBLE
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var produtoResponse = await _produtoService.InserirProduto(produto);
+                    if (produtoResponse is null)
+                        return NotFound("Não foi possível inserir o produto");
+
+                    var produtoViewModel = _mapper.MontaProdutoViewModel(produtoResponse);
+                    return View("Detalhes", produtoViewModel);
+                }
+                catch (System.Exception)
+                {
+                    throw;
+                }
+            }
+            else
+            {
+                return NotFound($"Erro de validação -  { ModelState.Values }");
+            }
+        }
+
+        [HttpPost]
         [Route("[controller]/atualizar/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Atualizar([Bind("Id, Codigo, Descricao, Setor_id, Preco_custo, Preco_venda")] ProdutoViewModel produto)//]VALIDAÇÃO DO CAMPOS STRINGS QUE VÃO SE TORNAR DOUBLE
+        public async Task<IActionResult> Atualizar(
+            [Bind("Id, Codigo, Descricao, Setor_id, Preco_custo, Preco_venda")]
+            ProdutoViewModel produto)//]VALIDAÇÃO DO CAMPOS STRINGS QUE VÃO SE TORNAR DOUBLE
         {
             if (ModelState.IsValid)
             {
@@ -133,7 +166,7 @@ namespace Comercio.Controllers
                     if (produtoResponse is null)
                         return NotFound("Erro ao tentar atualizar o produto"); 
                     
-                    var produtoViewModel = Adapter.MontaProdutoViewModel(produtoResponse);
+                    var produtoViewModel = _mapper.MontaProdutoViewModel(produtoResponse);
                     return View("Detalhes", produtoViewModel);
                 }
                 catch (System.Exception)
