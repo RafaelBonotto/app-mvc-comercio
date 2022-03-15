@@ -16,7 +16,7 @@ namespace Comercio.Entities
         public DateTime Data_criacao { get; set; }
         public DateTime Data_alteracao { get; set; }
 
-        [Write(false)] 
-        public virtual Setor Setor { get; set; }
+        [Write(false)]
+        public virtual Setor Setor { get; set; } 
     }
 }
