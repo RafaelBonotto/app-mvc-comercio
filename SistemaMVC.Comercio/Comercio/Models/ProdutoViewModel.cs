@@ -31,8 +31,5 @@ namespace Comercio.Models
         [Required]
         [EnumDataType(typeof(Setores))]
         public Setores Setor { get; set; }
-        //public string Setor { get; set; }
-
-        //public int Setor_id { get; set; }
     }
 }
