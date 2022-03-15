@@ -30,7 +30,7 @@
                 <input asp-for="Preco_venda" class="form-control" />
                 <span asp-validation-for="Preco_venda" class="alert-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label><strong>SETOR</strong></label>
                 <select name="Setor_id" class="form-control">
                     <option selected typeof="Number" value=2>ALIMENTOS</option>
@@ -41,6 +41,13 @@
                     <option typeof="Number" value=7>PRESENTES</option>
                     <option typeof="Number" value=8>PERFUMARIA</option>
                 </select>
+            </div>*@
+            <div class="form-group">
+                <label><strong>SETOR</strong></label>
+                <select asp-for="Setor" asp-items="Html.GetEnumSelectList<Comercio.Enum.Setores>()" class="form-control">
+                    <option selected="selected" value="">Setores</option>
+                </select>
+                <span asp-validation-for="Setor" class="text-danger" />
             </div>
 
             <div class="form-group">
