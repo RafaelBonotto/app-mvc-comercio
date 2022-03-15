@@ -26,9 +26,18 @@ namespace Comercio.Data.Repositories
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var response = await connection.InsertAsync<Produto>(produto);
-                produto.Id = response;
-                return produto;
+                var checkCodigo = await connection.QueryFirstOrDefaultAsync<Produto>(
+                            ProdutoQuery.SELECT_POR_CODIGO, new { produto.Codigo });
+                if (checkCodigo != null)
+                    throw new Exception("Impossível inserir o produto com esse código");
+
+                var row = await connection.InsertAsync<Produto>(produto);
+                if (row > 0)
+                {
+                    produto = await this.GetByIdAsync(row);
+                    return produto;
+                }
+                return null;
             }
             catch (Exception)
             {
