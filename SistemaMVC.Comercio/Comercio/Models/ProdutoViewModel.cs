@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Comercio.Enum;
+using System.ComponentModel.DataAnnotations;
 
 namespace Comercio.Models
 {
@@ -26,9 +27,12 @@ namespace Comercio.Models
         [Display(Name = "STATUS")]
         public string Ativo { get; set; } 
 
-        [Display(Name = "SETOR")]        
-        public string Setor { get; set; }
+        [Display(Name = "SETOR")]
+        [Required]
+        [EnumDataType(typeof(Setores))]
+        public Setores Setor { get; set; }
+        //public string Setor { get; set; }
 
-        public int Setor_id { get; set; }
+        //public int Setor_id { get; set; }
     }
 }
