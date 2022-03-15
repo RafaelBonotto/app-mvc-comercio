@@ -3,6 +3,7 @@ using Comercio.Data.Repositories;
 using Comercio.Entities;
 using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
+using Comercio.Mapper;
 using Comercio.Models;
 using Comercio.Services;
 using Microsoft.AspNetCore.Builder;
@@ -30,10 +31,11 @@ namespace Comercio
             services.AddCors();
 
             #region Injeção de Dependencia
+            services.AddScoped(typeof(IMySqlConnectionManager), typeof(MySqlConnectionManager));
             services.AddScoped(typeof(IRepositoryBase<Produto>), typeof(ProdutoRepository));
+            services.AddScoped(typeof(IAdapter), typeof(Adapter));
             services.AddScoped(typeof(IProdutoRepository), typeof(ProdutoRepository));
             services.AddScoped(typeof(IProdutoService), typeof(ProdutoService));
-            services.AddScoped(typeof(IMySqlConnectionManager), typeof(MySqlConnectionManager));
             #endregion
         }
 
