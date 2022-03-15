@@ -11,16 +11,23 @@ namespace Comercio.Services
 {
     public class ProdutoService : IProdutoService
     {
-        public IRepositoryBase<Produto> _repositoryBase;
-        public IProdutoRepository _repository;
+        private readonly IRepositoryBase<Produto> _repositoryBase;
+        private readonly IProdutoRepository _repository;
+        private readonly IAdapter _mapper;
 
-        public ProdutoService(IRepositoryBase<Produto> context, IProdutoRepository repository)
+        public ProdutoService(IRepositoryBase<Produto> context, IProdutoRepository repository, IAdapter adapter)
         {
             _repositoryBase = context;
             _repository = repository;
+            _mapper = adapter;
         }
 
         public Task<Produto> AdicionarFornecedor(int produtoId, string fornecedorDescricao)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Produto> AdicionarProduto(ProdutoViewModel produto)
         {
             throw new NotImplementedException();
         }
@@ -30,9 +37,9 @@ namespace Comercio.Services
             try
             {
                 Produto produtoRepository = await _repositoryBase.GetByIdAsync(produto.Id);
-                produtoRepository = Adapter.MontaProdutoUpdateRepositorio(
-                                                            produtoViewModel: produto, 
-                                                            produtoRepositorio: produtoRepository);          
+                produtoRepository = _mapper.MontaProdutoUpdateRepositorio(
+                                                            produtoViewModel: produto,
+                                                            produtoRepositorio: produtoRepository);
                 return await _repositoryBase.UpdateAsync(produtoRepository);
             }
             catch (System.Exception)
@@ -109,9 +116,17 @@ namespace Comercio.Services
             }
         }
 
-        public Task<Produto> InserirProduto(Produto produto)
+        public async Task<Produto> InserirProduto(ProdutoViewModel produto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var produtoRepository = _mapper.MontaProdutoInsertRepositorio(produto);
+                return await _repositoryBase.AddAsync(produtoRepository);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public Task<List<Produto>> ListarProdutos()
