@@ -1,12 +1,13 @@
 ﻿using Comercio.Entities;
+using Comercio.Interfaces;
 using Comercio.Models;
 using System;
 
 namespace Comercio.Mapper
 {
-    public static class Adapter
+    public class Adapter : IAdapter
     {
-        public static Produto MontaProdutoUpdateRepositorio(ProdutoViewModel produtoViewModel, Produto produtoRepositorio)
+        public Produto MontaProdutoUpdateRepositorio(ProdutoViewModel produtoViewModel, Produto produtoRepositorio)
         {
             produtoRepositorio.Descricao = produtoViewModel.Descricao;
             produtoRepositorio.Preco_custo = double.Parse(produtoViewModel.Preco_custo.Replace(".", ","));
@@ -17,7 +18,21 @@ namespace Comercio.Mapper
             return produtoRepositorio;
         }
 
-        public static ProdutoViewModel MontaProdutoViewModel(Produto produto)
+        public Produto MontaProdutoInsertRepositorio(ProdutoViewModel produtoViewModel)
+        {
+            return new Produto()
+            {
+                Descricao = produtoViewModel.Descricao,
+                Preco_custo = double.Parse(produtoViewModel.Preco_custo.Replace(".", ",")),
+                Preco_venda = double.Parse(produtoViewModel.Preco_venda.Replace(".", ",")),
+                Setor_id = produtoViewModel.Setor_id,
+                Ativo = 1,
+                Data_criacao = DateTime.Now,
+                Data_alteracao = DateTime.Now
+            };
+        }
+
+        public ProdutoViewModel MontaProdutoViewModel(Produto produto)
         {
             return new ProdutoViewModel()
             {
