@@ -1,6 +1,9 @@
-﻿namespace Comercio.Enum
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace Comercio.Enum
 {
-    public enum Setores
+    public enum Setores 
     {
         ALIMENTOS = 2,
         ELETRÔNICOS = 3,
