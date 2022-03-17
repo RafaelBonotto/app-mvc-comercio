@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<SelectListItem>
+@{
     ViewData["Title"] = "Produto/filtro";
 }
 
@@ -42,16 +43,19 @@
         <div class="form-group">
             <div class="form-group col-md-4">
                 <label for="setor"><strong>FILTRAR POR SETOR</strong></label>
-                <select name="setor" class="form-control">
-                    <option selected>SETORES...</option>
-                    <option typeof="Number" value=2>ALIMENTOS</option>
-                    <option typeof="Number" value=3>ELETRÔNICOS</option>
-                    <option typeof="Number" value=4>UTILIDADES</option>
-                    <option typeof="Number" value=5>FERRAMENTAS</option>
-                    <option typeof="Number" value=6>BRINQUEDOS</option>
-                    <option typeof="Number" value=7>PRESENTES</option>
-                    <option typeof="Number" value=8>PERFUMARIA</option>
+                <select name="setor" asp-items="@Model" class="form-control">
+                    @*<option selected="selected" value="">Setores</option>*@
                 </select>
+                @*<select name="setor" class="form-control">
+            <option selected>SETORES...</option>
+            <option typeof="Number" value=2>ALIMENTOS</option>
+            <option typeof="Number" value=3>ELETRÔNICOS</option>
+            <option typeof="Number" value=4>UTILIDADES</option>
+            <option typeof="Number" value=5>FERRAMENTAS</option>
+            <option typeof="Number" value=6>BRINQUEDOS</option>
+            <option typeof="Number" value=7>PRESENTES</option>
+            <option typeof="Number" value=8>PERFUMARIA</option>
+        </select>*@
             </div>
         </div>
         <hr />
