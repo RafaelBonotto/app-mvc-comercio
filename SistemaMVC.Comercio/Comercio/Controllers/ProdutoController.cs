@@ -22,8 +22,21 @@ namespace Comercio.Controllers
         }
 
         public IActionResult Index() => View();
-        public IActionResult Filtro() => View();
         public IActionResult Inserir() => View();
+
+        [Route("[controller]/filtro")]
+        public async Task<IActionResult> CarregaSetoresExibeViewFiltro()
+        {
+            try
+            {
+                var setores = new SelectList(await _produtoService.ListarSetores());
+                return View("Filtro", setores);
+            }
+            catch (System.Exception error)
+            {
+                return NotFound(error.Message);
+            }
+        }
 
         [Route("[controller]/filtrarPorCodigo")]
         public async Task<IActionResult> FiltrarPorCodigo(string codigo)
@@ -68,7 +81,7 @@ namespace Comercio.Controllers
         }
 
         [Route("[controller]/filtrarPorSetor")]
-        public async Task<IActionResult> FiltrarPorSetor(int setor)
+        public async Task<IActionResult> FiltrarPorSetor(string setor)
         {
             try
             {
