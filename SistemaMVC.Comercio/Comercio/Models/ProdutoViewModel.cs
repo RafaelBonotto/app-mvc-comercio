@@ -1,4 +1,7 @@
-﻿using Comercio.Enum;
+﻿using Comercio.Entities;
+using Comercio.Enum;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Comercio.Models
@@ -29,7 +32,15 @@ namespace Comercio.Models
 
         [Display(Name = "SETOR")]
         [Required]
-        [EnumDataType(typeof(Setores))]
-        public Setores Setor { get; set; }
+        //[EnumDataType(typeof(Setores))]
+        public string SetorDescricao { get; set; }
+
+        public int Setor_id { get; set; }
+        //public Setores Setor { get; set; }
+
+        // Usado nas Views Editar e Inserir
+        public IEnumerable<SelectListItem> SetoresBanco { get; set; } 
+       
+
     }
 }
