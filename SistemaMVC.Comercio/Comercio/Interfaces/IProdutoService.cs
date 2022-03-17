@@ -10,7 +10,7 @@ namespace Comercio.Interfaces
         Task<List<Produto>> ListarProdutos();
         Task<List<Produto>> FiltrarPorCodigo(string codigo);
         Task<List<Produto>> FiltrarPorDescricao(string descricao);
-        Task<List<Produto>> FiltrarPorSetor(int setor_id);
+        Task<List<Produto>> FiltrarPorSetor(string setor);
         Task<Produto> DetalhesProduto(int id);        
         Task<Produto> InserirProduto(ProdutoViewModel produto);
         Task<Produto> AtualizarProduto(ProdutoViewModel produto);
