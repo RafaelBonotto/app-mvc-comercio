@@ -13,9 +13,7 @@ namespace Comercio.Mapper
             produtoRepositorio.Descricao = produtoViewModel.Descricao;
             produtoRepositorio.Preco_custo = double.Parse(produtoViewModel.Preco_custo.Replace(".", ","));
             produtoRepositorio.Preco_venda = double.Parse(produtoViewModel.Preco_venda.Replace(".", ","));
-            //produtoRepositorio.Setor_id = produtoViewModel.Setor.GetHashCode();
             produtoRepositorio.Setor_id = produtoViewModel.Setor_id;
-            produtoRepositorio.Setor.Descricao = produtoViewModel.SetorDescricao;
             produtoRepositorio.Ativo = 1;
             produtoRepositorio.Data_alteracao = DateTime.Now;
             return produtoRepositorio;
@@ -42,12 +40,12 @@ namespace Comercio.Mapper
             {
                 Id = produto.Id,
                 Codigo = produto.Codigo,
-                Descricao = produto.Descricao,
+                Descricao = produto.Descricao.ToUpper(),
                 Preco_custo = produto.Preco_custo.ToString("N2"),
                 Preco_venda = produto.Preco_venda.ToString("N2"),
                 Ativo = produto.Ativo == 0 ? "INATIVO " : "ATIVO",
                 //Setor = (Setores)produto.Setor_id
-                SetorDescricao = produto.Setor.Descricao
+                SetorDescricao = produto.Setor.Descricao.ToUpper()
             };
         }
     }
