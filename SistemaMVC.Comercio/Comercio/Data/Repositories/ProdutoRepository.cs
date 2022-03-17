@@ -78,19 +78,19 @@ namespace Comercio.Data.Repositories
             }
         }
 
-        public async Task<List<Produto>> FiltrarPorSetor(int setor_id)
+        public async Task<List<Produto>> FiltrarPorSetor(string setor)
         {
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
                 var response = connection.Query<Produto, Setor, Produto>(
-                                sql: ProdutoQuery.SELECT_POR_SETOR_ID,
+                                sql: ProdutoQuery.SELECT_POR_SETOR,
                                 (produto, setor) =>
                                 {
                                     produto.Setor = setor;
                                     return produto;
                                 },
-                                param: new { setor_id }).ToList(); 
+                                param: new { setor }).ToList(); 
                 return response;
             }
             catch (Exception)
@@ -146,12 +146,14 @@ namespace Comercio.Data.Repositories
             }
         }
 
-        public async Task<List<Setor>> ListarSetoresBanco()
+        public async Task<List<Setor>> ObterSetores()
         {
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
                 var setores = await connection.QueryAsync<Setor>(ProdutoQuery.SELECT_LISTAR_SETORES);
+                foreach (var setor in setores)
+                    setor.Descricao = setor.Descricao.ToUpper();
                 return setores.ToList();
             }
             catch (Exception)
