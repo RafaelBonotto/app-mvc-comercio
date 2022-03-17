@@ -146,11 +146,28 @@ namespace Comercio.Data.Repositories
             }
         }
 
+        public async Task<List<Setor>> ListarSetoresBanco()
+        {
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                var setores = await connection.QueryAsync<Setor>(ProdutoQuery.SELECT_LISTAR_SETORES);
+                return setores.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<Produto> UpdateAsync(Produto produto)
         {
             try
             {                
                 using var connection = await _connection.GetConnectionAsync();
+                produto.Setor_id = connection.QueryFirst<int>(
+                                ProdutoQuery.SELECT_ID_SETOR, 
+                                new { descricao = produto.Setor.Descricao });
                 var response = await connection.UpdateAsync<Produto>(produto);
                 if (!response)
                     return null;
