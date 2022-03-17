@@ -1,8 +1,11 @@
-﻿using Comercio.Interfaces;
+﻿using Comercio.Entities;
+using Comercio.Interfaces;
 using Comercio.Mapper;
 using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Comercio.Controllers
@@ -109,11 +112,23 @@ namespace Comercio.Controllers
             try
             {
                 var produto = await _produtoService.DetalhesProduto(id);
-
+                
                 if (produto is null) 
                     return NotFound("Produto não encontrado no sistema");
 
                 var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
+
+
+                var setores = new SelectList(await _produtoService.ListarSetores());
+                produtoViewModel.SetoresBanco = setores;
+
+                //var setores = await _produtoService.ListarSetores();
+                //produtoViewModel.SetoresBanco = new List<SelectListItem>();
+                //foreach (var item in setores)
+                //{
+                //    var aux = new SelectListItem() { Value = item.Id.ToString(), Text = item.Descricao };
+                //    produtoViewModel.SetoresBanco.ToList().Add(aux);
+                //}
                 return View("Editar", produtoViewModel);
             }
             catch (System.Exception)
@@ -155,13 +170,13 @@ namespace Comercio.Controllers
         [Route("[controller]/atualizar/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Atualizar(
-            [Bind("Id, Codigo, Descricao, Setor, Preco_custo, Preco_venda")]
+            [Bind("Id, Codigo, Descricao, SetorDescricao, Preco_custo, Preco_venda")]
             ProdutoViewModel produto)//]VALIDAÇÃO DO CAMPOS STRINGS QUE VÃO SE TORNAR DOUBLE
         {
             if (ModelState.IsValid)
             {
                 try
-                {
+                {                    
                     var produtoResponse = await _produtoService.AtualizarProduto(produto);
                     if (produtoResponse is null)
                         return NotFound("Erro ao tentar atualizar o produto"); 
