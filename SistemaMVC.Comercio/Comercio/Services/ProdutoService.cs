@@ -48,11 +48,11 @@ namespace Comercio.Services
             }
         }
 
-        public Task<Produto> DetalhesProduto(int id)
+        public async Task<Produto> DetalhesProduto(int id)
         {
             try
             {
-                return _repositoryBase.GetByIdAsync(id);
+                return await _repositoryBase.GetByIdAsync(id);                 
             }
             catch (Exception)
             {
@@ -138,5 +138,8 @@ namespace Comercio.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task<List<Setor>> ListarSetores
+            ()=> await _repository.ListarSetoresBanco();
     }
 }
