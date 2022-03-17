@@ -32,18 +32,18 @@
                 <label><strong>VENDA</strong></label>
                 <input asp-for="Preco_venda" class="form-control" />
                 <span asp-validation-for="Preco_venda" class="alert-danger"></span>
-            </div>         
+            </div>
             <div class="form-group">
                 <label><strong>SETOR</strong></label>
-                <select asp-for="Setor" asp-items="Html.GetEnumSelectList<Comercio.Enum.Setores>()" class="form-control">
-                    <option selected="selected" value="">Setores</option>
+                <select asp-for="SetorDescricao" asp-items="@Model.SetoresBanco" class ="form-control">
+                    @*<option selected="selected" value="">Setores</option>*@
                 </select>
-                <span asp-validation-for="Setor" class="text-danger" />
+                <span asp-validation-for="SetorDescricao" class="text-danger" />
             </div>
             <div class="form-group">
                 <input type="submit" value="SALVAR" class="btn btn-success " />
             </div>
-
+           
         </form>
     </div>
 </div>
@@ -53,8 +53,8 @@
     <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+@*@section Scripts {
+    @{await Html.RenderPartialAsynContial");}
+}*@
 
 
