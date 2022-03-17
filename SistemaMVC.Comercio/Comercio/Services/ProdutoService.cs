@@ -4,6 +4,7 @@ using Comercio.Interfaces.Base;
 using Comercio.Mapper;
 using Comercio.Models;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -37,6 +38,12 @@ namespace Comercio.Services
             try
             {
                 Produto produtoRepository = await _repositoryBase.GetByIdAsync(produto.Id);
+
+                var setores = await this.ListarSetores();
+                produto.Setor_id = setores.Where(
+                        x => x.Descricao.Equals(produto.SetorDescricao))
+                        .Select(x => x.Id).First();
+
                 produtoRepository = _mapper.MontaProdutoUpdateRepositorio(
                                                             produtoViewModel: produto,
                                                             produtoRepositorio: produtoRepository);
@@ -104,11 +111,11 @@ namespace Comercio.Services
             }
         }
 
-        public async Task<List<Produto>> FiltrarPorSetor(int setor_id)
+        public async Task<List<Produto>> FiltrarPorSetor(string setor)
         {
             try
             {
-                return await _repository.FiltrarPorSetor(setor_id);
+                return await _repository.FiltrarPorSetor(setor);
             }
             catch (System.Exception)
             {
@@ -140,6 +147,6 @@ namespace Comercio.Services
         }
 
         public async Task<List<Setor>> ListarSetores
-            ()=> await _repository.ListarSetoresBanco();
+            ()=> await _repository.ObterSetores();
     }
 }
