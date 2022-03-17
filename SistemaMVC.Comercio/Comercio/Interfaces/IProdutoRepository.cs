@@ -8,5 +8,6 @@ namespace Comercio.Interfaces
     {
         Task<List<Produto>> FiltrarPorDescricao(string descricao);
         Task<List<Produto>> FiltrarPorSetor(int setor_id);
+        Task<List<Setor>> ListarSetoresBanco();
     }
 }
