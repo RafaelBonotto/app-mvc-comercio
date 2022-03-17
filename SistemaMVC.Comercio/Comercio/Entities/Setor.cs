@@ -11,5 +11,10 @@ namespace Comercio.Entities
         public sbyte Ativo { get; set; }
         public DateTime Data_criacao { get; set; }
         public DateTime Data_alteracao { get; set; }
+
+        public override string ToString()
+        {
+            return this.Descricao;
+        }
     }
 }
