@@ -1,5 +1,4 @@
 ﻿using Comercio.Entities;
-using Comercio.Enum;
 using Comercio.Interfaces;
 using Comercio.Models;
 using System;
@@ -23,10 +22,10 @@ namespace Comercio.Mapper
         {
             return new Produto()
             {
-                Descricao = produtoViewModel.Descricao,
+                Codigo = produtoViewModel.Codigo,
+                Descricao = produtoViewModel.Descricao.ToUpper(),
                 Preco_custo = double.Parse(produtoViewModel.Preco_custo.Replace(".", ",")),
                 Preco_venda = double.Parse(produtoViewModel.Preco_venda.Replace(".", ",")),
-                //Setor_id = produtoViewModel.Setor.GetHashCode(),
                 Setor_id = produtoViewModel.Setor_id,
                 Ativo = 1,
                 Data_criacao = DateTime.Now,
@@ -44,7 +43,6 @@ namespace Comercio.Mapper
                 Preco_custo = produto.Preco_custo.ToString("N2"),
                 Preco_venda = produto.Preco_venda.ToString("N2"),
                 Ativo = produto.Ativo == 0 ? "INATIVO " : "ATIVO",
-                //Setor = (Setores)produto.Setor_id
                 SetorDescricao = produto.Setor.Descricao.ToUpper()
             };
         }
