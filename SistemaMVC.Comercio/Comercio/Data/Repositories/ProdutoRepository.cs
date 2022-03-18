@@ -3,6 +3,7 @@ using Comercio.Data.Querys;
 using Comercio.Entities;
 using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
+using Comercio.Interfaces.ProdutoInterfaces;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using System;
