@@ -15,6 +15,9 @@ namespace Comercio.Controllers
     {
         private readonly IProdutoService _produtoService;
         private readonly IProdutoAdapter _mapper;
+        private const string MSG_ERRO_FILTRO = "Não foram encontrados produtos para esse filtro.";
+        private const string MSG_ERRO_PAGINA = "Algo deu errado ao tentar carregar essa página.";
+        private const string MSG_ERRO_DETALHES_PRODUTO = "Algo deu errado ao tentar carregar detalhes do produto.";
         public ProdutoController(IProdutoService produtoService, IProdutoAdapter adaper)
         {
             _produtoService = produtoService;
@@ -31,9 +34,9 @@ namespace Comercio.Controllers
                 var setores = new SelectList(await _produtoService.ListarSetores());
                 return View("Filtro", setores);
             }
-            catch (System.Exception error)
+            catch (System.Exception)
             {
-                return NotFound(error.Message);// ErroViewModel...
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
             }
         }
 
@@ -47,9 +50,9 @@ namespace Comercio.Controllers
                 produtoViewModel.SetoresBanco = setores;
                 return View("Inserir", produtoViewModel);
             }
-            catch (System.Exception error)
+            catch (System.Exception)
             {
-                return NotFound(error.Message);// ErroViewModel...
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
             }
         }
 
@@ -60,7 +63,7 @@ namespace Comercio.Controllers
             {
                 var produtos = await _produtoService.FiltrarPorCodigo(codigo);
                 if (produtos.Count == 0)
-                    return NotFound("Não foram encontrados produtos para esse filtro");
+                    return View("Error", new ErrorViewModel(MSG_ERRO_FILTRO, 500));
 
                 var listaViewModel = new List<ProdutoViewModel>();
                 foreach (var produto in produtos)
@@ -68,9 +71,9 @@ namespace Comercio.Controllers
 
                 return View("Produtos", listaViewModel);
             }
-            catch (System.Exception error)
+            catch (System.Exception)
             {
-                return NotFound(error.Message);// ErroViewModel...
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
             }
         }
 
@@ -85,13 +88,13 @@ namespace Comercio.Controllers
                     listaViewModel.Add(_mapper.MontaProdutoViewModel(produto));
 
                 if (produtos.Count == 0)
-                    return NotFound("Não foram encontrados produtos para esse filtro");// ErroViewModel...
+                    return View("Error", new ErrorViewModel(MSG_ERRO_FILTRO, 500));
 
                 return View("Produtos", listaViewModel);
             }
             catch (System.Exception error)
             {
-                return NotFound(error.Message);
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
             }
         }
 
@@ -106,13 +109,13 @@ namespace Comercio.Controllers
                     listaViewModel.Add(_mapper.MontaProdutoViewModel(produto));
 
                 if (produtos.Count == 0)
-                    return NotFound("Não foram encontrados produtos para esse filtro");// ErroViewModel...
+                    return View("Error", new ErrorViewModel(MSG_ERRO_FILTRO, 500));
 
                 return View("Produtos", listaViewModel);
             }
-            catch (System.Exception error)
+            catch (System.Exception)
             {
-                return NotFound(error.Message);// ErroViewModel...
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
             }
         }
 
@@ -123,14 +126,14 @@ namespace Comercio.Controllers
             {
                 var produto = await _produtoService.DetalhesProduto(id);
                 if (produto is null)
-                    return NotFound("Nenhum produto encontrado"); // ErroViewModel...
+                    return View("Error", new ErrorViewModel(MSG_ERRO_DETALHES_PRODUTO, 404));
 
                 var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
                 return View("Detalhes", produtoViewModel);
             }
             catch (System.Exception)
             {
-                throw;
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
             }
         }
 
@@ -141,8 +144,8 @@ namespace Comercio.Controllers
             {
                 var produto = await _produtoService.DetalhesProduto(id);
                 
-                if (produto is null) 
-                    return NotFound("Produto não encontrado no sistema");// ErroViewModel...
+                if (produto is null)
+                    return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
 
                 var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
                 var setores = new SelectList(await _produtoService.ListarSetores());
@@ -151,7 +154,7 @@ namespace Comercio.Controllers
             }
             catch (System.Exception)
             {
-                throw;
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
             }
         }
 
@@ -168,14 +171,14 @@ namespace Comercio.Controllers
                 {
                     var produtoResponse = await _produtoService.InserirProduto(produto);
                     if (produtoResponse is null)
-                        return NotFound("Não foi possível inserir o produto");// ErroViewModel...
+                        return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
 
                     var produtoViewModel = _mapper.MontaProdutoViewModel(produtoResponse);
                     return View("Detalhes", produtoViewModel);
                 }
                 catch (System.Exception ex)
                 {
-                    return NotFound(ex.Message);// ErroViewModel...
+                    return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
                 }
             }
             else
@@ -197,8 +200,8 @@ namespace Comercio.Controllers
                 {                    
                     var produtoResponse = await _produtoService.AtualizarProduto(produto);
                     if (produtoResponse is null)
-                        return NotFound("Erro ao tentar atualizar o produto"); // ErroViewModel...
-                    
+                        return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+
                     var produtoViewModel = _mapper.MontaProdutoViewModel(produtoResponse);
                     return View("Detalhes", produtoViewModel);
                 }
@@ -209,7 +212,7 @@ namespace Comercio.Controllers
             }
             else
             {
-                return NotFound($"Erro de validação -  { ModelState.Values }");
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
             }
         }
 
@@ -220,14 +223,14 @@ namespace Comercio.Controllers
             try
             {
                 var delete = await _produtoService.ExcluirProduto(id);
-                if (!delete) 
-                    return NotFound("Erro ao excluir o produto"); // ErroViewModel...
+                if (!delete)
+                    return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
 
                 return View("Index");
             }
             catch (System.Exception)
             {
-                throw;
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
             }
         }
     }
