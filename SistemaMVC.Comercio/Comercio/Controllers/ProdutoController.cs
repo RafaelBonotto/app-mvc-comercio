@@ -14,7 +14,6 @@ namespace Comercio.Controllers
     {
         private readonly IProdutoService _produtoService;
         private readonly IAdapter _mapper;
-
         public ProdutoController(IProdutoService produtoService, IAdapter adaper)
         {
             _produtoService = produtoService;
@@ -22,7 +21,6 @@ namespace Comercio.Controllers
         }
 
         public IActionResult Index() => View();
-        public IActionResult Inserir() => View();
 
         [Route("[controller]/filtro")]
         public async Task<IActionResult> CarregaSetoresExibeViewFiltro()
@@ -34,7 +32,23 @@ namespace Comercio.Controllers
             }
             catch (System.Exception error)
             {
-                return NotFound(error.Message);
+                return NotFound(error.Message);// ErroViewModel...
+            }
+        }
+
+        [Route("[controller]/inserir")]
+        public async Task<IActionResult> CarregaSetoresExibeViewInserir()
+        {
+            try
+            {
+                ProdutoViewModel produtoViewModel = new();
+                var setores = new SelectList(await _produtoService.ListarSetores());
+                produtoViewModel.SetoresBanco = setores;
+                return View("Inserir", produtoViewModel);
+            }
+            catch (System.Exception error)
+            {
+                return NotFound(error.Message);// ErroViewModel...
             }
         }
 
@@ -55,7 +69,7 @@ namespace Comercio.Controllers
             }
             catch (System.Exception error)
             {
-                return NotFound(error.Message);
+                return NotFound(error.Message);// ErroViewModel...
             }
         }
 
@@ -70,7 +84,7 @@ namespace Comercio.Controllers
                     listaViewModel.Add(_mapper.MontaProdutoViewModel(produto));
 
                 if (produtos.Count == 0)
-                    return NotFound("Não foram encontrados produtos para esse filtro");
+                    return NotFound("Não foram encontrados produtos para esse filtro");// ErroViewModel...
 
                 return View("Produtos", listaViewModel);
             }
@@ -91,13 +105,13 @@ namespace Comercio.Controllers
                     listaViewModel.Add(_mapper.MontaProdutoViewModel(produto));
 
                 if (produtos.Count == 0)
-                    return NotFound("Não foram encontrados produtos para esse filtro");
+                    return NotFound("Não foram encontrados produtos para esse filtro");// ErroViewModel...
 
                 return View("Produtos", listaViewModel);
             }
             catch (System.Exception error)
             {
-                return NotFound(error.Message);
+                return NotFound(error.Message);// ErroViewModel...
             }
         }
 
@@ -108,7 +122,7 @@ namespace Comercio.Controllers
             {
                 var produto = await _produtoService.DetalhesProduto(id);
                 if (produto is null)
-                    return NotFound("Nenhum produto encontrado");
+                    return NotFound("Nenhum produto encontrado"); // ErroViewModel...
 
                 var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
                 return View("Detalhes", produtoViewModel);
@@ -127,21 +141,11 @@ namespace Comercio.Controllers
                 var produto = await _produtoService.DetalhesProduto(id);
                 
                 if (produto is null) 
-                    return NotFound("Produto não encontrado no sistema");
+                    return NotFound("Produto não encontrado no sistema");// ErroViewModel...
 
                 var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
-
-
                 var setores = new SelectList(await _produtoService.ListarSetores());
                 produtoViewModel.SetoresBanco = setores;
-
-                //var setores = await _produtoService.ListarSetores();
-                //produtoViewModel.SetoresBanco = new List<SelectListItem>();
-                //foreach (var item in setores)
-                //{
-                //    var aux = new SelectListItem() { Value = item.Id.ToString(), Text = item.Descricao };
-                //    produtoViewModel.SetoresBanco.ToList().Add(aux);
-                //}
                 return View("Editar", produtoViewModel);
             }
             catch (System.Exception)
@@ -154,7 +158,7 @@ namespace Comercio.Controllers
         [Route("[controller]/adicionar/")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Adicionar(
-            [Bind("Id, Codigo, Descricao, Setor_id, Preco_custo, Preco_venda")]
+            [Bind("Id, Codigo, Descricao, SetorDescricao, Preco_custo, Preco_venda")]
             ProdutoViewModel produto)//]VALIDAÇÃO DO CAMPOS STRINGS QUE VÃO SE TORNAR DOUBLE
         {
             if (ModelState.IsValid)
@@ -163,14 +167,14 @@ namespace Comercio.Controllers
                 {
                     var produtoResponse = await _produtoService.InserirProduto(produto);
                     if (produtoResponse is null)
-                        return NotFound("Não foi possível inserir o produto");
+                        return NotFound("Não foi possível inserir o produto");// ErroViewModel...
 
                     var produtoViewModel = _mapper.MontaProdutoViewModel(produtoResponse);
                     return View("Detalhes", produtoViewModel);
                 }
-                catch (System.Exception)
+                catch (System.Exception ex)
                 {
-                    throw;
+                    return NotFound(ex.Message);// ErroViewModel...
                 }
             }
             else
@@ -192,7 +196,7 @@ namespace Comercio.Controllers
                 {                    
                     var produtoResponse = await _produtoService.AtualizarProduto(produto);
                     if (produtoResponse is null)
-                        return NotFound("Erro ao tentar atualizar o produto"); 
+                        return NotFound("Erro ao tentar atualizar o produto"); // ErroViewModel...
                     
                     var produtoViewModel = _mapper.MontaProdutoViewModel(produtoResponse);
                     return View("Detalhes", produtoViewModel);
@@ -215,9 +219,8 @@ namespace Comercio.Controllers
             try
             {
                 var delete = await _produtoService.ExcluirProduto(id);
-
                 if (!delete) 
-                    return NotFound("Erro ao excluir o produto");
+                    return NotFound("Erro ao excluir o produto"); // ErroViewModel...
 
                 return View("Index");
             }
