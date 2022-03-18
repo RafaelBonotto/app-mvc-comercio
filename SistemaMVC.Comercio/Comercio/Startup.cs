@@ -3,6 +3,7 @@ using Comercio.Data.Repositories;
 using Comercio.Entities;
 using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
+using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Mapper;
 using Comercio.Models;
 using Comercio.Services;
@@ -33,7 +34,7 @@ namespace Comercio
             #region Injeção de Dependencia
             services.AddScoped(typeof(IMySqlConnectionManager), typeof(MySqlConnectionManager));
             services.AddScoped(typeof(IRepositoryBase<Produto>), typeof(ProdutoRepository));
-            services.AddScoped(typeof(IAdapter), typeof(Adapter));
+            services.AddScoped(typeof(IProdutoAdapter), typeof(ProdutoAdapter));
             services.AddScoped(typeof(IProdutoRepository), typeof(ProdutoRepository));
             services.AddScoped(typeof(IProdutoService), typeof(ProdutoService));
             #endregion
