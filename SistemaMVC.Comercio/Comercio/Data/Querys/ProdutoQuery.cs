@@ -9,7 +9,7 @@
                                                     tb_setor 
                                                     ON tb_setor.id = tb_produto.setor_id
                                                     WHERE 
-                                                    codigo = @codigo";
+                                                    tb_produto.codigo = @Codigo";
 
         public const string SELECT_POR_DESCRICAO = @"SELECT* 
                                                         FROM 
