@@ -7,9 +7,7 @@
 <hr />
 
 <div class="w-50 p-3" style="background-color: #C0C0C0;">
-
     <form asp-action="filtrarPorCodigo">
-
         <div class="form-group">
             <label for="codigo" class="control-label"><strong>FILTRAR POR CÓDIGO</strong></label>
             <input type="text" class="form-control" name="codigo" placeholder="Código do produto">
@@ -22,9 +20,7 @@
 </div>
 <hr />
 <div class="w-50 p-3" style="background-color: #eee; ">
-
     <form asp-action="filtrarPorDescricao">
-
         <div class="form-group">
             <label for="descricao"><strong>FILTRAR POR DESCRIÇÃO</strong></label>
             <input type="text" class="form-control" name="descricao" placeholder="Descrição do produto">
@@ -37,25 +33,12 @@
 </div>
 <hr />
 <div class="w-50 p-3" style="background-color: #C0C0C0; ">
-
     <form asp-action="filtrarPorSetor">
-
         <div class="form-group">
             <div class="form-group col-md-4">
                 <label for="setor"><strong>FILTRAR POR SETOR</strong></label>
                 <select name="setor" asp-items="@Model" class="form-control">
-                    @*<option selected="selected" value="">Setores</option>*@
                 </select>
-                @*<select name="setor" class="form-control">
-            <option selected>SETORES...</option>
-            <option typeof="Number" value=2>ALIMENTOS</option>
-            <option typeof="Number" value=3>ELETRÔNICOS</option>
-            <option typeof="Number" value=4>UTILIDADES</option>
-            <option typeof="Number" value=5>FERRAMENTAS</option>
-            <option typeof="Number" value=6>BRINQUEDOS</option>
-            <option typeof="Number" value=7>PRESENTES</option>
-            <option typeof="Number" value=8>PERFUMARIA</option>
-        </select>*@
             </div>
         </div>
         <hr />
@@ -64,7 +47,5 @@
         </div>
     </form>
 </div>
-
 <hr />
-
 <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
