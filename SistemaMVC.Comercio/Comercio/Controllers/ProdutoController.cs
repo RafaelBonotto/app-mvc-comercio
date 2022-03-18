@@ -1,5 +1,6 @@
 ﻿using Comercio.Entities;
 using Comercio.Interfaces;
+using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Mapper;
 using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,8 +14,8 @@ namespace Comercio.Controllers
     public class ProdutoController : Controller
     {
         private readonly IProdutoService _produtoService;
-        private readonly IAdapter _mapper;
-        public ProdutoController(IProdutoService produtoService, IAdapter adaper)
+        private readonly IProdutoAdapter _mapper;
+        public ProdutoController(IProdutoService produtoService, IProdutoAdapter adaper)
         {
             _produtoService = produtoService;
             _mapper = adaper;
