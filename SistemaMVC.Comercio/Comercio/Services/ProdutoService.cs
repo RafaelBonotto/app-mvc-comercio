@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Comercio.Interfaces.ProdutoInterfaces;
 
 namespace Comercio.Services
 {
@@ -14,9 +15,9 @@ namespace Comercio.Services
     {
         private readonly IRepositoryBase<Produto> _repositoryBase;
         private readonly IProdutoRepository _repository;
-        private readonly IAdapter _mapper;
+        private readonly IProdutoAdapter _mapper;
 
-        public ProdutoService(IRepositoryBase<Produto> context, IProdutoRepository repository, IAdapter adapter)
+        public ProdutoService(IRepositoryBase<Produto> context, IProdutoRepository repository, IProdutoAdapter adapter)
         {
             _repositoryBase = context;
             _repository = repository;
