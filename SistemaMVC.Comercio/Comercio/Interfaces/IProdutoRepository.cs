@@ -9,5 +9,6 @@ namespace Comercio.Interfaces
         Task<List<Produto>> FiltrarPorDescricao(string descricao);
         Task<List<Produto>> FiltrarPorSetor(string setor);
         Task<List<Setor>> ObterSetores();
+        Task<int> ObterSetorId(string setor);
     }
 }
