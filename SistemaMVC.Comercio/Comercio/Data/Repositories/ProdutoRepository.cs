@@ -26,17 +26,28 @@ namespace Comercio.Data.Repositories
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var checkCodigo = await connection.QueryFirstOrDefaultAsync<Produto>(
-                            ProdutoQuery.SELECT_POR_CODIGO, new { produto.Codigo });
-                if (checkCodigo != null)
-                    throw new Exception("Impossível inserir o produto com esse código");
+                var checkProduto = connection.Query<Produto, Setor, Produto>(
+                                sql: ProdutoQuery.SELECT_POR_CODIGO,
+                                (produto, setor) =>
+                                {
+                                    produto.Setor = setor;
+                                    return produto;
+                                },
+                                param: new { produto.Codigo }).FirstOrDefault();
 
+                if (checkProduto != null && checkProduto.Ativo == 1)
+                    throw new Exception("Impossível inserir o produto com esse código");
+                if (checkProduto != null && checkProduto.Ativo == 0)
+                {
+                    produto.Id = checkProduto.Id;
+                    produto.Data_criacao = checkProduto.Data_criacao;
+                    checkProduto = produto;
+                    var update = await this.UpdateAsync(checkProduto);
+                    return await this.GetByIdAsync(update.Id);
+                }
                 var row = await connection.InsertAsync<Produto>(produto);
                 if (row > 0)
-                {
-                    produto = await this.GetByIdAsync(row);
-                    return produto;
-                }
+                    return await this.GetByIdAsync(row);
                 return null;
             }
             catch (Exception)
@@ -166,19 +177,31 @@ namespace Comercio.Data.Repositories
         {
             try
             {                
-                using var connection = await _connection.GetConnectionAsync();
-                produto.Setor_id = connection.QueryFirst<int>(
-                                ProdutoQuery.SELECT_ID_SETOR, 
-                                new { descricao = produto.Setor.Descricao });
+                using var connection = await _connection.GetConnectionAsync();                
                 var response = await connection.UpdateAsync<Produto>(produto);
                 if (!response)
                     return null;
-                return produto;
+                return await this.GetByIdAsync(produto.Id);
             }
             catch (Exception)
             {
                 throw;
             }            
+        }
+
+        public async Task<int> ObterSetorId(string setor)
+        {
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                return connection.QueryFirst<int>(
+                                ProdutoQuery.SELECT_ID_SETOR,
+                                new { descricao = setor });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
