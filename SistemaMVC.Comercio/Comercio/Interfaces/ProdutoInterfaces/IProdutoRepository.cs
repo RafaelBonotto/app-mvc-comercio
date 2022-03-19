@@ -1,4 +1,5 @@
-﻿using Comercio.Entities;
+﻿using Comercio.Data.Repositories.Produtos.Response;
+using Comercio.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
