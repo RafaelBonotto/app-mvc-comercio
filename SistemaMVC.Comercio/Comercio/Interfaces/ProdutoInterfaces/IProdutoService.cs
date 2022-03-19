@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Comercio.Entities;
+﻿using Comercio.Entities;
 using Comercio.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Comercio.Interfaces.ProdutoInterfaces
 {
