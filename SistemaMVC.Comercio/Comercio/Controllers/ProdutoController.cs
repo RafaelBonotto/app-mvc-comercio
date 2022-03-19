@@ -1,12 +1,9 @@
-﻿using Comercio.Entities;
-using Comercio.Interfaces;
+﻿using Comercio.Exceptions.Produto;
 using Comercio.Interfaces.ProdutoInterfaces;
-using Comercio.Mapper;
 using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Comercio.Controllers
@@ -16,6 +13,8 @@ namespace Comercio.Controllers
         private readonly IProdutoService _produtoService;
         private readonly IProdutoAdapter _mapper;
         private const string MSG_ERRO_FILTRO = "Não foram encontrados produtos para esse filtro.";
+        private const string MSG_ERRO_INSERIR = "Algo deu errado ao tentar inserir o produto.";
+        private const string MSG_ERRO_CODIGO_INVALIDO = "Impossível inserir o produto, foi encontrado um produto ativo com o mesmo código.";
         private const string MSG_ERRO_PAGINA = "Algo deu errado ao tentar carregar essa página.";
         private const string MSG_ERRO_DETALHES_PRODUTO = "Algo deu errado ao tentar carregar detalhes do produto.";
         public ProdutoController(IProdutoService produtoService, IProdutoAdapter adaper)
@@ -36,7 +35,7 @@ namespace Comercio.Controllers
             }
             catch (System.Exception)
             {
-                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
             }
         }
 
@@ -52,7 +51,7 @@ namespace Comercio.Controllers
             }
             catch (System.Exception)
             {
-                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
             }
         }
 
@@ -62,8 +61,9 @@ namespace Comercio.Controllers
             try
             {
                 var produtos = await _produtoService.FiltrarPorCodigo(codigo);
+
                 if (produtos.Count == 0)
-                    return View("Error", new ErrorViewModel(MSG_ERRO_FILTRO, 500));
+                    return View("Error", new ErrorViewModel(MSG_ERRO_FILTRO));
 
                 var listaViewModel = new List<ProdutoViewModel>();
                 foreach (var produto in produtos)
@@ -73,7 +73,7 @@ namespace Comercio.Controllers
             }
             catch (System.Exception)
             {
-                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
             }
         }
 
@@ -88,13 +88,13 @@ namespace Comercio.Controllers
                     listaViewModel.Add(_mapper.MontaProdutoViewModel(produto));
 
                 if (produtos.Count == 0)
-                    return View("Error", new ErrorViewModel(MSG_ERRO_FILTRO, 500));
+                    return View("Error", new ErrorViewModel(MSG_ERRO_FILTRO));
 
                 return View("Produtos", listaViewModel);
             }
-            catch (System.Exception error)
+            catch (System.Exception)
             {
-                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
             }
         }
 
@@ -109,13 +109,13 @@ namespace Comercio.Controllers
                     listaViewModel.Add(_mapper.MontaProdutoViewModel(produto));
 
                 if (produtos.Count == 0)
-                    return View("Error", new ErrorViewModel(MSG_ERRO_FILTRO, 500));
+                    return View("Error", new ErrorViewModel(MSG_ERRO_FILTRO));
 
                 return View("Produtos", listaViewModel);
             }
             catch (System.Exception)
             {
-                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
             }
         }
 
@@ -126,14 +126,14 @@ namespace Comercio.Controllers
             {
                 var produto = await _produtoService.DetalhesProduto(id);
                 if (produto is null)
-                    return View("Error", new ErrorViewModel(MSG_ERRO_DETALHES_PRODUTO, 404));
+                    return View("Error", new ErrorViewModel(MSG_ERRO_DETALHES_PRODUTO));
 
                 var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
                 return View("Detalhes", produtoViewModel);
             }
             catch (System.Exception)
             {
-                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
             }
         }
 
@@ -142,10 +142,9 @@ namespace Comercio.Controllers
         {
             try
             {
-                var produto = await _produtoService.DetalhesProduto(id);
-                
+                var produto = await _produtoService.DetalhesProduto(id);                
                 if (produto is null)
-                    return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                    return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
 
                 var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
                 var setores = new SelectList(await _produtoService.ListarSetores());
@@ -154,7 +153,7 @@ namespace Comercio.Controllers
             }
             catch (System.Exception)
             {
-                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
             }
         }
 
@@ -168,18 +167,22 @@ namespace Comercio.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
+                {                    
                     var produtoResponse = await _produtoService.InserirProduto(produto);
                     if (produtoResponse is null)
-                        return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                        return View("Error", new ErrorViewModel(MSG_ERRO_INSERIR));
 
                     var produtoViewModel = _mapper.MontaProdutoViewModel(produtoResponse);
                     return View("Detalhes", produtoViewModel);
                 }
-                catch (System.Exception ex)
+                catch (CodigoInvalidoException)
                 {
-                    return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                    return View("Error", new ErrorViewModel(MSG_ERRO_CODIGO_INVALIDO));
                 }
+                catch (System.Exception)
+                {
+                    return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
+                }                
             }
             else
             {
@@ -200,7 +203,7 @@ namespace Comercio.Controllers
                 {                    
                     var produtoResponse = await _produtoService.AtualizarProduto(produto);
                     if (produtoResponse is null)
-                        return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                        return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
 
                     var produtoViewModel = _mapper.MontaProdutoViewModel(produtoResponse);
                     return View("Detalhes", produtoViewModel);
@@ -212,7 +215,7 @@ namespace Comercio.Controllers
             }
             else
             {
-                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
             }
         }
 
@@ -224,13 +227,13 @@ namespace Comercio.Controllers
             {
                 var delete = await _produtoService.ExcluirProduto(id);
                 if (!delete)
-                    return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                    return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
 
                 return View("Index");
             }
             catch (System.Exception)
             {
-                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA, 500));
+                return View("Error", new ErrorViewModel(MSG_ERRO_PAGINA));
             }
         }
     }
