@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using static Comercio.Validations.Produtos.PrecoValidacao;
 
 namespace Comercio.Models
 {
@@ -25,6 +24,7 @@ namespace Comercio.Models
         public string Preco_custo { get; set; }
 
         [Display(Name = "VENDA")]
+        [PrecoValidacao]
         [Required(ErrorMessage = ("O preço de venda do produto é obrigatório"))]
         public string Preco_venda { get; set; }
 
@@ -33,15 +33,10 @@ namespace Comercio.Models
 
         [Display(Name = "SETOR")]
         [Required]
-        //[EnumDataType(typeof(Setores))]
         public string SetorDescricao { get; set; }
 
         public int Setor_id { get; set; }
-        //public Setores Setor { get; set; }
 
-        // Usado nas Views Editar e Inserir
         public IEnumerable<SelectListItem> SetoresBanco { get; set; } 
-       
-
     }
 }
