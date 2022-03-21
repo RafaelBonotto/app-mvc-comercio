@@ -1,13 +1,12 @@
 ﻿using Comercio.Entities;
-using Comercio.Interfaces;
+using Comercio.Exceptions.Produto;
 using Comercio.Interfaces.Base;
-using Comercio.Mapper;
+using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Models;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Comercio.Interfaces.ProdutoInterfaces;
 
 namespace Comercio.Services
 {
@@ -123,6 +122,14 @@ namespace Comercio.Services
         {
             try
             {
+                var checkProduto = await _repositoryBase.GetByKeyAsync(produto.Codigo);
+                if (checkProduto.Any() && checkProduto.First().Ativo == 1)
+                    throw new CodigoInvalidoException();
+                if (checkProduto.Any() && checkProduto.First().Ativo == 0)
+                {
+                    produto.Id = checkProduto.First().Id;
+                    return await this.AtualizarProduto(produto);
+                }
                 produto.Setor_id = await _repository.ObterSetorId(produto.SetorDescricao);
                 var produtoRepository = _mapper.MontaProdutoInsertRepositorio(produto);
                 return await _repositoryBase.AddAsync(produtoRepository);
