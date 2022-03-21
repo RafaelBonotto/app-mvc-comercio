@@ -3,19 +3,17 @@
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">ERRO!</h1>
+<h1 class="text-danger">OPS !!</h1>
 <h2 class="text-danger">Um erro ocorreu durante o processamento da sua requisição.</h2>
-
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
 
 <h3>Mensagem: </h3>@Model.Mensagem
 
-<h3>Status Code: </h3>@Model.StatusCode
+<hr />
+
 <p>
     <strong>Para maiores informações entre em contato com o administrador do sistema.</strong>    
 </p>
+
+<div>
+    <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
+</div>
