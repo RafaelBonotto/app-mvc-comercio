@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using static Comercio.Validations.Produtos.PrecoVCustoValidacao;
+using static Comercio.Validations.Produtos.PrecoValidacao;
 
 namespace Comercio.Models
 {
@@ -20,7 +20,7 @@ namespace Comercio.Models
         public string Descricao { get; set; }
 
         [Display(Name = "CUSTO")]
-        [PrecoVCustoValidacao]
+        [PrecoValidacao]
         [Required(ErrorMessage = ("O preço de custo do produto é obrigatório"))]
         public string Preco_custo { get; set; }
 
