@@ -10,12 +10,13 @@ namespace Comercio.Models
         public int Id { get; set; }
 
         [Display(Name = "CÓDIGO")]
-        [Required(ErrorMessage = ("O campo código é obrigatório"))]
+        [Required(ErrorMessage = ("O campo código é obrigatório"), AllowEmptyStrings = false)]
         [MinLength(6, ErrorMessage = "O campo código deve ter no mínimo 6 dígitos")]
         public string Codigo { get; set; }
 
         [Display(Name = "PRODUTO")]
-        [Required(ErrorMessage = ("O campo descrição é obrigatório"))]
+        [MaxLength(50)]
+        [Required(ErrorMessage = ("O campo descrição é obrigatório"), AllowEmptyStrings = false)]
         public string Descricao { get; set; }
 
         [Display(Name = "CUSTO")]
