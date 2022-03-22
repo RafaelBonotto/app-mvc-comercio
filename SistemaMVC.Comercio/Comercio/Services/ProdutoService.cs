@@ -23,12 +23,20 @@ namespace Comercio.Services
             _mapper = adapter;
         }
 
+        // Não implementado...
         public Task<Produto> AdicionarFornecedor(int produtoId, string fornecedorDescricao)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Produto> AdicionarProduto(ProdutoViewModel produto)
+        // Não implementado...
+        public Task<List<Fornecedor>> ExcluirFornecedor(int produtoId, int fornecedorId)
+        {
+            throw new NotImplementedException();
+        }
+        
+        // Não implementado...
+        public Task<List<Fornecedor>> ObterFornecedor(int produtoId)
         {
             throw new NotImplementedException();
         }
@@ -61,12 +69,7 @@ namespace Comercio.Services
                 throw;
             }
         }
-
-        public Task<List<Fornecedor>> ExcluirFornecedor(int produtoId, int fornecedorId)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public async Task<bool> ExcluirProduto(int produtoId)
         {
             try
@@ -138,16 +141,6 @@ namespace Comercio.Services
             {
                 throw;
             }
-        }
-
-        public Task<List<Produto>> ListarProdutos()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Fornecedor>> ObterFornecedor(int produtoId)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<List<Setor>> ListarSetores
