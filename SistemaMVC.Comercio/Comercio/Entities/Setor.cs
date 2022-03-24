@@ -1,5 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Dapper.Contrib.Extensions;
+using System;
+using System.Collections.Generic;
 
 namespace Comercio.Entities
 {
@@ -12,9 +13,9 @@ namespace Comercio.Entities
         public DateTime Data_criacao { get; set; }
         public DateTime Data_alteracao { get; set; }
 
-        public override string ToString()
-        {
-            return this.Descricao;
-        }
+        [Write(false)]
+        public virtual List<Produto> Produtos { get; set; }
+
+        public override string ToString() => this.Descricao;
     }
 }
