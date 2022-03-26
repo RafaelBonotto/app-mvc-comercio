@@ -1,10 +1,12 @@
 using Comercio.Data.ConnectionManager;
 using Comercio.Data.Repositories;
 using Comercio.Data.Repositories.Produtos;
+using Comercio.Data.Repositories.Setores;
 using Comercio.Entities;
 using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.ProdutoInterfaces;
+using Comercio.Interfaces.SetorInterfaces;
 using Comercio.Mapper;
 using Comercio.Models;
 using Comercio.Services;
@@ -33,11 +35,21 @@ namespace Comercio
             services.AddCors();
 
             #region Injeção de Dependencia
+
+            // Connection
             services.AddScoped(typeof(IMySqlConnectionManager), typeof(MySqlConnectionManager));
-            services.AddScoped(typeof(IRepositoryBase<Produto>), typeof(ProdutoRepository));
+            // Mapper
             services.AddScoped(typeof(IProdutoAdapter), typeof(ProdutoAdapter));
-            services.AddScoped(typeof(IProdutoRepository), typeof(ProdutoRepository));
+            services.AddScoped(typeof(ISetorAdapter), typeof(SetorAdapter));
+            // Services
             services.AddScoped(typeof(IProdutoService), typeof(ProdutoService));
+            services.AddScoped(typeof(ISetorService), typeof(SetorService));
+            // Repository Base
+            services.AddScoped(typeof(IRepositoryBase<Produto>), typeof(ProdutoRepository));
+            // Repositorys
+            services.AddScoped(typeof(IProdutoRepository), typeof(ProdutoRepository));
+            services.AddScoped(typeof(ISetorRepository), typeof(SetorRepository));
+
             #endregion
         }
 
