@@ -1,0 +1,60 @@
+@model Comercio.Models.SetorViewModel
+
+@{
+    ViewData["Title"] = "Setores/editar";
+}
+
+<h4 class="display-4">ALTERAR NOME DO SETOR</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+
+        <form asp-action="atualizar" asp-route-id="@Model.Id">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label><strong>DESCRIÇÃO</strong></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>           
+            <div class="form-group">
+                <input type="submit" value="SALVAR" class="btn btn-success " />
+            </div>           
+        </form>
+    </div>
+</div>
+<hr />
+ <!-- Botão  modal EXCLUIR-->
+    <button asp-controller="Setor" asp-action="excluir" asp-route-id="@Model.Id"  type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExcluir">EXCLUIR</button>
+  <!-- Modal Excluir-->
+    <div class="modal fade" id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">EXCLUIR SETOR</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h6>TEM CERTEZA QUE DESEJA EXCLUIR ESSE SETOR ? OS PRODUTOS QUE PERTENCEM A ELE FICARÃO SEM SETOR.</h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCELAR</button>
+                    <button type="submit" class="btn btn-danger" data-dismiss="modal">EXCLUIR</button>
+                    @*<a asp-controller="Setor" asp-action="excluir" asp-route-id="@item.Id" class="btn btn-danger">EXCLUIR</a>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div>
+    <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
+</div>
+
+@*@section Scripts {
+    @{await Html.RenderPartialAsynContial");}
+}*@
+
+
