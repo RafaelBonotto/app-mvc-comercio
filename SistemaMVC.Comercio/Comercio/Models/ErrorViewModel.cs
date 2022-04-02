@@ -56,5 +56,17 @@ namespace Comercio.Models
             this.Mensagem = "Não foi possível excluir o produto.";
             return this;
         }
+
+        public ErrorViewModel SetorErroAoTentarAtualizar()
+        {
+            this.Mensagem = "Não foi possível atualizar o setor.";
+            return this;
+        }
+
+        public ErrorViewModel SetorErroAoTentarExcluir()
+        {
+            this.Mensagem = "Não foi possível excluir o setor.";
+            return this;
+        }
     }
 }
