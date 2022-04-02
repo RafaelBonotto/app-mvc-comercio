@@ -1,4 +1,5 @@
 ﻿using Comercio.Entities;
+using Comercio.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace Comercio.Interfaces.SetorInterfaces
     {
         Task<IEnumerable<Setor>> ListarSetores();
         Task<Setor> ObterSetor(int id);
-        Task<Setor> AtualizarSetor(Setor setor);
+        Task<Setor> AtualizarSetor(SetorViewModel setor);
+        Task<bool> ExcluirSetor(int id);
     }
 }
