@@ -27,5 +27,14 @@ namespace Comercio.Mapper
             };
         }
 
+        public Setor MontaSetor(SetorViewModel setorViewModel)
+        {
+            return new Setor()
+            {
+                Id = setorViewModel.Id,
+                Descricao = setorViewModel.Descricao.ToUpper()
+            };
+        }
+
     }
 }
