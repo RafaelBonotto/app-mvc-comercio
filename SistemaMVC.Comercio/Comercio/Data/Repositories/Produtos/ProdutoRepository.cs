@@ -57,7 +57,7 @@ namespace Comercio.Data.Repositories.Produtos
             {
                 using var connection = await _connection.GetConnectionAsync();
                 var response = connection.Query<Produto, Setor, Produto>(
-                                sql: ProdutoQuery.SELECT_POR_DESCRICAO,
+                                sql: ProdutoQuerys.SELECT_POR_DESCRICAO,
                                 (produto, setor) =>
                                 {
                                     produto.Setor = setor;
@@ -78,7 +78,7 @@ namespace Comercio.Data.Repositories.Produtos
             {
                 using var connection = await _connection.GetConnectionAsync();
                 var response = connection.Query<Produto, Setor, Produto>(
-                                sql: ProdutoQuery.SELECT_POR_SETOR,
+                                sql: ProdutoQuerys.SELECT_POR_SETOR,
                                 (produto, setor) =>
                                 {
                                     produto.Setor = setor;
@@ -104,7 +104,7 @@ namespace Comercio.Data.Repositories.Produtos
             {
                 using var connection = await _connection.GetConnectionAsync();
                 var response = connection.Query<Produto, Setor, Produto>(
-                            sql: ProdutoQuery.SELECT_POR_ID,
+                            sql: ProdutoQuerys.SELECT_POR_ID,
                             (produto, setor) =>
                             {
                                 produto.Setor = setor;
@@ -126,7 +126,7 @@ namespace Comercio.Data.Repositories.Produtos
                 using var connection = await _connection.GetConnectionAsync();
                 List<Produto> ret = new();
                 return connection.Query<Produto, Setor, Produto>(
-                                    sql: ProdutoQuery.SELECT_POR_CODIGO,
+                                    sql: ProdutoQuerys.SELECT_POR_CODIGO,
                                     (produto, setor) =>
                                     {
                                         produto.Setor = setor;
@@ -145,7 +145,7 @@ namespace Comercio.Data.Repositories.Produtos
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var setores = await connection.QueryAsync<Setor>(ProdutoQuery.SELECT_LISTAR_SETORES);
+                var setores = await connection.QueryAsync<Setor>(ProdutoQuerys.SELECT_LISTAR_SETORES);
                 foreach (var setor in setores)
                     setor.Descricao = setor.Descricao.ToUpper();
                 return setores.ToList();
@@ -178,7 +178,7 @@ namespace Comercio.Data.Repositories.Produtos
             {
                 using var connection = await _connection.GetConnectionAsync();
                 return connection.QueryFirst<int>(
-                                ProdutoQuery.SELECT_ID_SETOR,
+                                ProdutoQuerys.SELECT_ID_SETOR,
                                 new { descricao = setor });
             }
             catch (Exception)
