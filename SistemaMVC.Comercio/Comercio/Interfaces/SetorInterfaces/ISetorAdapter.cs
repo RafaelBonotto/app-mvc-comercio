@@ -8,5 +8,6 @@ namespace Comercio.Interfaces.SetorInterfaces
     {
         IEnumerable<SetorViewModel> MontaListaSetorViewModel(IEnumerable<Setor> setoresBanco);
         SetorViewModel MontaSetorViewModel(Setor setor);
+        Setor MontaSetor(SetorViewModel setorViewModel);
     }
 }
