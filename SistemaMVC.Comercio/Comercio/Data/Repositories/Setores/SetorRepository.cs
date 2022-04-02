@@ -2,6 +2,7 @@
 using Comercio.Entities;
 using Comercio.Interfaces.Base;
 using Dapper.Contrib.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,9 +23,16 @@ namespace Comercio.Data.Repositories.Setores
             throw new System.NotImplementedException();
         }
 
-        public Task<Setor> DeleteAsync(int id)
+        public async Task<Setor> DeleteAsync(int id)
         {
-            throw new System.NotImplementedException();
+            using var connection = await _connection.GetConnectionAsync();
+            var setor = await this.GetByIdAsync(id);
+            setor.Ativo = 0;
+            setor.Data_alteracao = DateTime.Now;
+            var response = connection.Update<Setor>(setor);
+            if (!response)
+                return null;
+            return setor;
         }
 
         public async Task<List<Setor>> GetAllAsync()
@@ -32,8 +40,7 @@ namespace Comercio.Data.Repositories.Setores
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                //return (await connection.QueryAsync<Setor>(SetorQuerys.OBTER_SETORES)).ToList();
-                return (await connection.GetAllAsync<Setor>()).ToList();
+                return (await connection.GetAllAsync<Setor>()).Where(x => x.Ativo == 1).ToList();
             }
             catch (System.Exception)
             {
@@ -46,7 +53,6 @@ namespace Comercio.Data.Repositories.Setores
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                //return await connection.QueryFirstOrDefaultAsync<Setor>(SetorQuerys.OBTER_SETORES, new { id });
                 return await connection.GetAsync<Setor>(id);
             }
             catch (System.Exception)
