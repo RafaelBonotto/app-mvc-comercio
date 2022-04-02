@@ -46,9 +46,9 @@ namespace Comercio
             services.AddScoped(typeof(ISetorService), typeof(SetorService));
             // Repository Base
             services.AddScoped(typeof(IRepositoryBase<Produto>), typeof(ProdutoRepository));
+            services.AddScoped(typeof(IRepositoryBase<Setor>), typeof(SetorRepository));
             // Repositorys
             services.AddScoped(typeof(IProdutoRepository), typeof(ProdutoRepository));
-            services.AddScoped(typeof(ISetorRepository), typeof(SetorRepository));
 
             #endregion
         }
