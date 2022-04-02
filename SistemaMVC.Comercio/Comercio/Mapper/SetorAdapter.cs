@@ -7,7 +7,7 @@ namespace Comercio.Mapper
 {
     public class SetorAdapter : ISetorAdapter
     {
-        public IEnumerable<SetorViewModel> MontaSetorViewModel(IEnumerable<Setor> setoresBanco)
+        public IEnumerable<SetorViewModel> MontaListaSetorViewModel(IEnumerable<Setor> setoresBanco)
         {
             List<SetorViewModel> ret = new();
             foreach (var setor in setoresBanco)
@@ -18,5 +18,14 @@ namespace Comercio.Mapper
                 });
             return ret;
         }
+        public SetorViewModel MontaSetorViewModel(Setor setor)
+        {
+            return new SetorViewModel()
+            {
+                Id = setor.Id,
+                Descricao = setor.Descricao.ToUpper()
+            };
+        }
+
     }
 }
