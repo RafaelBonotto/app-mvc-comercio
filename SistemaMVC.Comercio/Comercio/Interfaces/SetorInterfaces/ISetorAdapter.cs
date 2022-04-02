@@ -6,6 +6,7 @@ namespace Comercio.Interfaces.SetorInterfaces
 {
     public interface ISetorAdapter
     {
-        IEnumerable<SetorViewModel> MontaSetorViewModel(IEnumerable<Setor> setoresBanco);
+        IEnumerable<SetorViewModel> MontaListaSetorViewModel(IEnumerable<Setor> setoresBanco);
+        SetorViewModel MontaSetorViewModel(Setor setor);
     }
 }
