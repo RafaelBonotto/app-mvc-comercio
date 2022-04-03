@@ -1,6 +1,7 @@
 ﻿using Comercio.Entities;
 using Comercio.Interfaces.SetorInterfaces;
 using Comercio.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Comercio.Mapper
@@ -36,5 +37,15 @@ namespace Comercio.Mapper
             };
         }
 
+        public Setor MontaInsertSetor(string descricao)
+        {
+            return new Setor()
+            {                
+                Descricao = descricao.ToUpper(), 
+                Ativo = 1,
+                Data_criacao = DateTime.Now,
+                Data_alteracao = DateTime.Now 
+            };
+        }
     }
 }
