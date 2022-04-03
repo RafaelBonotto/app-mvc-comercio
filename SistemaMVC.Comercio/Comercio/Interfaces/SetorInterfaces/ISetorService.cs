@@ -7,6 +7,7 @@ namespace Comercio.Interfaces.SetorInterfaces
 {
     public interface ISetorService
     {
+        Task<Setor> Inserir(string descricao);
         Task<IEnumerable<Setor>> ListarSetores();
         Task<Setor> ObterSetor(int id);
         Task<Setor> AtualizarSetor(SetorViewModel setor);
