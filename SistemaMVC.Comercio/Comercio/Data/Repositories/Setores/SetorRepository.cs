@@ -1,6 +1,8 @@
 ﻿using Comercio.Data.ConnectionManager;
+using Comercio.Data.Querys;
 using Comercio.Entities;
 using Comercio.Interfaces.Base;
+using Dapper;
 using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
@@ -18,9 +20,20 @@ namespace Comercio.Data.Repositories.Setores
             _connection = connection;
         }
 
-        public Task<Setor> AddAsync(Setor entity)
+        public async Task<Setor> AddAsync(Setor setor)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                var setorId = await connection.InsertAsync<Setor>(setor);
+                if (setorId > 0)
+                    return await this.GetByIdAsync(setorId);
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<Setor> DeleteAsync(int id)
@@ -40,7 +53,10 @@ namespace Comercio.Data.Repositories.Setores
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                return (await connection.GetAllAsync<Setor>()).Where(x => x.Ativo == 1).ToList();
+                return (await connection.GetAllAsync<Setor>())
+                            .Where(x => x.Ativo == 1)
+                            .OrderBy(x => x.Descricao)
+                            .ToList();
             }
             catch (System.Exception)
             {
@@ -61,9 +77,24 @@ namespace Comercio.Data.Repositories.Setores
             }
         }
 
-        public Task<List<Setor>> GetByKeyAsync(string key)
+        public async Task<List<Setor>> GetByKeyAsync(string descricao)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                List<Setor> ret = new();
+                using var connction = await _connection.GetConnectionAsync();
+                var response = await connction.QueryFirstOrDefaultAsync<Setor>(
+                                SetorQuerys.SELECT_POR_DESCRICAO, new { descricao });
+                if (response is null)
+                    return ret;
+                ret.Add(response);
+                return ret;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<Setor> UpdateAsync(Setor setor)
