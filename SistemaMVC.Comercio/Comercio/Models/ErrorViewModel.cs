@@ -2,7 +2,7 @@ namespace Comercio.Models
 {
     public class ErrorViewModel
     {
-        public ErrorViewModel(){}
+        public ErrorViewModel() { }
         public ErrorViewModel(string msg) => Mensagem = msg;
 
         public string RequestId { get; set; }
@@ -66,6 +66,18 @@ namespace Comercio.Models
         public ErrorViewModel SetorErroAoTentarExcluir()
         {
             this.Mensagem = "Não foi possível excluir o setor.";
+            return this;
+        }
+
+        public ErrorViewModel SetorErroAoTentarInserir()
+        {
+            this.Mensagem = "Não foi possível inserir o setor.";
+            return this;
+        }
+
+        public ErrorViewModel SetorErroInserirDescricaoInvalida()
+        {
+            this.Mensagem = "Não foi possível inseir o setor. Foi encontrado um setor ativo com a mesma descrição.";
             return this;
         }
     }
