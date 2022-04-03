@@ -1,6 +1,8 @@
-﻿using Comercio.Interfaces.SetorInterfaces;
+﻿using Comercio.Exceptions.Setor;
+using Comercio.Interfaces.SetorInterfaces;
 using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace Comercio.Controllers
@@ -21,7 +23,7 @@ namespace Comercio.Controllers
         {
             try
             {
-                var setoresBanco =  await _service.ListarSetores();
+                var setoresBanco = await _service.ListarSetores();
                 var setoresView = _mapper.MontaListaSetorViewModel(setoresBanco);
                 return View(setoresView);
             }
@@ -45,6 +47,31 @@ namespace Comercio.Controllers
                 throw;
             }
         }
+
+        [HttpPost]
+        [Route("inserir")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Inserir([Required][MaxLength(30)] string descricao)
+        {
+            try
+            {
+                var setorResponse = await _service.Inserir(descricao);
+                if (setorResponse is null)
+                    return View("Error", new ErrorViewModel().SetorErroAoTentarInserir());
+
+                var setoresViewModel = _mapper.MontaListaSetorViewModel(await _service.ListarSetores());
+                return View("Index", setoresViewModel);
+            }
+            catch (DescricaoInvalidaException)
+            {
+                return View("Error", new ErrorViewModel().SetorErroInserirDescricaoInvalida());
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
+
         [HttpPost]
         [Route("atualizar/{id}")]
         [ValidateAntiForgeryToken]
@@ -56,7 +83,7 @@ namespace Comercio.Controllers
                 {
                     var setorResponse = await _service.AtualizarSetor(setor);
                     if (setorResponse is null)
-                        return View("Error", new ErrorViewModel().SetorErroAoTentarAtualizar()); 
+                        return View("Error", new ErrorViewModel().SetorErroAoTentarAtualizar());
 
                     var setoresViewModel = _mapper.MontaListaSetorViewModel(await _service.ListarSetores());
                     return View("Index", setoresViewModel);
