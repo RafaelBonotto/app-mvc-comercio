@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Comercio.Entities
@@ -11,15 +12,11 @@ namespace Comercio.Entities
         public string Nome_empresa { get; set; }
 
         [Display(Name = "Telefone")]
-        [MaxLength(12)]
-        public string Telefone_empresa { get; set; }
+        public List<Telefone> Telefones { get; set; }
 
         [Display(Name = "Vendedor")]
-        public string Nome_vendedor { get; set; }
+        public List<Pessoa> Vendedores { get; set; }
 
-        [Display(Name = "Telefone")]
-        [MaxLength(12)]
-        public string Telefone_vendedor { get; set; }
         public sbyte Ativo { get; set; }
         public DateTime Data_criacao { get; set; }
         public DateTime Data_alteracao { get; set; }
