@@ -1,5 +1,4 @@
-﻿using Comercio.Data.Repositories.Produtos.Response;
-using Comercio.Entities;
+﻿using Comercio.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,5 +10,6 @@ namespace Comercio.Interfaces.ProdutoInterfaces
         Task<List<Produto>> FiltrarPorSetor(string setor);
         Task<List<Setor>> ObterSetores();
         Task<int> ObterSetorId(string setor);
+        Task<List<Fornecedor>> ObterFornecedor(int produtoId);
     }
 }
