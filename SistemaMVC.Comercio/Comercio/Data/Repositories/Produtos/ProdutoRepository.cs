@@ -186,5 +186,19 @@ namespace Comercio.Data.Repositories.Produtos
                 throw;
             }
         }
+
+        public async Task<List<Fornecedor>> ObterFornecedor(int produtoId)
+        {
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                return (await connection.QueryAsync<Fornecedor>(
+                    ProdutoQuerys.SELECT_LISTAR_FORNECEDORES, new { produtoId })).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
