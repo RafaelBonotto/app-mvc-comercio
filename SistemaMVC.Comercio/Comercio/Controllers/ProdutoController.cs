@@ -4,6 +4,7 @@ using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Comercio.Controllers
@@ -227,6 +228,27 @@ namespace Comercio.Controllers
                     return View("Error", new ErrorViewModel().ProdutoErroAoTentarExcluir());
 
                 return View("Index");
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
+
+        [HttpGet]
+        [Route("[controller]/fornecedores")]
+        public async Task<IActionResult> ObterFornecedor(int produtoId)
+        {
+            try
+            {
+                var fornecedor = await _produtoService.ObterFornecedor(produtoId);
+                if (fornecedor.Any())
+                {
+                    var fornecedorViewModel = _mapper.MontaFornecedorViewModel(fornecedor);
+                    return Ok("Fornecedores", fornecedorViewModel);
+                }
+                return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
+                
             }
             catch (System.Exception)
             {
