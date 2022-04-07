@@ -35,10 +35,16 @@ namespace Comercio.Services
             throw new NotImplementedException();
         }
         
-        // Não implementado...
-        public Task<List<Fornecedor>> ObterFornecedor(int produtoId)
+        public async Task<List<Fornecedor>> ObterFornecedor(int produtoId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _repository.ObterFornecedor(produtoId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<Produto> AtualizarProduto(ProdutoViewModel produto)
