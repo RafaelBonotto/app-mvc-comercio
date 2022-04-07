@@ -1,6 +1,6 @@
 ﻿namespace Comercio.Data.Querys
 {
-    public static class ProdutoQuerys
+    public class ProdutoQuerys
     {
         public const string SELECT_POR_CODIGO = @"SELECT* 
                                                     FROM 
@@ -53,5 +53,15 @@
                                                     tb_setor
                                                     WHERE
                                                     tb_setor.descricao LIKE CONCAT('%',@descricao,'%')";
+
+        public const string SELECT_LISTAR_FORNECEDORES = @"SELECT *
+                                                            FROM
+                                                            tb_fornecedor
+                                                            INNER JOIN
+                                                            tb_fornecedor_produto 
+                                                            ON tb_fornecedor_produto.fornecedor_id = tb_fornecedor.id
+                                                            WHERE
+                                                            tb_fornecedor_produto.produto_id = @produto_id";
+                                                        
     }
 }
