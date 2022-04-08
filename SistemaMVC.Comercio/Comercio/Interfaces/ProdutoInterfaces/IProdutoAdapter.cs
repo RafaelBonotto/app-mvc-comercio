@@ -1,5 +1,6 @@
 ﻿using Comercio.Entities;
 using Comercio.Models;
+using System.Collections.Generic;
 
 namespace Comercio.Interfaces.ProdutoInterfaces
 {
@@ -8,5 +9,6 @@ namespace Comercio.Interfaces.ProdutoInterfaces
         Produto MontaProdutoUpdateRepositorio(ProdutoViewModel produtoViewModel, Produto produtoRepositorio);
         Produto MontaProdutoInsertRepositorio(ProdutoViewModel produtoViewModel);
         ProdutoViewModel MontaProdutoViewModel(Produto produto);
+        List<FornecedorViewModel> MontaListaFornecedorViewModel(List<Fornecedor> fornecedores);
     }
 }
