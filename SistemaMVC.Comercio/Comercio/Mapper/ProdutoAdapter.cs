@@ -3,6 +3,7 @@ using Comercio.Interfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Comercio.Mapper
 {
@@ -46,6 +47,19 @@ namespace Comercio.Mapper
                 Ativo = produto.Ativo == 0 ? "INATIVO " : "ATIVO",
                 SetorDescricao = produto.Setor.Descricao.ToUpper()
             };
+        }
+
+        public List<FornecedorViewModel> MontaListaFornecedorViewModel(List<Fornecedor> fornecedores)
+        {
+            List<FornecedorViewModel> ret = new();
+            foreach (var fornecedor in fornecedores)
+            {
+                ret.Add(new FornecedorViewModel()
+                {
+                    Nome_empresa = fornecedor.Nome_empresa
+                }); 
+            }
+            return ret;
         }
     }
 }
