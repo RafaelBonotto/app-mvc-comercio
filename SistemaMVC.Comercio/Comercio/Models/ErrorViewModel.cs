@@ -80,5 +80,11 @@ namespace Comercio.Models
             this.Mensagem = "Não foi possível inseir o setor. Foi encontrado um setor ativo com a mesma descrição.";
             return this;
         }
+
+        public ErrorViewModel ProdutoFornecedorNaoEncontrado()
+        {
+            this.Mensagem = "Não foi encontrado nenhum fornecedor para esse produto.";
+            return this;
+        }
     }
 }
