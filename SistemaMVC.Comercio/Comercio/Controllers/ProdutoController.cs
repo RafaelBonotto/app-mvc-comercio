@@ -244,8 +244,8 @@ namespace Comercio.Controllers
                 var fornecedor = await _produtoService.ObterFornecedor(produtoId);
                 if (fornecedor.Any())
                 {
-                    var fornecedorViewModel = _mapper.MontaFornecedorViewModel(fornecedor);
-                    return Ok("Fornecedores", fornecedorViewModel);
+                    var fornecedorViewModel = _mapper.MontaListaFornecedorViewModel(fornecedor);
+                    return View("Fornecedores", fornecedorViewModel);
                 }
                 return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
                 
