@@ -1,4 +1,5 @@
 ﻿using Comercio.Interfaces.FornecedorInterfaces;
+using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace Comercio.Controllers
 
         public IActionResult Index() => View();
 
-        [Route("[controller]/listar-fornecedores")]
+        [Route("[controller]/listar")]
         public async Task<IActionResult> ListarFornecedores()
         {
             try
@@ -29,6 +30,27 @@ namespace Comercio.Controllers
             catch (System.Exception)
             {
                 throw;
+            }
+        }
+
+        [Route("[controller]/filtrar-por-setor")]
+        public async Task<IActionResult> FiltrarPorSetor(string setor)
+        {
+            try
+            {
+                var fornecedores = await _service.FiltrarPorSetor(setor);
+                if (fornecedores.Count == 0)
+                    return View("Error", new ErrorViewModel().ErroFiltroNaoEncontrado());
+
+                var listaViewModel = new List<FornecedorViewModel>();
+                foreach (var fornecedor in fornecedores)
+                    listaViewModel.Add(_mapper.CriarFornecedorViewModel(fornecedor));
+
+                return View("Fornecedores", listaViewModel);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
             }
         }
     }
