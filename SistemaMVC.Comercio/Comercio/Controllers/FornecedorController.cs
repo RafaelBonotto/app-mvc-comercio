@@ -19,6 +19,35 @@ namespace Comercio.Controllers
 
         public IActionResult Index() => View();
 
+        [HttpPost]
+        [Route("[controller]/adicionar/")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Adicionar(
+            [Bind("Id, Descricao")]// 
+            FornecedorViewModel fornecedor)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var fornecedorResponse = await _service.InserirFornecedor(fornecedor);
+                    if (fornecedorResponse is null)
+                        return View("Error", new ErrorViewModel().ProdutoErroAoTentarInserir());
+
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
+                    return View("Detalhes", fornecedorViewModel);
+                }
+                catch (System.Exception)
+                {
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+                }
+            }
+            else
+            {
+                return View("Error", new ErrorViewModel().ErroDeValidacao());
+            }
+        }
+
         [Route("[controller]/listar")]
         public async Task<IActionResult> ListarFornecedores()
         {
