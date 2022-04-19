@@ -1,10 +1,12 @@
 using Comercio.Data.ConnectionManager;
 using Comercio.Data.Repositories;
+using Comercio.Data.Repositories.Fornecedores;
 using Comercio.Data.Repositories.Produtos;
 using Comercio.Data.Repositories.Setores;
 using Comercio.Entities;
 using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
+using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Interfaces.SetorInterfaces;
 using Comercio.Mapper;
@@ -41,12 +43,15 @@ namespace Comercio
             // Mapper
             services.AddScoped(typeof(IProdutoAdapter), typeof(ProdutoAdapter));
             services.AddScoped(typeof(ISetorAdapter), typeof(SetorAdapter));
+            services.AddScoped(typeof(IFornecedorAdapter), typeof(FornecedorAdapter));
             // Services
             services.AddScoped(typeof(IProdutoService), typeof(ProdutoService));
             services.AddScoped(typeof(ISetorService), typeof(SetorService));
+            services.AddScoped(typeof(IFornecedorService), typeof(FornecedorService));
             // Repository Base
             services.AddScoped(typeof(IRepositoryBase<Produto>), typeof(ProdutoRepository));
             services.AddScoped(typeof(IRepositoryBase<Setor>), typeof(SetorRepository));
+            services.AddScoped(typeof(IRepositoryBase<Fornecedor>), typeof(FornecedorRepository));
             // Repositorys
             services.AddScoped(typeof(IProdutoRepository), typeof(ProdutoRepository));
 
