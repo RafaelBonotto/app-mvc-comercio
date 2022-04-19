@@ -12,6 +12,11 @@ namespace Comercio.Services
             throw new System.NotImplementedException();
         }
 
+        public Task<Fornecedor> InserirFornecedor()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Task<List<Fornecedor>> ListarFornecedores()
         {
             throw new System.NotImplementedException();
