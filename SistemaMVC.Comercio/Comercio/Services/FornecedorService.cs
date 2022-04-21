@@ -1,7 +1,10 @@
 ﻿using Comercio.Entities;
+using Comercio.Exceptions.Fornecedor;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.FornecedorInterfaces;
+using Comercio.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Comercio.Services
@@ -22,9 +25,25 @@ namespace Comercio.Services
             throw new System.NotImplementedException();
         }
 
-        public Task<Fornecedor> InserirFornecedor()
+        public async Task<Fornecedor> InserirFornecedor(FornecedorViewModel fornecedor)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var checkFornecedor = await _repositoryBase.GetByKeyAsync(fornecedor.Cnpj);
+                if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 1)
+                    throw new CnpjInvalidoException();
+                if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 0)
+                {
+                    fornecedor.Id = checkFornecedor.First().Id;
+                    //return await this.AtualizarFornecedor(fornecedor);
+                }
+                var fornecedorRepository = _mapper.MontaFornecedorInsertRepositorio(fornecedor);
+                return await _repositoryBase.AddAsync(fornecedorRepository);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public Task<List<Fornecedor>> ListarFornecedores()
