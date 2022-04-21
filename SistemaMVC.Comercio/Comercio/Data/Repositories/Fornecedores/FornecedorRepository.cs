@@ -1,5 +1,7 @@
-﻿using Comercio.Entities;
+﻿using Comercio.Data.ConnectionManager;
+using Comercio.Entities;
 using Comercio.Interfaces.Base;
+using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,9 +10,27 @@ namespace Comercio.Data.Repositories.Fornecedores
 {
     public class FornecedorRepository : IRepositoryBase<Fornecedor>
     {
-        public Task<Fornecedor> AddAsync(Fornecedor entity)
+        private readonly IMySqlConnectionManager _connection;
+
+        public FornecedorRepository(IMySqlConnectionManager connection)
         {
-            throw new NotImplementedException();
+            _connection = connection;
+        }
+
+        public async Task<Fornecedor> AddAsync(Fornecedor fornecedor)
+        {
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                var row = await connection.InsertAsync<Fornecedor>(fornecedor);
+                if (row > 0)
+                    return await this.GetByIdAsync(row);
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<Fornecedor> DeleteAsync(int id)
