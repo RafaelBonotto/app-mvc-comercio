@@ -10,5 +10,10 @@ namespace Comercio.Mapper
         {
             throw new System.NotImplementedException();
         }
+
+        public Fornecedor MontaFornecedorInsertRepositorio(FornecedorViewModel fornecedor)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
