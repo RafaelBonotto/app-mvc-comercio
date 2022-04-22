@@ -29,14 +29,17 @@ namespace Comercio.Services
         {
             try
             {
-                var checkFornecedor = await _repositoryBase.GetByKeyAsync(fornecedor.Cnpj);
-                if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 1)
-                    throw new CnpjInvalidoException();
-                if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 0)
+                if (string.IsNullOrEmpty(fornecedor.Cnpj))
                 {
-                    fornecedor.Id = checkFornecedor.First().Id;
-                    //return await this.AtualizarFornecedor(fornecedor);
-                }
+                    var checkFornecedor = await _repositoryBase.GetByKeyAsync(fornecedor.Cnpj);
+                    if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 1)
+                        throw new CnpjInvalidoException();
+                    if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 0)
+                    {
+                        fornecedor.Id = checkFornecedor.First().Id;
+                        //return await this.AtualizarFornecedor(fornecedor);
+                    }
+                }                
                 var fornecedorRepository = _mapper.MontaFornecedorInsertRepositorio(fornecedor);
                 return await _repositoryBase.AddAsync(fornecedorRepository);
             }
