@@ -11,7 +11,17 @@ namespace Comercio.Mapper
             throw new System.NotImplementedException();
         }
 
+        public FornecedorEndereco MontaFornecedorEndereco(FornecedorViewModel fornecedor)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Fornecedor MontaFornecedorInsertRepositorio(FornecedorViewModel fornecedor)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public FornecedorTelefone MontaFornecedorTelefone(FornecedorViewModel fornecedor)
         {
             throw new System.NotImplementedException();
         }
