@@ -1,9 +1,11 @@
 ﻿using Comercio.Data.ConnectionManager;
+using Comercio.Data.Querys;
 using Comercio.Entities;
 using Comercio.Interfaces.Base;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -55,7 +57,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             {
                 using var connection = await _connection.GetConnectionAsync();
                 List<Produto> ret = new();
-                return await connection.Query<Fornecedor>(FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj });
+                return (connection.Query<Fornecedor>(FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
             }
             catch (Exception)
             {
