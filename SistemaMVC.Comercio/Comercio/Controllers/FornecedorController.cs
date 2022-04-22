@@ -23,7 +23,7 @@ namespace Comercio.Controllers
         [Route("[controller]/adicionar/")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Adicionar(
-            [Bind("Id, Descricao")]// 
+            //[Bind("Id, Descricao")]// 
             FornecedorViewModel fornecedor)
         {
             if (ModelState.IsValid)
