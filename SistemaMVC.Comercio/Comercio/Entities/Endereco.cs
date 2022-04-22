@@ -2,8 +2,9 @@
 
 namespace Comercio.Entities
 {
-    public class Endereco
+    public class Endereco 
     {
+        public int Id { get; set; }
         public TipoEndereco Tipo { get; set; }
         public string Logradouro { get; set; }
         public string NumeroLogradouro { get; set; }
