@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Comercio.Models
 {
-    public class FornecedorViewModel
+    public class FornecedorViewModel 
     {
         public int Id { get; set; }
 
@@ -14,10 +14,13 @@ namespace Comercio.Models
         [Display(Name = "Fornecedor")]
         public string Nome_empresa { get; set; }
 
+        [Display(Name = "Endereço")]
+        public List<Endereco> Endereco { get; set; }
+
         [Display(Name = "Telefone")]
         public List<Telefone> Telefones { get; set; } = new();
 
         [Display(Name = "Vendedor")]
-        public List<Pessoa> Vendedores { get; set; } = new();
+        public List<Vendedor> Vendedores { get; set; } = new();
     }
 }
