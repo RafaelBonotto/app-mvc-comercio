@@ -1,6 +1,7 @@
 ﻿using Comercio.Data.ConnectionManager;
 using Comercio.Entities;
 using Comercio.Interfaces.Base;
+using Dapper;
 using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
@@ -48,9 +49,18 @@ namespace Comercio.Data.Repositories.Fornecedores
             throw new NotImplementedException();
         }
 
-        public Task<List<Fornecedor>> GetByKeyAsync(string key)
+        public async Task<List<Fornecedor>> GetByKeyAsync(string cnpj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                List<Produto> ret = new();
+                return await connection.Query<Fornecedor>(FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<Fornecedor> UpdateAsync(Fornecedor entity)
