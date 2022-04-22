@@ -2,6 +2,6 @@
 {
     public class FornecedorQuerys
     {
-       
+        public const string SELECT_POR_CNPJ = @"";
     }
 }
