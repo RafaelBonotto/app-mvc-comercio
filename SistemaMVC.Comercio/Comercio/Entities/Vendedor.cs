@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace Comercio.Entities
+﻿namespace Comercio.Entities
 {
-    public class Vendedor
+    public class Vendedor : Pessoa
     {
-        public Pessoa Pessoa { get; set; } 
-        public List<Telefone> Telefones { get; set; }
     }
 }
