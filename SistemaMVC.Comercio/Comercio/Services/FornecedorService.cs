@@ -12,11 +12,13 @@ namespace Comercio.Services
     public class FornecedorService : IFornecedorService
     {
         private readonly IRepositoryBase<Fornecedor> _repositoryBase;
+        private readonly IFornecedorRepository _repository;
         private readonly IFornecedorAdapter _mapper;
 
-        public FornecedorService(IRepositoryBase<Fornecedor> repository, IFornecedorAdapter mapper)
+        public FornecedorService(IRepositoryBase<Fornecedor> repository, IFornecedorRepository fornecedorRepository, IFornecedorAdapter mapper)
         {
             _repositoryBase = repository;
+            _repository = fornecedorRepository;
             _mapper = mapper;
         }
 
@@ -39,9 +41,11 @@ namespace Comercio.Services
                         fornecedor.Id = checkFornecedor.First().Id;
                         //return await this.AtualizarFornecedor(fornecedor);
                     }
-                }                
+                }
+                //1- INSERIR FORNECEDOR
                 var fornecedorRepository = _mapper.MontaFornecedorInsertRepositorio(fornecedor);
-                return await _repositoryBase.AddAsync(fornecedorRepository);
+                var fornecedorResponse =  await _repositoryBase.AddAsync(fornecedorRepository);                
+                return fornecedorResponse;
             }
             catch (System.Exception)
             {
