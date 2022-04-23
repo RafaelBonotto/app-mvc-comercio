@@ -1,4 +1,5 @@
-﻿using Comercio.Interfaces.FornecedorInterfaces;
+﻿using Comercio.Exceptions.Fornecedor;
+using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -36,6 +37,10 @@ namespace Comercio.Controllers
 
                     var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
                     return View("Detalhes", fornecedorViewModel);
+                }
+                catch (CnpjInvalidoException)
+                {
+                    return View("Error", new ErrorViewModel().FornecedorErroInserirCnpjInvalido());
                 }
                 catch (System.Exception)
                 {
