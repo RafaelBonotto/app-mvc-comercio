@@ -8,10 +8,12 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Comercio.Interfaces.FornecedorInterfaces;
+using MySqlConnector;
 
 namespace Comercio.Data.Repositories.Fornecedores
 {
-    public class FornecedorRepository : IRepositoryBase<Fornecedor>
+    public class FornecedorRepository : IRepositoryBase<Fornecedor>, IFornecedorRepository
     {
         private readonly IMySqlConnectionManager _connection;
 
@@ -24,6 +26,20 @@ namespace Comercio.Data.Repositories.Fornecedores
         {
             try
             {
+                //2- INSERIR ENDERECO
+
+                //3- INSERIR ENDERECO - FORNECEDOR
+                //await _repository.InserirEnderecoFornecedor(_mapper.MontaFornecedorEndereco(fornecedor));
+
+                //4- INSERIR TELEFONE
+
+                //5- INSERIR TELEFONE FORNECEDOR
+                //await _repository.InserirTelefoneFornecedor(_mapper.MontaFornecedorTelefone(fornecedor));
+
+                //6- INSERIR VENDEDOR (PESSOA)
+
+                //4- INSERIR VENDEDOR - FORNECEDOR
+                //await _repository.InserirVendedorFornecedor(_mapper)
                 using var connection = await _connection.GetConnectionAsync();
                 var row = await connection.InsertAsync<Fornecedor>(fornecedor);
                 if (row > 0)
@@ -63,6 +79,30 @@ namespace Comercio.Data.Repositories.Fornecedores
             {
                 throw;
             }
+        }
+
+        public async Task<bool> InserirEnderecoFornecedor(List<FornecedorEndereco> fornecedorEndereco, MySqlConnection connection)
+        {
+            try
+            {
+                foreach (var item in fornecedorEndereco)
+                    await connection.InsertAsync<FornecedorEndereco>(item);
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public Task<bool> InserirTelefoneFornecedor(List<FornecedorTelefone> fornecedorTelefone)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> InserirVendedorFornecedor(int fornecedor_id, List<Vendedor> vendedor)
+        {
+            throw new NotImplementedException();
         }
 
         public Task<Fornecedor> UpdateAsync(Fornecedor entity)
