@@ -54,6 +54,7 @@ namespace Comercio
             services.AddScoped(typeof(IRepositoryBase<Fornecedor>), typeof(FornecedorRepository));
             // Repositorys
             services.AddScoped(typeof(IProdutoRepository), typeof(ProdutoRepository));
+            services.AddScoped(typeof(IFornecedorRepository), typeof(FornecedorRepository));
 
             #endregion
         }
