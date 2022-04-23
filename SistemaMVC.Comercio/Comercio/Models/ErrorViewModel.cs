@@ -86,5 +86,11 @@ namespace Comercio.Models
             this.Mensagem = "Não foi encontrado nenhum fornecedor para esse produto.";
             return this;
         }
+
+        public ErrorViewModel FornecedorErroInserirCnpjInvalido()
+        {
+            this.Mensagem = "Não foi possível inseir o fornecedor. Foi encontrado um fornecedor ativo com o mesmo CNPJ.";
+            return this;
+        }
     }
 }
