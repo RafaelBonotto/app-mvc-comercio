@@ -16,16 +16,22 @@ namespace Comercio.Data.Repositories.Fornecedores
     public class FornecedorRepository : IRepositoryBase<Fornecedor>, IFornecedorRepository
     {
         private readonly IMySqlConnectionManager _connection;
+        private readonly IFornecedorAdapter _mapper;
 
-        public FornecedorRepository(IMySqlConnectionManager connection)
+
+        public FornecedorRepository(IMySqlConnectionManager connection, IFornecedorAdapter mapper)
         {
             _connection = connection;
+            _mapper = mapper;
         }
 
         public async Task<Fornecedor> AddAsync(Fornecedor fornecedor)
         {
             try
             {
+                using var connection = await _connection.GetConnectionAsync();
+                //1- INSERIR FORNECEDOR
+                var fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
                 //2- INSERIR ENDERECO
 
                 //3- INSERIR ENDERECO - FORNECEDOR
@@ -40,10 +46,7 @@ namespace Comercio.Data.Repositories.Fornecedores
 
                 //4- INSERIR VENDEDOR - FORNECEDOR
                 //await _repository.InserirVendedorFornecedor(_mapper)
-                using var connection = await _connection.GetConnectionAsync();
-                var row = await connection.InsertAsync<Fornecedor>(fornecedor);
-                if (row > 0)
-                    return await this.GetByIdAsync(row);
+
                 return null;
             }
             catch (Exception)
@@ -95,12 +98,12 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
-        public Task<bool> InserirTelefoneFornecedor(List<FornecedorTelefone> fornecedorTelefone)
+        public Task<bool> InserirTelefoneFornecedor(List<FornecedorTelefone> fornecedorTelefone, MySqlConnection connection)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> InserirVendedorFornecedor(int fornecedor_id, List<Vendedor> vendedor)
+        public Task<bool> InserirVendedorFornecedor(int fornecedor_id, List<Vendedor> vendedor, MySqlConnection connection)
         {
             throw new NotImplementedException();
         }
