@@ -1,7 +1,9 @@
 ﻿using Comercio.Enums;
+using Dapper.Contrib.Extensions;
 
 namespace Comercio.Entities
 {
+    [Table("tb_telefone")]
     public class Telefone 
     {
         public int Id { get; set; }
