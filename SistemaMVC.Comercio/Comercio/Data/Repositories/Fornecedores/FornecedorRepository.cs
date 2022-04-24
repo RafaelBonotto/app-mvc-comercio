@@ -30,13 +30,9 @@ namespace Comercio.Data.Repositories.Fornecedores
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                //1- INSERIR FORNECEDOR
                 var fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
-                //2- INSERIR ENDERECO
                 await InserirEndereco(fornecdorId, fornecedor.Endereco, connection);
-                //4- INSERIR TELEFONE
                 await InserirTelefone(fornecdorId, fornecedor.Telefone, connection);
-                //6- INSERIR VENDEDOR (PESSOA)
                 await InserirVendedor(fornecdorId, fornecedor.Vendedor, connection);
                 return await this.GetByIdAsync(fornecdorId);
             }
@@ -114,9 +110,24 @@ namespace Comercio.Data.Repositories.Fornecedores
                 throw;
             }
         }
-        public Task InserirVendedor(int fornecedor_id, List<Vendedor> vendedores, MySqlConnection connection) 
+        public async Task InserirVendedor(int fornecedor_id, List<Vendedor> vendedores, MySqlConnection connection) 
         {
-            throw new NotImplementedException();
+            try
+            {
+                foreach (var vendedor in vendedores)
+                {
+                    var pessoa_id = await connection.InsertAsync<Pessoa>(vendedor);
+                    await connection.InsertAsync<FornecedorVendedor>(new FornecedorVendedor()
+                    {
+                        Fornecedor_id = fornecedor_id,
+                        Pessoa_id = pessoa_id
+                    });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<Fornecedor> UpdateAsync(Fornecedor entity)
