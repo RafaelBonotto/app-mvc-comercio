@@ -42,9 +42,9 @@ namespace Comercio.Services
                         //return await this.AtualizarFornecedor(fornecedor);
                     }
                 }
-                //1- INSERIR FORNECEDOR
                 var fornecedorRepository = _mapper.MontaFornecedorInsertRepositorio(fornecedor);
-                var fornecedorResponse =  await _repositoryBase.AddAsync(fornecedorRepository);                
+                var fornecedorResponse =  await _repositoryBase.AddAsync(fornecedorRepository);       
+                //RETORNAR O FORNECEDOR COM OS ATRIBUTOS: ENDERECO, TELEFONE E VENDEDOR
                 return fornecedorResponse;
             }
             catch (System.Exception)
