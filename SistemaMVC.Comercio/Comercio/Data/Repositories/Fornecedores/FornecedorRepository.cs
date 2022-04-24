@@ -75,18 +75,19 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
-        public Task<int> InserirEndereco(int fornecedor_id, List<Endereco> enderecos, MySqlConnection connection)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> InserirEnderecoFornecedor(List<FornecedorEndereco> fornecedorEndereco, MySqlConnection connection)
+        public async Task InserirEndereco(int fornecedor_id, List<Endereco> enderecos, MySqlConnection connection)
         {
             try
             {
-                foreach (var item in fornecedorEndereco)
-                    await connection.InsertAsync<FornecedorEndereco>(item);
-                return true;
+                foreach (var endereco in enderecos)
+                {
+                    var endereco_id = await connection.InsertAsync<Endereco>(endereco);
+                    await connection.InsertAsync<FornecedorEndereco>(new FornecedorEndereco()
+                    {
+                        Fornecedor_id = fornecedor_id,
+                        Endereco_id = endereco_id
+                    });
+                }
             }
             catch (Exception)
             {
@@ -94,22 +95,26 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
-        public Task<int> InserirTelefone(int fornecedor_id, List<Telefone> telefones, MySqlConnection connection)
+        public async Task InserirTelefone(int fornecedor_id, List<Telefone> telefones, MySqlConnection connection)
         {
-            throw new NotImplementedException();
+            try
+            {
+                foreach (var telefone in telefones)
+                {
+                    var telefone_id = await connection.InsertAsync<Telefone>(telefone);
+                    await connection.InsertAsync<FornecedorTelefone>(new FornecedorTelefone()
+                    {
+                        Fornecedor_id = fornecedor_id,
+                        Telefone_id = telefone_id
+                    });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
-
-        static Task<bool> InserirTelefoneFornecedor(List<FornecedorTelefone> fornecedorTelefone, MySqlConnection connection)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> InserirVendedor(int fornecedor_id, List<Vendedor> vendedores, MySqlConnection connection) 
-        {
-            throw new NotImplementedException();
-        }
-
-        static Task<bool> InserirVendedorFornecedor(int fornecedor_id, List<Vendedor> vendedor, MySqlConnection connection)
+        public Task InserirVendedor(int fornecedor_id, List<Vendedor> vendedores, MySqlConnection connection) 
         {
             throw new NotImplementedException();
         }
