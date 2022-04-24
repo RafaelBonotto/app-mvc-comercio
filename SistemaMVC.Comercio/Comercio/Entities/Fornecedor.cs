@@ -1,7 +1,6 @@
 ﻿using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Comercio.Entities
 {
@@ -17,5 +16,14 @@ namespace Comercio.Entities
 
         [Write(false)]
         public virtual List<Produto> Produtos { get; set; }
+         
+        [Write(false)]
+        public virtual List<Endereco> Endereco { get; set; }
+        
+        [Write(false)]
+        public virtual List<Telefone> Telefone { get; set; }
+        
+        [Write(false)]
+        public virtual List<Vendedor> Vendedor { get; set; }
     }
 }
