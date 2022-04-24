@@ -7,11 +7,11 @@ namespace Comercio.Interfaces.FornecedorInterfaces
 {
     public interface IFornecedorRepository 
     {
-        Task<int> InserirTelefone(int fornecedor_id, List<Telefone> telefones);
-        Task<int> InserirEndereco(int fornecedor_id, List<Endereco> telefones);
-        Task<int> InserirVendedor(int fornecedor_id, List<Vendedor> telefones);
-        Task<bool> InserirTelefoneFornecedor(List<FornecedorTelefone> fornecedorTelefone, MySqlConnection connection);
-        Task<bool> InserirEnderecoFornecedor(List<FornecedorEndereco> fornecedorEndereco, MySqlConnection connection);
-        Task<bool> InserirVendedorFornecedor(int fornecedor_id, List<Vendedor> vendedor, MySqlConnection connection);
+        Task<int> InserirTelefone(int fornecedor_id, List<Telefone> telefones, MySqlConnection connection);
+        Task<int> InserirEndereco(int fornecedor_id, List<Endereco> enderecos, MySqlConnection connection);
+        Task<int> InserirVendedor(int fornecedor_id, List<Vendedor> vendedores, MySqlConnection connection); 
+        //Task<bool> InserirTelefoneFornecedor(List<FornecedorTelefone> fornecedorTelefone, MySqlConnection connection);
+        //Task<bool> InserirEnderecoFornecedor(List<FornecedorEndereco> fornecedorEndereco, MySqlConnection connection);
+        //Task<bool> InserirVendedorFornecedor(int fornecedor_id, List<Vendedor> vendedor, MySqlConnection connection);
     }
 }
