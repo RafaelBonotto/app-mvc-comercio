@@ -1,6 +1,7 @@
 ﻿using Comercio.Entities;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
+using System;
 
 namespace Comercio.Mapper
 {
@@ -18,7 +19,17 @@ namespace Comercio.Mapper
 
         public Fornecedor MontaFornecedorInsertRepositorio(FornecedorViewModel fornecedor)
         {
-            throw new System.NotImplementedException();
+            return new Fornecedor()
+            {
+                Nome_empresa = fornecedor.Nome_empresa,
+                Cnpj = fornecedor.Cnpj,
+                Ativo = 1,
+                Data_criacao = DateTime.Now,
+                Data_alteracao = DateTime.Now,
+                Endereco = fornecedor.Endereco,
+                Telefone = fornecedor.Telefones,
+                Vendedor = fornecedor.Vendedores
+            };
         }
 
         public FornecedorTelefone MontaFornecedorTelefone(FornecedorViewModel fornecedor)
