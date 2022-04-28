@@ -29,12 +29,26 @@ namespace Comercio.Data.Repositories.Fornecedores
         {
             try
             {
-                using var connection = await _connection.GetConnectionAsync();
-                var fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
-                await InserirEndereco(fornecdorId, fornecedor.Endereco, connection);
-                await InserirTelefone(fornecdorId, fornecedor.Telefone, connection);
-                await InserirVendedor(fornecdorId, fornecedor.Vendedor, connection);
-                return await this.GetByIdAsync(fornecdorId);
+                using (var connection = await _connection.GetConnectionAsync())
+                {
+                    using (var transaction = connection.BeginTransaction())
+                    {
+                        var fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
+                        if(fornecdorId <= 0)
+                        {
+                            transaction.Rollback();
+                            throw new Exception();
+                        }
+
+                        await InserirEndereco(fornecdorId, fornecedor.Endereco, connection);
+                        await InserirTelefone(fornecdorId, fornecedor.Telefone, connection);
+                        await InserirVendedor(fornecdorId, fornecedor.Vendedor, connection);
+                        return await this.GetByIdAsync(fornecdorId);
+
+                    }
+
+                }
+                
             }
             catch (Exception)
             {
@@ -78,11 +92,15 @@ namespace Comercio.Data.Repositories.Fornecedores
                 foreach (var endereco in enderecos)
                 {
                     var endereco_id = await connection.InsertAsync<Endereco>(endereco);
-                    await connection.InsertAsync<FornecedorEndereco>(new FornecedorEndereco()
+                    if (endereco_id <= 0)
+                        throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
+                    var row = await connection.InsertAsync<FornecedorEndereco>(new FornecedorEndereco()
                     {
                         Fornecedor_id = fornecedor_id,
                         Endereco_id = endereco_id
                     });
+                    if (row <= 0)
+                        throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
                 }
             }
             catch (Exception)
@@ -98,11 +116,16 @@ namespace Comercio.Data.Repositories.Fornecedores
                 foreach (var telefone in telefones)
                 {
                     var telefone_id = await connection.InsertAsync<Telefone>(telefone);
-                    await connection.InsertAsync<FornecedorTelefone>(new FornecedorTelefone()
+                    if (telefone_id <= 0)
+                        throw new Exception("Erro ao tentar inserir o telefobe do fornecedor");
+
+                    var row = await connection.InsertAsync<FornecedorTelefone>(new FornecedorTelefone()
                     {
                         Fornecedor_id = fornecedor_id,
                         Telefone_id = telefone_id
                     });
+                    if (telefone_id <= 0)
+                        throw new Exception("Erro ao tentar inserir o telefobe do fornecedor");
                 }
             }
             catch (Exception)
@@ -117,11 +140,16 @@ namespace Comercio.Data.Repositories.Fornecedores
                 foreach (var vendedor in vendedores)
                 {
                     var pessoa_id = await connection.InsertAsync<Pessoa>(vendedor);
-                    await connection.InsertAsync<FornecedorVendedor>(new FornecedorVendedor()
+                    if (pessoa_id <= 0)
+                        throw new Exception("Erro ao tentar inserir o vendedor");
+
+                    var row = await connection.InsertAsync<FornecedorVendedor>(new FornecedorVendedor()
                     {
                         Fornecedor_id = fornecedor_id,
                         Pessoa_id = pessoa_id
                     });
+                    if (row <= 0)
+                        throw new Exception("Erro ao tentar inserir o vendedor");
                 }
             }
             catch (Exception)
