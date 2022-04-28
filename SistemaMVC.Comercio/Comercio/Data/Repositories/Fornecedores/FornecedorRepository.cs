@@ -29,26 +29,29 @@ namespace Comercio.Data.Repositories.Fornecedores
         {
             try
             {
+                int fornecdorId;
                 using (var connection = await _connection.GetConnectionAsync())
                 {
                     using (var transaction = connection.BeginTransaction())
                     {
-                        var fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
-                        if(fornecdorId <= 0)
+                        try
+                        {
+                            fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
+                            if (fornecdorId <= 0)
+                                throw new Exception("Erro ao tentar inserir o fornecedor");
+                            await InserirEndereco(fornecdorId, fornecedor.Endereco, connection);
+                            await InserirTelefone(fornecdorId, fornecedor.Telefone, connection);
+                            await InserirVendedor(fornecdorId, fornecedor.Vendedor, connection);
+                            transaction.Commit();
+                        }
+                        catch (Exception)
                         {
                             transaction.Rollback();
-                            throw new Exception();
+                            throw;
                         }
-
-                        await InserirEndereco(fornecdorId, fornecedor.Endereco, connection);
-                        await InserirTelefone(fornecdorId, fornecedor.Telefone, connection);
-                        await InserirVendedor(fornecdorId, fornecedor.Vendedor, connection);
-                        return await this.GetByIdAsync(fornecdorId);
-
                     }
-
                 }
-                
+                return await this.GetByIdAsync(fornecdorId);
             }
             catch (Exception)
             {
