@@ -27,8 +27,8 @@ namespace Comercio.Mapper
                 Data_criacao = DateTime.Now,
                 Data_alteracao = DateTime.Now,
                 Endereco = fornecedor.Endereco,
-                Telefone = fornecedor.Telefones,
-                Vendedor = fornecedor.Vendedores
+                Telefone = fornecedor.Telefone,
+                Vendedor = fornecedor.Vendedor
             };
         }
 
