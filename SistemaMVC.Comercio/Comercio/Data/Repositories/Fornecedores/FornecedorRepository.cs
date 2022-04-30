@@ -75,10 +75,10 @@ namespace Comercio.Data.Repositories.Fornecedores
             {
                 using var connection = await _connection.GetConnectionAsync();
                 var fornecedor = connection.Get<Fornecedor>(id);
-
-                
-                
-
+                fornecedor.Telefone = await RetornarTelefoneDoFornecedor(fornecedor.Id, connection);
+                fornecedor.Endereco = await RetornarEnderecoDoFornecedor(fornecedor.Id, connection);
+                fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
+                return fornecedor;
             }
             catch (Exception)
             {
@@ -201,14 +201,14 @@ namespace Comercio.Data.Repositories.Fornecedores
             return ret;
         }
 
-        static async Task<List<Pessoa>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
+        static async Task<List<Vendedor>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
-            List<Pessoa> ret = new();
+            List<Vendedor> ret = new();
             var vendedorIds = await connection.QueryAsync<int>(
                     sql: FornecedorQuerys.SELECT_ID_VENDEDOR_FORNECEDOR,
                     param: new { fornecedor_id });
             foreach (var item in vendedorIds)
-                ret.Add(connection.Get<Pessoa>(item));
+                ret.Add((Vendedor)connection.Get<Pessoa>(item));
             return ret;
         }
 
