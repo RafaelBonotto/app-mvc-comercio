@@ -79,7 +79,12 @@ namespace Comercio.Data.Repositories.Fornecedores
                 var TelefoneIds = await connection.QueryAsync<int>(
                     sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
                     param: new { fornecedor_id = fornecedor.Id });
-
+                foreach (var item in TelefoneIds)
+                {
+                    fornecedor.Telefone.Add(
+                    connection.Get<Telefone>(item));
+                }
+                
 
             }
             catch (Exception)
