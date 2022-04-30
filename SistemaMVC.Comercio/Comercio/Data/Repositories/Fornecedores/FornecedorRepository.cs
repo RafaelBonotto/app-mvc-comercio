@@ -69,9 +69,18 @@ namespace Comercio.Data.Repositories.Fornecedores
             throw new NotImplementedException();
         }
 
-        public Task<Fornecedor> GetByIdAsync(int id)
+        public async Task<Fornecedor> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                Fornecedor ret = new();
+                return (connection.Query<Fornecedor>(FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<List<Fornecedor>> GetByKeyAsync(string cnpj)
@@ -79,7 +88,6 @@ namespace Comercio.Data.Repositories.Fornecedores
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                List<Produto> ret = new();
                 return (connection.Query<Fornecedor>(FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
             }
             catch (Exception)
