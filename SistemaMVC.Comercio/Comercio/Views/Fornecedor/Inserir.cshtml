@@ -1,0 +1,53 @@
+﻿@model Comercio.Models.FornecedorViewModel
+
+@{
+    ViewData["Title"] = "fornecedor/inserir";
+}
+
+<h1 class="display-4">NOVO FORNECEDOR</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="adicionar">
+            <div class="form-group">
+                <label><strong>CNPJ</strong></label>
+                <input asp-for="Cnpj" class="form-control" />
+                <span><strong asp-validation-for="Cnpj" class="text-danger"></strong></span>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label><strong>NOME </strong></label>
+                <input asp-for="Nome_empresa" class="form-control" />
+                <span asp-validation-for="Nome_empresa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label><strong>ENDEREÇO</strong></label>
+                <input asp-for="Endereco" class="form-control" />
+                <span asp-validation-for="Endereco" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label><strong>TELEFONE</strong></label>
+                <input asp-for="Telefone" class="form-control" />
+                <span asp-validation-for="Telefone" class="alert-danger"></span>
+            </div>
+            <div class="form-group">
+                <label><strong>VENDEDOR</strong></label>
+                <select asp-for="Vendedor" class="form-control"></select>
+                <span asp-validation-for="Vendedor" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="SALVAR" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
