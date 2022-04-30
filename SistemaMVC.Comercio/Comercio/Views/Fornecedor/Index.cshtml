@@ -1,6 +1,11 @@
-﻿@model IEnumerable<Comercio.Models.FornecedorViewModel>
-@{
+﻿@{
     ViewData["Title"] = "Fornecedor/index";
 }
 
-<h4 class="display-4">FORNECEDORES</h4>
+<h4 class="display-4">FORNECEDOR</h4>
+
+<hr />
+<div class="col">
+    <a asp-controller="Fornecedor" asp-action="Inserir" class="btn btn-outline-primary btn-lg"><strong>NOVO</strong></a>
+</div>
+<hr />
