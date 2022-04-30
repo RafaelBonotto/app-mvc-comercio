@@ -76,14 +76,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 using var connection = await _connection.GetConnectionAsync();
                 var fornecedor = connection.Get<Fornecedor>(id);
 
-                var TelefoneIds = await connection.QueryAsync<int>(
-                    sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
-                    param: new { fornecedor_id = fornecedor.Id });
-                foreach (var item in TelefoneIds)
-                {
-                    fornecedor.Telefone.Add(
-                    connection.Get<Telefone>(item));
-                }
+                
                 
 
             }
@@ -183,5 +176,20 @@ namespace Comercio.Data.Repositories.Fornecedores
         {
             throw new NotImplementedException();
         }
+
+        #region Métodos privados
+
+        static async Task<List<Telefone>> RetornarTelefonesDoFornecedor(int fornecedor_id, MySqlConnection connection)
+        {
+            List<Telefone> ret = new();
+            var TelefoneIds = await connection.QueryAsync<int>(
+                    sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
+                    param: new { fornecedor_id = fornecedor_id });
+            foreach (var item in TelefoneIds)
+                ret.Add(connection.Get<Telefone>(item));
+            return ret;
+        }
+
+        #endregion
     }
 }
