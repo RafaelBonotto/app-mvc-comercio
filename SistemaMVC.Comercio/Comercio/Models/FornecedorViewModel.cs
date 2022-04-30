@@ -18,9 +18,9 @@ namespace Comercio.Models
         public List<Endereco> Endereco { get; set; }
 
         [Display(Name = "Telefone")]
-        public List<Telefone> Telefones { get; set; } = new();
+        public List<Telefone> Telefone { get; set; } = new();
 
         [Display(Name = "Vendedor")]
-        public List<Vendedor> Vendedores { get; set; } = new();
+        public List<Vendedor> Vendedor { get; set; } = new();
     }
 }
