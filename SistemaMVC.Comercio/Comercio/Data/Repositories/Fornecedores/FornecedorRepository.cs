@@ -179,14 +179,25 @@ namespace Comercio.Data.Repositories.Fornecedores
 
         #region Métodos privados
 
-        static async Task<List<Telefone>> RetornarTelefonesDoFornecedor(int fornecedor_id, MySqlConnection connection)
+        static async Task<List<Telefone>> RetornarTelefoneDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
             List<Telefone> ret = new();
-            var TelefoneIds = await connection.QueryAsync<int>(
+            var telefoneIds = await connection.QueryAsync<int>(
                     sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
                     param: new { fornecedor_id = fornecedor_id });
-            foreach (var item in TelefoneIds)
+            foreach (var item in telefoneIds)
                 ret.Add(connection.Get<Telefone>(item));
+            return ret;
+        }
+
+        static async Task<List<Endereco>> RetornarEnderecoDoFornecedor(int fornecedor_id, MySqlConnection connection)
+        {
+            List<Endereco> ret = new();
+            var EnderecosIds = await connection.QueryAsync<int>(
+                    sql: FornecedorQuerys.SELECT_ID_ENDERECO_FORNECEDOR,
+                    param: new { fornecedor_id = fornecedor_id });
+            foreach (var item in EnderecosIds)
+                ret.Add(connection.Get<Endereco>(item));
             return ret;
         }
 
