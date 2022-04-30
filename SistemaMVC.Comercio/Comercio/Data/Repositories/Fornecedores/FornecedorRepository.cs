@@ -184,7 +184,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             List<Telefone> ret = new();
             var telefoneIds = await connection.QueryAsync<int>(
                     sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
-                    param: new { fornecedor_id = fornecedor_id });
+                    param: new { fornecedor_id });
             foreach (var item in telefoneIds)
                 ret.Add(connection.Get<Telefone>(item));
             return ret;
@@ -193,11 +193,22 @@ namespace Comercio.Data.Repositories.Fornecedores
         static async Task<List<Endereco>> RetornarEnderecoDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
             List<Endereco> ret = new();
-            var EnderecosIds = await connection.QueryAsync<int>(
+            var enderecosIds = await connection.QueryAsync<int>(
                     sql: FornecedorQuerys.SELECT_ID_ENDERECO_FORNECEDOR,
-                    param: new { fornecedor_id = fornecedor_id });
-            foreach (var item in EnderecosIds)
+                    param: new { fornecedor_id });
+            foreach (var item in enderecosIds)
                 ret.Add(connection.Get<Endereco>(item));
+            return ret;
+        }
+
+        static async Task<List<Pessoa>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
+        {
+            List<Pessoa> ret = new();
+            var vendedorIds = await connection.QueryAsync<int>(
+                    sql: FornecedorQuerys.SELECT_ID_VENDEDOR_FORNECEDOR,
+                    param: new { fornecedor_id });
+            foreach (var item in vendedorIds)
+                ret.Add(connection.Get<Pessoa>(item));
             return ret;
         }
 
