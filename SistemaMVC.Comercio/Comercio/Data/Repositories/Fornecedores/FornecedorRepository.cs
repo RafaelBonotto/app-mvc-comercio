@@ -74,8 +74,13 @@ namespace Comercio.Data.Repositories.Fornecedores
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                Fornecedor ret = new();
-                return (connection.Query<Fornecedor>(FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
+                var fornecedor = connection.Get<Fornecedor>(id);
+
+                var TelefoneIds = await connection.QueryAsync<int>(
+                    sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
+                    param: new { fornecedor_id = fornecedor.Id });
+
+
             }
             catch (Exception)
             {
