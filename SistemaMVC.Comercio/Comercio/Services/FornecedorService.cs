@@ -52,9 +52,16 @@ namespace Comercio.Services
             }
         }
 
-        public Task<List<Fornecedor>> ListarFornecedores()
+        public async Task<List<Fornecedor>> ListarFornecedores()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                return await _repositoryBase.GetAllAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }
