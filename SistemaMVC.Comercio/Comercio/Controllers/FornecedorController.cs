@@ -75,6 +75,25 @@ namespace Comercio.Controllers
             }
         }
 
+        [HttpGet("[controller]/detalhes")]
+        public async Task<IActionResult> Detalhes(int id)
+        {
+            try
+            {
+                var fornecedor = await _service.BuscarFornecedor(id);
+                if (fornecedor is null)
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());// Alterar erro
+
+                var viewModel = _mapper.CriarFornecedorViewModel(fornecedor);
+
+                return View("Detalhes", viewModel);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
+
         [Route("[controller]/filtrar-por-setor")]
         public async Task<IActionResult> FiltrarPorSetor(string setor)
         {
