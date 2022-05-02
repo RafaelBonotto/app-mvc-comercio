@@ -63,5 +63,17 @@ namespace Comercio.Services
                 throw;
             }
         }
+
+        public async Task<Fornecedor> BuscarFornecedor(int id)
+        {
+            try
+            {
+                return await _repositoryBase.GetByIdAsync(id);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
     }
 }
