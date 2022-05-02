@@ -10,5 +10,6 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<Fornecedor> InserirFornecedor(FornecedorViewModel fornecedor);
         Task<List<Fornecedor>> ListarFornecedores();
         Task<List<Fornecedor>> FiltrarPorSetor(string setor);
+        Task<Fornecedor> BuscarFornecedor(int id);
     }
 }
