@@ -9,7 +9,12 @@ namespace Comercio.Mapper
     {
         public FornecedorViewModel CriarFornecedorViewModel(Fornecedor fornecedor)
         {
-            throw new System.NotImplementedException();
+            return new FornecedorViewModel()
+            {
+                Id = fornecedor.Id,
+                Cnpj = fornecedor.Cnpj,
+                Nome_empresa = fornecedor.Nome_empresa
+            };
         }
 
         public FornecedorEndereco MontaFornecedorEndereco(FornecedorViewModel fornecedor)
