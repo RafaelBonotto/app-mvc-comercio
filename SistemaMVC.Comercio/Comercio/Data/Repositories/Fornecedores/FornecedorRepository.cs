@@ -70,9 +70,9 @@ namespace Comercio.Data.Repositories.Fornecedores
             {
                 using var connection = await _connection.GetConnectionAsync();
                 var fornecedor = connection.Get<Fornecedor>(id);
-                fornecedor.Telefone = await RetornarTelefoneDoFornecedor(fornecedor.Id, connection);
-                fornecedor.Endereco = await RetornarEnderecoDoFornecedor(fornecedor.Id, connection);
-                fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
+                //fornecedor.Telefone = await RetornarTelefoneDoFornecedor(fornecedor.Id, connection);
+                //fornecedor.Endereco = await RetornarEnderecoDoFornecedor(fornecedor.Id, connection);
+                //fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
                 return fornecedor;
             }
             catch (Exception)
