@@ -49,9 +49,19 @@ namespace Comercio.Data.Repositories.Fornecedores
             throw new NotImplementedException();
         }
 
-        public Task<List<Fornecedor>> GetAllAsync()
+        public async Task<List<Fornecedor>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                var fornecedor = await connection.GetAllAsync<Fornecedor>();
+                return fornecedor.ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<Fornecedor> GetByIdAsync(int id)
