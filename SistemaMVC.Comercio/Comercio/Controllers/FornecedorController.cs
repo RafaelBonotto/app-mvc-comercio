@@ -54,17 +54,24 @@ namespace Comercio.Controllers
             }
         }
 
-        [Route("[controller]/listar")]
+        [HttpGet ("[controller]/listar")]
         public async Task<IActionResult> ListarFornecedores()
         {
             try
             {
-                List<Comercio.Models.FornecedorViewModel> ret = new();
-                return View("Fornecedores", ret);
+                var fornecedores = await _service.ListarFornecedores();
+                if (fornecedores.Count == 0)
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());// Alterar erro
+
+                var listaViewModel = new List<FornecedorViewModel>();
+                foreach (var fornecedor in fornecedores)
+                    listaViewModel.Add(_mapper.CriarFornecedorViewModel(fornecedor));
+
+                return View("Fornecedores", listaViewModel);
             }
             catch (System.Exception)
             {
-                throw;
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
             }
         }
 
