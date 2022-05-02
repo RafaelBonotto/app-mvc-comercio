@@ -19,12 +19,13 @@ namespace Comercio.Controllers
         }
 
         public IActionResult Index() => View();
+        public IActionResult Inserir() => View();
 
         [HttpPost]
         [Route("[controller]/adicionar/")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Adicionar(
-            [Bind("Id, Cnpj, Nome_empresa, Endereco, Telefone, Vendedor")] 
+            [Bind("Cnpj, Nome_empresa")] 
             FornecedorViewModel fornecedor)
         {
             if (ModelState.IsValid)
