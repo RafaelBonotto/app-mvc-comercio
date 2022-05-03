@@ -7,8 +7,8 @@ namespace Comercio.Interfaces.FornecedorInterfaces
 {
     public interface IFornecedorRepository 
     {
-        Task InserirTelefone(int fornecedor_id, List<Telefone> telefones, MySqlConnection connection);
-        Task InserirEndereco(int fornecedor_id, List<Endereco> enderecos, MySqlConnection connection);
-        Task InserirVendedor(int fornecedor_id, List<Vendedor> vendedores, MySqlConnection connection); 
+        Task InserirTelefone(int fornecedor_id, List<Telefone> telefones); 
+        Task InserirEndereco(int fornecedor_id, List<Endereco> enderecos);
+        Task InserirVendedor(int fornecedor_id, List<Vendedor> vendedores); 
     }
 }
