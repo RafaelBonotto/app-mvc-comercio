@@ -94,22 +94,43 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
-        public async Task InserirEndereco(int fornecedor_id, List<Endereco> enderecos, MySqlConnection connection)
+        public async Task InserirEndereco(int fornecedor_id, List<Endereco> enderecos)
         {
             try
             {
-                foreach (var endereco in enderecos)
+                using (var connection = await _connection.GetConnectionAsync())
                 {
-                    var endereco_id = await connection.InsertAsync<Endereco>(endereco);
-                    if (endereco_id <= 0)
-                        throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
-                    var row = await connection.InsertAsync<EnderecoFornecedor>(new EnderecoFornecedor()
+                    using (var transaction = connection.BeginTransaction())
                     {
-                        Fornecedor_id = fornecedor_id,
-                        Endereco_id = endereco_id
-                    });
-                    if (row <= 0)
-                        throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
+                        try
+                        {
+                            foreach (var endereco in enderecos)
+                            {
+                                var endereco_id = await connection.InsertAsync<Endereco>(endereco);
+                                if (endereco_id <= 0)
+                                {
+                                    transaction.Rollback();
+                                    throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
+                                }
+                                var row = await connection.InsertAsync<EnderecoFornecedor>(new EnderecoFornecedor()
+                                {
+                                    Fornecedor_id = fornecedor_id,
+                                    Endereco_id = endereco_id
+                                });
+                                if (row <= 0)
+                                {
+                                    transaction.Rollback();
+                                    throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
+                                }
+                            }
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw;
+                        }
+                    }
                 }
             }
             catch (Exception)
@@ -118,23 +139,43 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
-        public async Task InserirTelefone(int fornecedor_id, List<Telefone> telefones, MySqlConnection connection)
+        public async Task InserirTelefone(int fornecedor_id, List<Telefone> telefones)
         {
             try
             {
-                foreach (var telefone in telefones)
+                using (var connection = await _connection.GetConnectionAsync())
                 {
-                    var telefone_id = await connection.InsertAsync<Telefone>(telefone);
-                    if (telefone_id <= 0)
-                        throw new Exception("Erro ao tentar inserir o telefobe do fornecedor");
-
-                    var row = await connection.InsertAsync<TelefoneFornecedor>(new TelefoneFornecedor()
+                    using (var transaction = connection.BeginTransaction())
                     {
-                        Fornecedor_id = fornecedor_id,
-                        Telefone_id = telefone_id
-                    });
-                    if (telefone_id <= 0)
-                        throw new Exception("Erro ao tentar inserir o telefobe do fornecedor");
+                        try
+                        {
+                            foreach (var telefone in telefones)
+                            {
+                                var telefone_id = await connection.InsertAsync<Telefone>(telefone);
+                                if (telefone_id <= 0)
+                                {
+                                    transaction.Rollback();
+                                    throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
+                                }
+                                var row = await connection.InsertAsync<TelefoneFornecedor>(new TelefoneFornecedor()
+                                {
+                                    Fornecedor_id = fornecedor_id,
+                                    Telefone_id = telefone_id
+                                });
+                                if (row <= 0)
+                                {
+                                    transaction.Rollback();
+                                    throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
+                                }
+                            }
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw;
+                        }
+                    }
                 }
             }
             catch (Exception)
@@ -142,29 +183,29 @@ namespace Comercio.Data.Repositories.Fornecedores
                 throw;
             }
         }
-        public async Task InserirVendedor(int fornecedor_id, List<Vendedor> vendedores, MySqlConnection connection) 
+        public async Task InserirVendedor(int fornecedor_id, List<Vendedor> vendedores) 
         {
-            try
-            {
-                foreach (var vendedor in vendedores)
-                {
-                    var pessoa_id = await connection.InsertAsync<Pessoa>(vendedor);
-                    if (pessoa_id <= 0)
-                        throw new Exception("Erro ao tentar inserir o vendedor");
+            //try
+            //{
+            //    foreach (var vendedor in vendedores)
+            //    {
+            //        var pessoa_id = await connection.InsertAsync<Pessoa>(vendedor);
+            //        if (pessoa_id <= 0)
+            //            throw new Exception("Erro ao tentar inserir o vendedor");
 
-                    var row = await connection.InsertAsync<FornecedorVendedor>(new FornecedorVendedor()
-                    {
-                        Fornecedor_id = fornecedor_id,
-                        Pessoa_id = pessoa_id
-                    });
-                    if (row <= 0)
-                        throw new Exception("Erro ao tentar inserir o vendedor");
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            //        var row = await connection.InsertAsync<FornecedorVendedor>(new FornecedorVendedor()
+            //        {
+            //            Fornecedor_id = fornecedor_id,
+            //            Pessoa_id = pessoa_id
+            //        });
+            //        if (row <= 0)
+            //            throw new Exception("Erro ao tentar inserir o vendedor");
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //    throw;
+            //}
         }
 
         public Task<Fornecedor> UpdateAsync(Fornecedor entity)
