@@ -65,6 +65,19 @@ namespace Comercio.Services
             }
         }
 
+        public async Task<Fornecedor> InserirEndereco(int fornecedor_id, List<Endereco> enderecos)
+        {
+            try
+            {
+                await _repository.InserirEndereco(fornecedor_id, enderecos);
+                return await this.BuscarFornecedor(fornecedor_id);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<List<Fornecedor>> ListarFornecedores()
         {
             try
