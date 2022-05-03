@@ -103,7 +103,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                     var endereco_id = await connection.InsertAsync<Endereco>(endereco);
                     if (endereco_id <= 0)
                         throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
-                    var row = await connection.InsertAsync<FornecedorEndereco>(new FornecedorEndereco()
+                    var row = await connection.InsertAsync<EnderecoFornecedor>(new EnderecoFornecedor()
                     {
                         Fornecedor_id = fornecedor_id,
                         Endereco_id = endereco_id
@@ -128,7 +128,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                     if (telefone_id <= 0)
                         throw new Exception("Erro ao tentar inserir o telefobe do fornecedor");
 
-                    var row = await connection.InsertAsync<FornecedorTelefone>(new FornecedorTelefone()
+                    var row = await connection.InsertAsync<TelefoneFornecedor>(new TelefoneFornecedor()
                     {
                         Fornecedor_id = fornecedor_id,
                         Telefone_id = telefone_id
