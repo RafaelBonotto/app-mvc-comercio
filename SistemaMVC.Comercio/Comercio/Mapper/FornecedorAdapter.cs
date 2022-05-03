@@ -17,7 +17,7 @@ namespace Comercio.Mapper
             };
         }
 
-        public FornecedorEndereco MontaFornecedorEndereco(FornecedorViewModel fornecedor)
+        public EnderecoFornecedor MontaFornecedorEndereco(FornecedorViewModel fornecedor)
         {
             throw new System.NotImplementedException();
         }
@@ -37,7 +37,7 @@ namespace Comercio.Mapper
             };
         }
 
-        public FornecedorTelefone MontaFornecedorTelefone(FornecedorViewModel fornecedor)
+        public TelefoneFornecedor MontaFornecedorTelefone(FornecedorViewModel fornecedor)
         {
             throw new System.NotImplementedException();
         }
