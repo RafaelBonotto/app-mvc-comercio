@@ -70,9 +70,31 @@ namespace Comercio.Controllers
                     var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
                     return View("Detalhes", fornecedorViewModel);
                 }
-                catch (CnpjInvalidoException)
+                catch (System.Exception)
                 {
-                    return View("Error", new ErrorViewModel().FornecedorErroInserirCnpjInvalido());
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+                }
+            }
+            else
+            {
+                return View("Error", new ErrorViewModel().ErroDeValidacao());
+            }
+        }
+
+        [HttpPost]
+        [Route("[controller]/adicionar-endereco/")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AdicionarEndereco(int fornecedor_id, List<Endereco> enderecos)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var fornecedorResponse = await _service.InserirEndereco(fornecedor_id, enderecos);
+                    if (fornecedorResponse is null)
+                        return View("Error", new ErrorViewModel().ProdutoErroAoTentarInserir());
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
+                    return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
                 {
