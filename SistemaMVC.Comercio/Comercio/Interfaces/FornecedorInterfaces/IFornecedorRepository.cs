@@ -1,14 +1,12 @@
 ﻿using Comercio.Entities;
-using MySqlConnector;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Comercio.Interfaces.FornecedorInterfaces
 {
-    public interface IFornecedorRepository 
+    public interface IFornecedorRepository
     {
         Task InserirTelefone(int fornecedor_id, Telefone telefone); 
         Task InserirEndereco(int fornecedor_id, Endereco endereco);
-        Task InserirVendedor(int fornecedor_id, List<Vendedor> vendedores); 
+        Task InserirVendedor(int fornecedor_id, Vendedor vendedor); 
     }
 }
