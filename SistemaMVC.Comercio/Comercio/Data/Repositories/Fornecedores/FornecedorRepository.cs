@@ -94,7 +94,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
-        public async Task InserirEndereco(int fornecedor_id, List<Endereco> enderecos)
+        public async Task InserirEndereco(int fornecedor_id, Endereco endereco)
         {
             try
             {
@@ -104,24 +104,19 @@ namespace Comercio.Data.Repositories.Fornecedores
                     {
                         try
                         {
-                            foreach (var endereco in enderecos)
+                            var endereco_id = await connection.InsertAsync<Endereco>(endereco);
+                            if (endereco_id <= 0)
+                                throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
+
+                            var row = await connection.InsertAsync<EnderecoFornecedor>(new EnderecoFornecedor()
                             {
-                                var endereco_id = await connection.InsertAsync<Endereco>(endereco);
-                                if (endereco_id <= 0)
-                                {
-                                    transaction.Rollback();
-                                    throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
-                                }
-                                var row = await connection.InsertAsync<EnderecoFornecedor>(new EnderecoFornecedor()
-                                {
-                                    Fornecedor_id = fornecedor_id,
-                                    Endereco_id = endereco_id
-                                });
-                                if (row <= 0)
-                                {
-                                    transaction.Rollback();
-                                    throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
-                                }
+                                Fornecedor_id = fornecedor_id,
+                                Endereco_id = endereco_id
+                            });
+                            if (row <= 0)
+                            {
+                                transaction.Rollback();
+                                throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
                             }
                             transaction.Commit();
                         }
