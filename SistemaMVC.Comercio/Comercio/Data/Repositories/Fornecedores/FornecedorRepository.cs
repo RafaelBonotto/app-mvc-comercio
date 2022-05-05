@@ -173,7 +173,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 throw;
             }
         }
-        public async Task InserirVendedor(int fornecedor_id, List<Vendedor> vendedores) 
+        public async Task InserirVendedor(int fornecedor_id, Vendedor vendedor)
         {
             //try
             //{
