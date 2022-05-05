@@ -84,13 +84,13 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/adicionar-endereco/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdicionarEndereco(int fornecedor_id, List<Endereco> enderecos)
+        public async Task<IActionResult> AdicionarEndereco(int fornecedor_id, Endereco endereco)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var fornecedorResponse = await _service.InserirEndereco(fornecedor_id, enderecos);
+                    var fornecedorResponse = await _service.InserirEndereco(fornecedor_id, endereco);
                     if (fornecedorResponse is null)
                         return View("Error", new ErrorViewModel().ProdutoErroAoTentarInserir());
                     var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
