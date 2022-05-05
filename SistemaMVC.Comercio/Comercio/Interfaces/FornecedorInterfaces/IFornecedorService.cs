@@ -9,7 +9,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
     {
         Task<Fornecedor> InserirFornecedor(FornecedorViewModel fornecedor);
         Task<Fornecedor> InserirTelefone(int fornecedor_id, Telefone telefone);
-        Task<Fornecedor> InserirEndereco(int fornecedor_id, List<Endereco> enderecos);
+        Task<Fornecedor> InserirEndereco(int fornecedor_id, Endereco endereco);
         Task<List<Fornecedor>> ListarFornecedores();
         Task<List<Fornecedor>> FiltrarPorSetor(string setor);
         Task<Fornecedor> BuscarFornecedor(int id);
