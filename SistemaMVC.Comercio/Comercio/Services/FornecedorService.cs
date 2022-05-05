@@ -52,11 +52,11 @@ namespace Comercio.Services
             }
         }
 
-        public async Task<Fornecedor> InserirTelefone(int fornecedor_id, List<Telefone> telefones)
+        public async Task<Fornecedor> InserirTelefone(int fornecedor_id, Telefone telefone)
         {
             try
             {
-                await _repository.InserirTelefone(fornecedor_id, telefones);
+                await _repository.InserirTelefone(fornecedor_id, telefone);
                 return await this.BuscarFornecedor(fornecedor_id);
             }
             catch (System.Exception)
