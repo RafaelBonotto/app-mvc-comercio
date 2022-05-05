@@ -139,7 +139,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
-        public async Task InserirTelefone(int fornecedor_id, List<Telefone> telefones)
+        public async Task InserirTelefone(int fornecedor_id, Telefone telefone)
         {
             try
             {
@@ -149,24 +149,19 @@ namespace Comercio.Data.Repositories.Fornecedores
                     {
                         try
                         {
-                            foreach (var telefone in telefones)
+                            var telefone_id = await connection.InsertAsync<Telefone>(telefone);
+                            if (telefone_id <= 0)
+                                throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
+
+                            var row = await connection.InsertAsync<TelefoneFornecedor>(new TelefoneFornecedor()
                             {
-                                var telefone_id = await connection.InsertAsync<Telefone>(telefone);
-                                if (telefone_id <= 0)
-                                {
-                                    transaction.Rollback();
-                                    throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
-                                }
-                                var row = await connection.InsertAsync<TelefoneFornecedor>(new TelefoneFornecedor()
-                                {
-                                    Fornecedor_id = fornecedor_id,
-                                    Telefone_id = telefone_id
-                                });
-                                if (row <= 0)
-                                {
-                                    transaction.Rollback();
-                                    throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
-                                }
+                                Fornecedor_id = fornecedor_id,
+                                Telefone_id = telefone_id
+                            });
+                            if (row <= 0)
+                            {
+                                transaction.Rollback();
+                                throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
                             }
                             transaction.Commit();
                         }
