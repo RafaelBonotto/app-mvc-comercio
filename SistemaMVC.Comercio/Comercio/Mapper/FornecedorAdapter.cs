@@ -13,7 +13,7 @@ namespace Comercio.Mapper
             {
                 Id = fornecedor.Id,
                 Cnpj = fornecedor.Cnpj,
-                Nome_empresa = fornecedor.Nome_empresa
+                Nome_empresa = fornecedor.Nome_empresa.ToUpper()
             };
         }
 
@@ -26,7 +26,7 @@ namespace Comercio.Mapper
         {
             return new Fornecedor()
             {
-                Nome_empresa = fornecedor.Nome_empresa,
+                Nome_empresa = fornecedor.Nome_empresa.ToUpper(),
                 Cnpj = fornecedor.Cnpj,
                 Ativo = 1,
                 Data_criacao = DateTime.Now,
@@ -34,6 +34,21 @@ namespace Comercio.Mapper
                 Endereco = fornecedor.Endereco,
                 Telefone = fornecedor.Telefone,
                 Vendedor = fornecedor.Vendedor
+            };
+        }
+
+        public Endereco RetornarEnderecoToUpper(Endereco endereco)
+        {
+            return new Endereco()
+            {
+                Logradouro = endereco.Logradouro.ToUpper(),
+                NumeroLogradouro = endereco.NumeroLogradouro.ToUpper(),
+                Complemento =  endereco.Complemento.ToUpper(),
+                Cep = endereco.Cep.ToUpper(),
+                Bairro = endereco.Bairro.ToUpper(),
+                Cidade = endereco.Bairro.ToUpper(),
+                Estado = endereco.Bairro.ToUpper(),
+                Tipo = endereco.Tipo,
             };
         }
 
