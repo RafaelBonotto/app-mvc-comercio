@@ -52,10 +52,16 @@ namespace Comercio.Services
             }
         }
 
-        public async Task<Fornecedor> InserirTelefone(int fornecedor_id, Telefone telefone)
+        public async Task<Fornecedor> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
         {
             try
             {
+                var telefone = new Telefone()
+                {
+                    Ddd = ddd,
+                    Numero = numero,
+                    //Tipo = RetornarTipoTelfone(tipoTelefone)
+                };
                 await _repository.InserirTelefone(fornecedor_id, telefone);
                 return await this.BuscarFornecedor(fornecedor_id);
             }
@@ -101,5 +107,18 @@ namespace Comercio.Services
                 throw;
             }
         }
+
+        //static Enums.TipoTelefone RetornarTipoTelfone(string tipoTelefone)
+        //{
+        //    //Enums.TipoTelefone ret;
+        //    if (tipoTelefone.ToString().Equals(Enums.TipoTelefone.CELULAR.ToString()))
+        //        return Enums.TipoTelefone.CELULAR;
+        //    if (tipoTelefone.ToString().Equals(Enums.TipoTelefone.RESIDENCIAL.ToString()))
+        //        return Enums.TipoTelefone.CELULAR;
+        //    if (tipoTelefone.ToString().Equals(Enums.TipoTelefone.COMERCIAL.ToString()))
+        //        return Enums.TipoTelefone.CELULAR;
+        //    if (tipoTelefone.ToString().Equals(Enums.TipoTelefone.RECADO.ToString()))
+        //        return Enums.TipoTelefone.CELULAR;
+        //}
     }
 }
