@@ -30,7 +30,39 @@
 <div>
     <h4>ENDEREÇOS</h4>
     <!-- Exibir lista de endereços-->
-    <a asp-controller="Fornecedor" asp-action="adicionarEndereco" asp-route-fornecedorId="@Model.Id" class="btn btn-info btn-lg">NOVO ENDEREÇO</a>
+    <div>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleModal" data-whatever="mdo">NOVO</button>
+        <!-- Modal Adicionar novo endereço ao fornecedor-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">ADICIONE AQUI UM NOVO ENDEREÇO PARA ESSE FORNECEDOR:</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="CANCELAR">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form asp-controller="Fornecedor" asp-action="adicionar-endereco" asp-route-fornecedorId="@Model.Id">
+                            <h6>LOGRADOURO: <input type="text" name="logradouro" /></h6>
+                            <h6>NÚMERO: <input type="text" name="numero" /></h6>
+                            <h6>COMPLEMENTO: <input type="text" name="complemento" /></h6>
+                            <h6>CEP: <input type="text" name="cep" /></h6>
+                            <h6>BAIRRO: <input type="text" name="bairro" /></h6>
+                            <h6>CIDADE: <input type="text" name="cidade" /></h6>
+                            <h6>ESTADO: <input type="text" name="estado" /></h6>
+                            <h6>UF: <input type="text" name="uf" /></h6>
+                            <h6>TIPO DE ENDEREÇO: <input type="text" name="tipoEndereco" /></h6>
+                            <input type="submit" value="ADICIONAR" class="btn-danger" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">CANCELAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <hr />
