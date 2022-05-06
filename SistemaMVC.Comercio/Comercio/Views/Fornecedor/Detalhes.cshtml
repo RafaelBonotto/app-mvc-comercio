@@ -70,7 +70,33 @@
 <div>
     <h4>TELEFONES</h4>
     <!-- Exibir lista de telefones-->
-    <a asp-controller="Fornecedor" asp-action="adicionarTelefone" asp-route-fornecedorId="@Model.Id" class="btn btn-info btn-lg">NOVO TELEFONE</a>
+    <div>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleModal" data-whatever="mdo">NOVO</button>
+        <!-- Modal Adicionar novo telefone ao fornecedor-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">ADICIONE AQUI UM NOVO TELEFONE PARA ESSE FORNECEDOR:</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="CANCELAR">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form asp-controller="Fornecedor" asp-action="adicionar-telefone" asp-route-fornecedorId="@Model.Id">
+                            <h6>DDD: <input type="text" name="ddd" /></h6>
+                            <h6>NÚMERO: <input type="text" name="numero" /></h6>
+                            <h6>TIPO DE TELEFONE: <input type="text" name="tipoTelefone" /></h6>
+                            <input type="submit" value="ADICIONAR" class="btn-danger" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">CANCELAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <hr />
@@ -78,7 +104,7 @@
 <div>
     <h4>VENDEDORES</h4>
     <!-- Exibir lista de vendedores-->
-    <a asp-controller="Fornecedor" asp-action="adicionarVendedor" asp-route-fornecedorId="@Model.Id" class="btn btn-info btn-lg">NOVO VENDEDOR</a>
+    
 </div>
 
 <hr />
