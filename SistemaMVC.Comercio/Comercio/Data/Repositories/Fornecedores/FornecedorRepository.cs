@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Comercio.Interfaces.FornecedorInterfaces;
 using MySqlConnector;
+using Comercio.Data.Repositories.Response;
 
 namespace Comercio.Data.Repositories.Fornecedores
 {
@@ -208,7 +209,22 @@ namespace Comercio.Data.Repositories.Fornecedores
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                return connection.QueryFirstOrDefault<int>(FornecedorQuerys.SELECT_ID_TIPO_TELEFONE, new { tipoTelefone });
+                return connection.QueryFirstOrDefault<int>(
+                    FornecedorQuerys.SELECT_ID_TIPO_TELEFONE, new { tipoTelefone });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<TipoTelefoneResponse>> ObterTipoTelefone()
+        {
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                return (await connection.QueryAsync<TipoTelefoneResponse>(
+                    FornecedorQuerys.SELECT_TIPO_TELEFONE)).ToList();
             }
             catch (Exception)
             {
@@ -221,7 +237,8 @@ namespace Comercio.Data.Repositories.Fornecedores
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                return connection.QueryFirstOrDefault<int>(FornecedorQuerys.SELECT_ID_TIPO_ENDERECO, new { tipoEndereco});
+                return connection.QueryFirstOrDefault<int>(
+                    FornecedorQuerys.SELECT_ID_TIPO_ENDERECO, new { tipoEndereco});
             }
             catch (Exception)
             {
