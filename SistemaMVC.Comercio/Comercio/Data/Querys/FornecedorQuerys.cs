@@ -26,5 +26,19 @@
                                                                 fornecPes.fornecedor_id = @fornecedor_id
                                                                 AND
                                                                 fornecPes.ativo = 1";
+
+        public const string SELECT_ID_TIPO_TELEFONE = @"SELECT id 
+                                                        FROM tb_tipo_telefone tpTel
+                                                        WHERE tpTel.descricao = @tipoTelefone";
+
+        public const string SELECT_ID_TIPO_ENDERECO = @"SELECT id 
+                                                        FROM tb_tipo_endereco tpEnd
+                                                        WHERE tpEnd.descricao = @tipoEndereco";
+
+        public const string SELECT_TIPO_TELEFONE = @"SELECT descricao 
+                                                    FROM tb_tipo_telefone";
+
+        public const string SELECT_TIPO_ENDERECO = @"SELECT descricao 
+                                                    FROM tb_tipo_endereco";
     }
 }
