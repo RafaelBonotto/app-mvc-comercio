@@ -7,7 +7,7 @@ namespace Comercio.Entities
     public class Endereco 
     {
         public int Id { get; set; }
-        public TipoEndereco Tipo { get; set; }
+        public int TipoEnderecoId { get; set; }
         public string Logradouro { get; set; }
         public string NumeroLogradouro { get; set; }
         public string Complemento { get; set; }
@@ -15,5 +15,6 @@ namespace Comercio.Entities
         public string Bairro { get; set; }
         public string Cidade { get; set; }
         public string Estado { get; set; }
+        public string UF { get; set; } 
     }
 }
