@@ -3,6 +3,7 @@ using Comercio.Exceptions.Fornecedor;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -84,13 +85,25 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/adicionar-endereco/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdicionarEndereco(int fornecedor_id, Endereco endereco)
+        public async Task<IActionResult> AdicionarEndereco(
+            int fornecedor_id,
+            string logradouro,
+            string numero,
+            string complemento,
+            string cep,
+            string bairro,
+            string cidade,
+            string estado,
+            string uf,
+            string tipoEndereco)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var fornecedorResponse = await _service.InserirEndereco(fornecedor_id, endereco);
+                    var fornecedorResponse = await _service.InserirEndereco(
+                        fornecedor_id, logradouro, numero, complemento, cep, bairro, cidade, estado, uf, tipoEndereco);
+
                     if (fornecedorResponse is null)
                         return View("Error", new ErrorViewModel().ProdutoErroAoTentarInserir());
                     var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
@@ -138,7 +151,8 @@ namespace Comercio.Controllers
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());// Alterar erro
 
                 var viewModel = _mapper.CriarFornecedorViewModel(fornecedor);
-
+                viewModel.TipoTelefone = new SelectList(await _service.ObterTipoTelefone());
+                viewModel.TipoEndereco = new SelectList(await _service.ObterTipoEndereco());
                 return View("Detalhes", viewModel);
             }
             catch (System.Exception)
