@@ -72,10 +72,32 @@ namespace Comercio.Services
             }
         }
 
-        public async Task<Fornecedor> InserirEndereco(int fornecedor_id, Endereco endereco)
+        public async Task<Fornecedor> InserirEndereco(
+            int fornecedor_id, 
+            string logradouro, 
+            string numero, 
+            string complemento, 
+            string cep, 
+            string bairro,
+            string cidade,
+            string estado,
+            string uf,
+            string tipoEndereco)
         {
             try
             {
+                var endereco = new Endereco()
+                {
+                    Logradouro = logradouro,
+                    NumeroLogradouro = numero,
+                    Complemento = complemento,
+                    Cep = cep,
+                    Bairro = bairro,
+                    Cidade = cidade,
+                    Estado = estado,
+                    UF = uf
+                };
+                endereco.TipoEnderecoId = await _repository.ObterIdTipoEndereco(tipoEndereco);
                 await _repository.InserirEndereco(fornecedor_id, endereco);
                 return await this.BuscarFornecedor(fornecedor_id);
             }
