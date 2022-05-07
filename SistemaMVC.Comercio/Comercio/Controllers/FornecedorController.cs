@@ -58,13 +58,13 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/adicionar-telefone/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdicionarTelefone(int fornecedor_id, Telefone telefone)
+        public async Task<IActionResult> AdicionarTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var fornecedorResponse = await _service.InserirTelefone(fornecedor_id, telefone);
+                    var fornecedorResponse = await _service.InserirTelefone(fornecedor_id, ddd, numero, tipoTelefone);
                     if (fornecedorResponse is null)
                         return View("Error", new ErrorViewModel().ProdutoErroAoTentarInserir());
                     var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
