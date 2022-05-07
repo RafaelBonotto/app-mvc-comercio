@@ -56,14 +56,15 @@ namespace Comercio.Services
         {
             try
             {
+                var tipoTelefoneId = await _repository.ObterIdTipoTelefone(tipoTelefone);
                 var telefone = new Telefone()
                 {
                     Ddd = ddd,
                     Numero = numero,
-                    //Tipo = RetornarTipoTelfone(tipoTelefone)
+                    TipoTelefoneId = tipoTelefoneId
                 };
                 await _repository.InserirTelefone(fornecedor_id, telefone);
-                return await this.BuscarFornecedor(fornecedor_id);
+                return await _repositoryBase.GetByIdAsync(fornecedor_id);
             }
             catch (System.Exception)
             {
@@ -107,18 +108,5 @@ namespace Comercio.Services
                 throw;
             }
         }
-
-        //static Enums.TipoTelefone RetornarTipoTelfone(string tipoTelefone)
-        //{
-        //    //Enums.TipoTelefone ret;
-        //    if (tipoTelefone.ToString().Equals(Enums.TipoTelefone.CELULAR.ToString()))
-        //        return Enums.TipoTelefone.CELULAR;
-        //    if (tipoTelefone.ToString().Equals(Enums.TipoTelefone.RESIDENCIAL.ToString()))
-        //        return Enums.TipoTelefone.CELULAR;
-        //    if (tipoTelefone.ToString().Equals(Enums.TipoTelefone.COMERCIAL.ToString()))
-        //        return Enums.TipoTelefone.CELULAR;
-        //    if (tipoTelefone.ToString().Equals(Enums.TipoTelefone.RECADO.ToString()))
-        //        return Enums.TipoTelefone.CELULAR;
-        //}
     }
 }
