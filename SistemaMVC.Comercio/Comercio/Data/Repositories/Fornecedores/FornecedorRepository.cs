@@ -216,6 +216,19 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
+        public async Task<int> ObterIdTipoEndereco(string tipoEndereco)
+        {
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                return connection.QueryFirstOrDefault<int>(FornecedorQuerys.SELECT_ID_TIPO_ENDERECO, new { tipoEndereco});
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         #region Métodos privados
 
         static async Task<List<Telefone>> RetornarTelefoneDoFornecedor(int fornecedor_id, MySqlConnection connection)
