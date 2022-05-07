@@ -1,4 +1,5 @@
-﻿using Comercio.Entities;
+﻿using Comercio.Data.Repositories.Response;
+using Comercio.Entities;
 using Comercio.Exceptions.Fornecedor;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.FornecedorInterfaces;
@@ -124,6 +125,30 @@ namespace Comercio.Services
             try
             {
                 return await _repositoryBase.GetByIdAsync(id);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<TipoEnderecoResponse>> ObterTipoEndereco()
+        {
+            try
+            {
+                return await _repository.ObterTipoEndereco();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<TipoTelefoneResponse>> ObterTipoTelefone()
+        {
+            try
+            {
+                return await _repository.ObterTipoTelefone();
             }
             catch (System.Exception)
             {
