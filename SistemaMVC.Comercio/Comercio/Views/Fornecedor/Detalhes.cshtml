@@ -52,7 +52,7 @@
                             <h6>CIDADE: <input type="text" name="cidade" /></h6>
                             <h6>ESTADO: <input type="text" name="estado" /></h6>
                             <h6>UF: <input type="text" name="uf" /></h6>
-                            <h6>TIPO DE ENDEREÇO: <input type="text" name="tipoEndereco" /></h6>
+                            <h6>TIPO DE ENDEREÇO: <select name="tipoEndereco" asp-items="@Model.TipoEndereco" class="align-items-md-center"></select></h6>
                             <input type="submit" value="ADICIONAR" class="btn-danger" />
                         </form>
                     </div>
@@ -70,8 +70,43 @@
 <div>
     <h4>TELEFONES</h4>
     <!-- Exibir lista de telefones-->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    NÚMERO
+                </th>
+                <th>
+                    TIPO
+                </th>
+                <th>
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalInserirTelefone" data-whatever="mdo">NOVO</button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Telefone)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ddd)
+                        @Html.DisplayFor(modelItem => item.Numero)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tipo_telefone)
+                    </td>
+                    <td>
+                        <a asp-controller="Fornecedor" asp-action="excluir-telefone" asp-route-id="@item.Id" class="btn btn-success btn-sm">EDITAR</a>
+                        <a asp-controller="Fornecedor" asp-action="atualizar-telefone" asp-route-id="@item.Id" class="btn btn-danger btn-sm">EXCLUIR</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <hr />
+
     <div>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modalInserirTelefone" data-whatever="mdo">NOVO</button>
         <!-- Modal Adicionar novo telefone ao fornecedor-->
         <div class="modal fade" id="modalInserirTelefone" tabindex="-1" role="dialog" aria-labelledby="modalInserirTelefoneLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -86,7 +121,9 @@
                         <form asp-controller="Fornecedor" asp-action="adicionar-telefone" asp-route-fornecedorId="@Model.Id">
                             <h6>DDD: <input type="text" name="ddd" /></h6>
                             <h6>NÚMERO: <input type="text" name="numero" /></h6>
-                            <h6>TIPO DE TELEFONE: <input type="text" name="tipoTelefone" /></h6>
+                            <h6>TIPO DE TELEFONE: <select name="tipoTelefone" asp-items="@Model.TipoTelefone" class="align-items-md-center"></select></h6>
+
+                            @*<h6>TIPO DE TELEFONE: <input type="text" name="tipoTelefone" /></h6>*@
                             <input type="submit" value="ADICIONAR" class="btn-danger" />
                         </form>
                     </div>
