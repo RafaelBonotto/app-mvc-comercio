@@ -2,6 +2,7 @@
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Comercio.Mapper
 {
@@ -14,7 +15,8 @@ namespace Comercio.Mapper
                 Id = fornecedor.Id,
                 Cnpj = fornecedor.Cnpj,
                 Nome_empresa = fornecedor.Nome_empresa.ToUpper(),
-                Telefone = fornecedor.Telefone
+                Telefone = fornecedor.Telefone,
+                Endereco = fornecedor.Endereco
             };
         }
 
@@ -38,23 +40,54 @@ namespace Comercio.Mapper
             };
         }
 
-        public Endereco RetornarEnderecoToUpper(Endereco endereco)
+        public Endereco MontarInsertEndereco(
+            string logradouro,
+            string numero,
+            string complemento,
+            string cep,
+            string bairro,
+            string cidade,
+            string estado,
+            string uf)
         {
             return new Endereco()
             {
-                Logradouro = endereco.Logradouro.ToUpper(),
-                NumeroLogradouro = endereco.NumeroLogradouro.ToUpper(),
-                Complemento =  endereco.Complemento.ToUpper(),
-                Cep = endereco.Cep.ToUpper(),
-                Bairro = endereco.Bairro.ToUpper(),
-                Cidade = endereco.Bairro.ToUpper(),
-                Estado = endereco.Bairro.ToUpper(),
+                Logradouro = logradouro.ToUpper(),
+                Numero = numero,
+                Complemento = complemento.ToUpper(),
+                Cep = cep,
+                Bairro = bairro.ToUpper(),
+                Cidade = cidade.ToUpper(),
+                Estado = estado.ToUpper(),
+                UF = uf.ToUpper(),
+                Ativo = 1,
+                Data_criacao = DateTime.Now,
+                Data_alteracao = DateTime.Now
             };
         }
 
-        public TelefoneFornecedor MontaFornecedorTelefone(FornecedorViewModel fornecedor)
+        public EnderecoFornecedor MontaEnderecoFornecedor(int fornecedorId, int enderecoId)
         {
-            throw new System.NotImplementedException();
+            return new EnderecoFornecedor()
+            {
+                Fornecedor_id = fornecedorId,
+                Endereco_id = enderecoId,
+                Ativo = 1,
+                Data_criacao = DateTime.Now,
+                Data_alteracao = DateTime.Now
+            };
+        }
+
+        public TelefoneFornecedor MontaTelefoneFornecedor(int fornecedorId, int telefoneId)
+        {
+            return new TelefoneFornecedor()
+            {
+                Fornecedor_id = fornecedorId,
+                Telefone_id = telefoneId,
+                Ativo = 1,
+                Data_criacao = DateTime.Now,
+                Data_alteracao = DateTime.Now
+            };
         }
     }
 }
