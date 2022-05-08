@@ -105,15 +105,12 @@ namespace Comercio.Data.Repositories.Fornecedores
                     {
                         try
                         {
-                            var endereco_id = await connection.InsertAsync<Endereco>(endereco);
+                            var endereco_id = await connection.InsertAsync<Endereco>(endereco, transaction);
                             if (endereco_id <= 0)
                                 throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
 
-                            var row = await connection.InsertAsync<EnderecoFornecedor>(new EnderecoFornecedor()
-                            {
-                                Fornecedor_id = fornecedor_id,
-                                Endereco_id = endereco_id
-                            });
+                            var row = await connection.InsertAsync<EnderecoFornecedor>(
+                                _mapper.MontaEnderecoFornecedor(fornecedor_id, endereco_id),transaction);
                             if (row <= 0)
                             {
                                 transaction.Rollback();
@@ -149,14 +146,8 @@ namespace Comercio.Data.Repositories.Fornecedores
                             if (telefone_id <= 0)
                                 throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
 
-                            var row = await connection.InsertAsync<TelefoneFornecedor>(new TelefoneFornecedor()
-                            {
-                                Fornecedor_id = fornecedor_id,
-                                Telefone_id = telefone_id,
-                                Ativo = 1,
-                                Data_criacao = DateTime.Now,
-                                Data_alteracao = DateTime.Now
-                            }, transaction);
+                            var row = await connection.InsertAsync<TelefoneFornecedor>(
+                                _mapper.MontaTelefoneFornecedor(fornecedor_id, telefone_id), transaction);
                             if (row <= 0)
                             {
                                 transaction.Rollback();
