@@ -13,7 +13,8 @@ namespace Comercio.Mapper
             {
                 Id = fornecedor.Id,
                 Cnpj = fornecedor.Cnpj,
-                Nome_empresa = fornecedor.Nome_empresa.ToUpper()
+                Nome_empresa = fornecedor.Nome_empresa.ToUpper(),
+                Telefone = fornecedor.Telefone
             };
         }
 
@@ -48,7 +49,6 @@ namespace Comercio.Mapper
                 Bairro = endereco.Bairro.ToUpper(),
                 Cidade = endereco.Bairro.ToUpper(),
                 Estado = endereco.Bairro.ToUpper(),
-                Tipo = endereco.Tipo,
             };
         }
 
