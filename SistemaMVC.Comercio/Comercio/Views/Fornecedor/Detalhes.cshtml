@@ -5,11 +5,8 @@
 
 <h1>@Model.Nome_empresa </h1>
 
-<h2>DETALHES</h2>
-
 <hr />
 <div>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Cnpj)
@@ -30,8 +27,76 @@
 <div>
     <h4>ENDEREÇOS</h4>
     <!-- Exibir lista de endereços-->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    LOGRADOURO
+                </th>
+                <th>
+                    NÚMERO
+                </th>
+                <th>
+                    COMPLEMENTO
+                </th>
+                <th>
+                    CEP
+                </th>
+                <th>
+                    BAIRRO
+                </th>
+                <th>
+                    CIDADE
+                </th>
+                <th>
+                    ESTADO
+                </th>
+                <th>
+                    UF
+                </th>
+                <th>
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalInserirEndereco" data-whatever="mdo">NOVO</button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Endereco)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Logradouro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumeroLogradouro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Complemento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cep)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bairro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UF)
+                </td>
+                <td>
+                    <a asp-controller="Fornecedor" asp-action="atualizar-endereco" asp-route-id="@item.Id" class="btn btn-success btn-sm">EDITAR</a>
+                    <a asp-controller="Fornecedor" asp-action="excluir-endereco" asp-route-id="@item.Id" class="btn btn-danger btn-sm">EXCLUIR</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
     <div>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modalInserirEndereco" data-whatever="mdo">NOVO</button>
         <!-- Modal Adicionar novo endereço ao fornecedor-->
         <div class="modal fade" id="modalInserirEndereco" tabindex="-1" role="dialog" aria-labelledby="modalInserirEnderecoLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -96,15 +161,13 @@
                         @Html.DisplayFor(modelItem => item.Tipo_telefone)
                     </td>
                     <td>
-                        <a asp-controller="Fornecedor" asp-action="excluir-telefone" asp-route-id="@item.Id" class="btn btn-success btn-sm">EDITAR</a>
-                        <a asp-controller="Fornecedor" asp-action="atualizar-telefone" asp-route-id="@item.Id" class="btn btn-danger btn-sm">EXCLUIR</a>
+                        <a asp-controller="Fornecedor" asp-action="atualizar-telefone" asp-route-id="@item.Id" class="btn btn-success btn-sm">EDITAR</a>
+                        <a asp-controller="Fornecedor" asp-action="excluir-telefone" asp-route-id="@item.Id" class="btn btn-danger btn-sm">EXCLUIR</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-
-    <hr />
 
     <div>
         <!-- Modal Adicionar novo telefone ao fornecedor-->
@@ -141,8 +204,44 @@
 <div>
     <h4>VENDEDORES</h4>
     <!-- Exibir lista de vendedores-->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    NOME
+                </th>
+                <th>
+                    TELEFONE
+                </th>
+                <th>
+                    TIPO TELEFONE
+                </th>
+                <th>
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalInserirVendedor" data-whatever="mdo">NOVO</button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Vendedor)
+            {
+                <tr>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Ddd)
+                        @Html.DisplayFor(modelItem => item.Numero)*@
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Tipo_telefone)*@
+                    </td>
+                    <td>
+                        <a asp-controller="Fornecedor" asp-action="atualizar-vendedor" asp-route-id="@item.Id" class="btn btn-success btn-sm">EDITAR</a>
+                        <a asp-controller="Fornecedor" asp-action="excluir-vendedor" asp-route-id="@item.Id" class="btn btn-danger btn-sm">EXCLUIR</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
     <div>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modalInserirVendedor" data-whatever="mdo">NOVO</button>
         <!-- Modal Adicionar novo vendedor ao fornecedor-->
         <div class="modal fade" id="modalInserirVendedor" tabindex="-1" role="dialog" aria-labelledby="modalInserirVendedorLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
