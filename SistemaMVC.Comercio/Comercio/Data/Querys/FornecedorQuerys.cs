@@ -7,14 +7,14 @@
                                                 WHERE tb_fornecedor.cnpj = @cnpj";
 
         public const string SELECT_ID_TELEFONE_FORNECEDOR = @"SELECT telefone_id
-                                                                FROM tb_fornecedor_telefone fornecTel
+                                                                FROM tb_telefone_fornecedor fornecTel
                                                                 WHERE 
                                                                 fornecTel.fornecedor_id = @fornecedor_id
                                                                 AND 
                                                                 fornecTel.ativo = 1";
         
         public const string SELECT_ID_ENDERECO_FORNECEDOR = @"SELECT endereco_id
-                                                                FROM tb_fornecedor_endereco fornecEnd
+                                                                FROM tb_endereco_fornecedor fornecEnd
                                                                 WHERE 
                                                                 fornecEnd.fornecedor_id = @fornecedor_id
                                                                 AND 
@@ -35,10 +35,10 @@
                                                         FROM tb_tipo_endereco tpEnd
                                                         WHERE tpEnd.descricao = @tipoEndereco";
 
-        public const string SELECT_TIPO_TELEFONE = @"SELECT descricao 
+        public const string SELECT_TIPO_TELEFONE = @"SELECT id, descricao 
                                                     FROM tb_tipo_telefone";
 
-        public const string SELECT_TIPO_ENDERECO = @"SELECT descricao 
+        public const string SELECT_TIPO_ENDERECO = @"SELECT id, descricao 
                                                     FROM tb_tipo_endereco";
     }
 }
