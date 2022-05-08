@@ -16,7 +16,7 @@ namespace Comercio.Models
         public string Nome_empresa { get; set; }
 
         [Display(Name = "Endereço")]
-        public List<Endereco> Endereco { get; set; }
+        public List<Endereco> Endereco { get; set; } = new();
 
         [Display(Name = "Telefone")]
         public List<Telefone> Telefone { get; set; } = new();
