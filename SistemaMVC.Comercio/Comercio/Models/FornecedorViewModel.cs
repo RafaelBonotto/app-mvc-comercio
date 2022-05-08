@@ -1,4 +1,5 @@
 ﻿using Comercio.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -22,5 +23,9 @@ namespace Comercio.Models
 
         [Display(Name = "Vendedor")]
         public List<Vendedor> Vendedor { get; set; } = new();
+
+        public IEnumerable<SelectListItem> TipoEndereco { get; set; }
+
+        public IEnumerable<SelectListItem> TipoTelefone { get; set; }
     }
 }
