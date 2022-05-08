@@ -1,4 +1,5 @@
 ﻿using Dapper.Contrib.Extensions;
+using System;
 using System.Collections.Generic;
 
 namespace Comercio.Entities
@@ -11,6 +12,9 @@ namespace Comercio.Entities
         public string SobreNome { get; set; }
         public string DataNasc { get; set; }
         public string Genero { get; set; }
+        public sbyte Ativo { get; set; }
+        public DateTime Data_criacao { get; set; }
+        public DateTime Data_alteracao { get; set; }
 
         [Write(false)]
         public virtual List<Telefone> Telefones { get; set; }
