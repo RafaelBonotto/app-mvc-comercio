@@ -1,4 +1,5 @@
 ﻿using Dapper.Contrib.Extensions;
+using System;
 
 namespace Comercio.Entities
 {
@@ -7,6 +8,9 @@ namespace Comercio.Entities
     {
         public int Fornecedor_id { get; set; }
         public int Endereco_id { get; set; }
+        public sbyte Ativo { get; set; }
+        public DateTime Data_criacao { get; set; }
+        public DateTime Data_alteracao { get; set; }
 
         [Write(false)]
         public virtual Endereco Endereco { get; set; }
