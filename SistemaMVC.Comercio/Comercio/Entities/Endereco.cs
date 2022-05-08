@@ -1,5 +1,6 @@
 ﻿using Comercio.Enums;
 using Dapper.Contrib.Extensions;
+using System;
 
 namespace Comercio.Entities
 {
@@ -15,6 +16,9 @@ namespace Comercio.Entities
         public string Bairro { get; set; }
         public string Cidade { get; set; }
         public string Estado { get; set; }
-        public string UF { get; set; } 
+        public string UF { get; set; }
+        public sbyte Ativo { get; set; }
+        public DateTime Data_criacao { get; set; }
+        public DateTime Data_alteracao { get; set; }
     }
 }
