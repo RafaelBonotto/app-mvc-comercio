@@ -72,7 +72,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 using var connection = await _connection.GetConnectionAsync();
                 var fornecedor = connection.Get<Fornecedor>(id);
                 fornecedor.Telefone = await RetornarTelefoneDoFornecedor(fornecedor.Id, connection);
-                //fornecedor.Endereco = await RetornarEnderecoDoFornecedor(fornecedor.Id, connection);
+                fornecedor.Endereco = await RetornarEnderecoDoFornecedor(fornecedor.Id, connection);
                 //fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
                 return fornecedor;
             }
@@ -267,21 +267,14 @@ namespace Comercio.Data.Repositories.Fornecedores
 
         static async Task<List<Telefone>> RetornarTelefoneDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
-            try
-            {
-                List<Telefone> ret = new();
-                var telefoneIds = await connection.QueryAsync<int>(
-                        sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
-                        param: new { fornecedor_id });
+            List<Telefone> ret = new();
+            var telefoneIds = await connection.QueryAsync<int>(
+                    sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
+                    param: new { fornecedor_id });
+            if(telefoneIds.Any())
                 foreach (var item in telefoneIds)
                     ret.Add(connection.Get<Telefone>(item));
-                return ret;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            return ret;
         }
 
         static async Task<List<Endereco>> RetornarEnderecoDoFornecedor(int fornecedor_id, MySqlConnection connection)
@@ -290,8 +283,9 @@ namespace Comercio.Data.Repositories.Fornecedores
             var enderecosIds = await connection.QueryAsync<int>(
                     sql: FornecedorQuerys.SELECT_ID_ENDERECO_FORNECEDOR,
                     param: new { fornecedor_id });
-            foreach (var item in enderecosIds)
-                ret.Add(connection.Get<Endereco>(item));
+            if(enderecosIds.Any())
+                foreach (var item in enderecosIds)
+                    ret.Add(connection.Get<Endereco>(item));
             return ret;
         }
 
@@ -301,8 +295,9 @@ namespace Comercio.Data.Repositories.Fornecedores
             var vendedorIds = await connection.QueryAsync<int>(
                     sql: FornecedorQuerys.SELECT_ID_VENDEDOR_FORNECEDOR,
                     param: new { fornecedor_id });
-            foreach (var item in vendedorIds)
-                ret.Add((Vendedor)connection.Get<Pessoa>(item));
+            if(vendedorIds.Any())
+                foreach (var item in vendedorIds)
+                    ret.Add((Vendedor)connection.Get<Pessoa>(item));
             return ret;
         }
 
