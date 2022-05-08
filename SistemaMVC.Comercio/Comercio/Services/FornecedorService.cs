@@ -4,6 +4,7 @@ using Comercio.Exceptions.Fornecedor;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,7 +63,10 @@ namespace Comercio.Services
                 {
                     Ddd = ddd,
                     Numero = numero,
-                    TipoTelefoneId = tipoTelefoneId
+                    Tipo_telefone_id = tipoTelefoneId,
+                    Ativo = 1,
+                    Data_criacao = DateTime.Now,
+                    Data_alteracao = DateTime.Now
                 };
                 await _repository.InserirTelefone(fornecedor_id, telefone);
                 return await _repositoryBase.GetByIdAsync(fornecedor_id);
