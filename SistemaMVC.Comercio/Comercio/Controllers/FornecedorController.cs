@@ -5,6 +5,7 @@ using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Comercio.Controllers
@@ -59,13 +60,13 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/adicionar-telefone/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdicionarTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
+        public async Task<IActionResult> AdicionarTelefone(int fornecedorId, string ddd, string numero, string tipoTelefone)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var fornecedorResponse = await _service.InserirTelefone(fornecedor_id, ddd, numero, tipoTelefone);
+                    var fornecedorResponse = await _service.InserirTelefone(fornecedorId, ddd, numero, tipoTelefone);
                     if (fornecedorResponse is null)
                         return View("Error", new ErrorViewModel().ProdutoErroAoTentarInserir());
                     var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
@@ -151,8 +152,16 @@ namespace Comercio.Controllers
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());// Alterar erro
 
                 var viewModel = _mapper.CriarFornecedorViewModel(fornecedor);
-                viewModel.TipoTelefone = new SelectList(await _service.ObterTipoTelefone());
+                var tipoTelefone = await _service.ObterTipoTelefone();
+                viewModel.TipoTelefone = new SelectList(tipoTelefone);
                 viewModel.TipoEndereco = new SelectList(await _service.ObterTipoEndereco());
+                foreach (var telefone in viewModel.Telefone)
+                {
+                    telefone.Tipo_telefone = tipoTelefone
+                        .Where(x => x.Id == telefone.Tipo_telefone_id)
+                        .Select(x => x.Descricao)
+                        .FirstOrDefault();
+                }
                 return View("Detalhes", viewModel);
             }
             catch (System.Exception)
