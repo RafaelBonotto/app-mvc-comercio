@@ -91,20 +91,18 @@ namespace Comercio.Services
         {
             try
             {
-                var endereco = new Endereco()
-                {
-                    Logradouro = logradouro,
-                    NumeroLogradouro = numero,
-                    Complemento = complemento,
-                    Cep = cep,
-                    Bairro = bairro,
-                    Cidade = cidade,
-                    Estado = estado,
-                    UF = uf
-                };
-                endereco.TipoEnderecoId = await _repository.ObterIdTipoEndereco(tipoEndereco);
+                var endereco = _mapper.MontarInsertEndereco(
+                    logradouro: logradouro,
+                    numero: numero,
+                    complemento: complemento,
+                    cep: cep,
+                    bairro: bairro,
+                    cidade: cidade,
+                    estado: estado,
+                    uf: uf);
+                endereco.Tipo_endereco_id = await _repository.ObterIdTipoEndereco(tipoEndereco);
                 await _repository.InserirEndereco(fornecedor_id, endereco);
-                return await this.BuscarFornecedor(fornecedor_id);
+                return await _repositoryBase.GetByIdAsync(fornecedor_id);
             }
             catch (System.Exception)
             {
