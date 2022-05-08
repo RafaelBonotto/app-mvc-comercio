@@ -71,7 +71,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             {
                 using var connection = await _connection.GetConnectionAsync();
                 var fornecedor = connection.Get<Fornecedor>(id);
-                //fornecedor.Telefone = await RetornarTelefoneDoFornecedor(fornecedor.Id, connection);
+                fornecedor.Telefone = await RetornarTelefoneDoFornecedor(fornecedor.Id, connection);
                 //fornecedor.Endereco = await RetornarEnderecoDoFornecedor(fornecedor.Id, connection);
                 //fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
                 return fornecedor;
@@ -145,15 +145,18 @@ namespace Comercio.Data.Repositories.Fornecedores
                     {
                         try
                         {
-                            var telefone_id = await connection.InsertAsync<Telefone>(telefone);
+                            var telefone_id = await connection.InsertAsync<Telefone>(telefone, transaction);
                             if (telefone_id <= 0)
                                 throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
 
                             var row = await connection.InsertAsync<TelefoneFornecedor>(new TelefoneFornecedor()
                             {
                                 Fornecedor_id = fornecedor_id,
-                                Telefone_id = telefone_id
-                            });
+                                Telefone_id = telefone_id,
+                                Ativo = 1,
+                                Data_criacao = DateTime.Now,
+                                Data_alteracao = DateTime.Now
+                            }, transaction);
                             if (row <= 0)
                             {
                                 transaction.Rollback();
@@ -161,7 +164,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                             }
                             transaction.Commit();
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                             transaction.Rollback();
                             throw;
@@ -264,13 +267,21 @@ namespace Comercio.Data.Repositories.Fornecedores
 
         static async Task<List<Telefone>> RetornarTelefoneDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
-            List<Telefone> ret = new();
-            var telefoneIds = await connection.QueryAsync<int>(
-                    sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
-                    param: new { fornecedor_id });
-            foreach (var item in telefoneIds)
-                ret.Add(connection.Get<Telefone>(item));
-            return ret;
+            try
+            {
+                List<Telefone> ret = new();
+                var telefoneIds = await connection.QueryAsync<int>(
+                        sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
+                        param: new { fornecedor_id });
+                foreach (var item in telefoneIds)
+                    ret.Add(connection.Get<Telefone>(item));
+                return ret;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         static async Task<List<Endereco>> RetornarEnderecoDoFornecedor(int fornecedor_id, MySqlConnection connection)
