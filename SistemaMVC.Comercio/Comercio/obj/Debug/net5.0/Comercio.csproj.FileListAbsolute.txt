@@ -75,3 +75,4 @@ C:\Users\rbonotto\Documents\Pessoal\Projetos\Git\appMVC.Comercio\SistemaMVC.Come
 C:\Users\rbonotto\Documents\Pessoal\Projetos\Git\appMVC.Comercio\SistemaMVC.Comercio\Comercio\obj\Debug\net5.0\Razor\Views\Fornecedor\Index.cshtml.g.cs
 C:\Users\rbonotto\Documents\Pessoal\Projetos\Git\appMVC.Comercio\SistemaMVC.Comercio\Comercio\obj\Debug\net5.0\Razor\Views\Fornecedor\Inserir.cshtml.g.cs
 C:\Users\rbonotto\Documents\Pessoal\Projetos\Git\appMVC.Comercio\SistemaMVC.Comercio\Comercio\obj\Debug\net5.0\Razor\Views\Fornecedor\Detalhes.cshtml.g.cs
+C:\Users\rbonotto\Documents\Pessoal\Projetos\Git\appMVC.Comercio\SistemaMVC.Comercio\Comercio\obj\Debug\net5.0\Razor\Views\Fornecedor\Fornecedores.cshtml.g.cs
