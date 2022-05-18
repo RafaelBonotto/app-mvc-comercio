@@ -12,7 +12,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task InserirVendedor(int fornecedor_id, Vendedor vendedor);
         Task<int> ObterIdTipoTelefone(string tipoTelefone);
         Task<int> ObterIdTipoEndereco(string tipoEndereco);
-        Task<List<TipoTelefoneResponse>> ObterTipoTelefone();
+        Task<List<TipoTelefoneResponse>> ObterDescricaoTipoTelefone();
         Task<List<TipoEnderecoResponse>> ObterTipoEndereco();
     }
 }
