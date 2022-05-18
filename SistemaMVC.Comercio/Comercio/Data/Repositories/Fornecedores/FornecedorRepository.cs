@@ -212,7 +212,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
-        public async Task<List<TipoTelefoneResponse>> ObterTipoTelefone()
+        public async Task<List<TipoTelefoneResponse>> ObterDescricaoTipoTelefone()
         {
             try
             {
