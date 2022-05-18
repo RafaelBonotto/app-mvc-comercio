@@ -9,6 +9,8 @@ namespace Comercio.Entities
     {
         public int Id { get; set; }
         public int Tipo_telefone_id { get; set; }
+
+        [Write(false)]
         public string Tipo_telefone { get; set; }
         public string Ddd { get; set; }
         public string Numero { get; set; }
