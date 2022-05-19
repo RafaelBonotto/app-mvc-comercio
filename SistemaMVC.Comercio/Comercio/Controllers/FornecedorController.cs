@@ -68,7 +68,32 @@ namespace Comercio.Controllers
                 {
                     var fornecedorResponse = await _service.InserirTelefone(fornecedorId, ddd, numero, tipoTelefone);
                     if (fornecedorResponse is null)
-                        return View("Error", new ErrorViewModel().ProdutoErroAoTentarInserir());
+                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
+                    return View("Detalhes", fornecedorViewModel);
+                }
+                catch (System.Exception)
+                {
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+                }
+            }
+            else
+            {
+                return View("Error", new ErrorViewModel().ErroDeValidacao());
+            }
+        }
+
+        [HttpPost]
+        [Route("[controller]/excluir-telefone/")]
+        public async Task<IActionResult> ExcluirTelefone(int fornecedorId, int telefone_id)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var fornecedorResponse = await _service.ExcluirTelefone(fornecedorId, telefone_id);
+                    if (fornecedorResponse is null)
+                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
                     var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
                     return View("Detalhes", fornecedorViewModel);
                 }
@@ -190,5 +215,6 @@ namespace Comercio.Controllers
                 return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
             }
         }
+        
     }
 }
