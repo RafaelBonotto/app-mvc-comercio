@@ -69,12 +69,14 @@ namespace Comercio.Services
                     Data_alteracao = DateTime.Now
                 };
                 await _repository.InserirTelefone(fornecedor_id, telefone);
+
                 var fornecedorResponse = await _repositoryBase.GetByIdAsync(fornecedor_id);
                 var tipoTelefoneDesc = await _repository.ObterDescricaoTipoTelefone();
                 foreach (var telef in fornecedorResponse.Telefone)
                     telef.Tipo_telefone = tipoTelefoneDesc
                             .Where(x => x.Id == telef.Tipo_telefone_id)
                             .Select(x => x.Descricao).FirstOrDefault();
+
                 return fornecedorResponse;
 
             }
@@ -161,6 +163,20 @@ namespace Comercio.Services
             }
             catch (System.Exception)
             {
+                throw;
+            }
+        }
+
+        public async Task<Fornecedor> ExcluirTelefone(int fornecedor_id, int telefone_id)
+        {
+            try
+            {
+                await _repository.ExcluirTelefone(fornecedor_id, telefone_id);
+                return await _repositoryBase.GetByIdAsync(fornecedor_id); 
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }
