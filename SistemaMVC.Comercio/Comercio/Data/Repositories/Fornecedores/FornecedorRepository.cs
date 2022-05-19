@@ -254,6 +254,21 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
+        public async Task ExcluirTelefone(int fornecedor_id, int telefone_id)
+        {
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                await connection.QueryAsync(
+                    sql: FornecedorQuerys.DESATIVAR_TELEFONE_FORNECEDOR,
+                    param: new { fornecedor_id, telefone_id });
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         #region Métodos privados
 
         static async Task<List<Telefone>> RetornarTelefoneDoFornecedor(int fornecedor_id, MySqlConnection connection)
@@ -291,7 +306,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                     ret.Add((Vendedor)connection.Get<Pessoa>(item));
             return ret;
         }
-
+        
         #endregion
     }
 }
