@@ -40,5 +40,10 @@
 
         public const string SELECT_TIPO_ENDERECO = @"SELECT id, descricao 
                                                     FROM tb_tipo_endereco";
+
+        public const string DESATIVAR_TELEFONE_FORNECEDOR = @"UPDATE tb_telefone_fornecedor fornecTel
+                                                                SET fornecTel.Ativo = 0
+                                                                WHERE fornecTel.fornecedor_id = @fornecedor_id
+                                                                AND fornecTel.telefone_id = @telefone_id";
     }
 }
