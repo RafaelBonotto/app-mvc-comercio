@@ -278,7 +278,7 @@
 <div>
     <a asp-action="editar" asp-route-id="@Model.Id" class="btn btn-success">Editar</a>
     <!-- Botão para acionar modal Excluir-->
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExcluir">
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExcluirFornecedor">
         Excluir
     </button>
 </div>
@@ -286,21 +286,21 @@
 <hr />
 
 <!-- Modal Excluir-->
-<div class="modal fade" id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalExcluirFornecedor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">EXCLUIR PRODUTO</h5>
+                <h5 class="modal-title" id="exampleModalLabel">EXCLUIR FORNECEDOR</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Tem certeza que deseja excluir esse produto ?
+                TEM CERTEZA QUE DESEJA EXCLUIR ESSE FORNECEDOR ?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <a asp-controller="Produto" asp-action="excluir" asp-route-id="@Model.Id" class="btn btn-danger">Excluir</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCELAR</button>
+                <a asp-controller="Fornecedor" asp-action="excluir" asp-route-id="@Model.Id" class="btn btn-danger">EXCLUIR</a>
             </div>
         </div>
     </div>
