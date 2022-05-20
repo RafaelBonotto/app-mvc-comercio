@@ -84,14 +84,15 @@ namespace Comercio.Controllers
         }
 
         [HttpPost]
-        [Route("[controller]/excluir-telefone/")]
-        public async Task<IActionResult> ExcluirTelefone(int fornecedorId, int telefone_id)
+        [Route("[controller]/excluir-telefone")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ExcluirTelefone(int fornecedor_id, int telefone_id)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var fornecedorResponse = await _service.ExcluirTelefone(fornecedorId, telefone_id);
+                    var fornecedorResponse = await _service.ExcluirTelefone(fornecedor_id, telefone_id);
                     if (fornecedorResponse is null)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
                     var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
