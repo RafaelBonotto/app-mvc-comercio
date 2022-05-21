@@ -28,7 +28,7 @@ namespace Comercio.Controllers
         [Route("[controller]/adicionar/")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Adicionar(
-            [Bind("Cnpj, Nome_empresa")] 
+            [Bind("Cnpj, Nome_empresa")]
             FornecedorViewModel fornecedor)
         {
             if (ModelState.IsValid)
@@ -83,29 +83,20 @@ namespace Comercio.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("[controller]/excluir-telefone")]
-        [ValidateAntiForgeryToken]
+        [HttpGet("[controller]/excluir-telefone")]
         public async Task<IActionResult> ExcluirTelefone(int fornecedor_id, int telefone_id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    var fornecedorResponse = await _service.ExcluirTelefone(fornecedor_id, telefone_id);
-                    if (fornecedorResponse is null)
-                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
-                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
-                    return View("Detalhes", fornecedorViewModel);
-                }
-                catch (System.Exception)
-                {
+                var fornecedorResponse = await _service.ExcluirTelefone(fornecedor_id, telefone_id);
+                if (fornecedorResponse is null)
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
-                }
+                var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
+                return View("Detalhes", fornecedorViewModel);
             }
-            else
+            catch (System.Exception)
             {
-                return View("Error", new ErrorViewModel().ErroDeValidacao());
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
             }
         }
 
@@ -147,7 +138,7 @@ namespace Comercio.Controllers
             }
         }
 
-        [HttpGet ("[controller]/listar")]
+        [HttpGet("[controller]/listar")]
         public async Task<IActionResult> ListarFornecedores()
         {
             try
@@ -216,6 +207,6 @@ namespace Comercio.Controllers
                 return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
             }
         }
-        
+
     }
 }
