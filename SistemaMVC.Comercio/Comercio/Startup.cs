@@ -3,12 +3,14 @@ using Comercio.Data.Repositories;
 using Comercio.Data.Repositories.Fornecedores;
 using Comercio.Data.Repositories.Produtos;
 using Comercio.Data.Repositories.Setores;
+using Comercio.Data.Repositories.Telefones;
 using Comercio.Entities;
 using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Interfaces.SetorInterfaces;
+using Comercio.Interfaces.TelefoneInterfaces;
 using Comercio.Mapper;
 using Comercio.Models;
 using Comercio.Services;
@@ -48,6 +50,7 @@ namespace Comercio
             services.AddScoped(typeof(IProdutoService), typeof(ProdutoService));
             services.AddScoped(typeof(ISetorService), typeof(SetorService));
             services.AddScoped(typeof(IFornecedorService), typeof(FornecedorService));
+            services.AddScoped(typeof(ITelefoneService), typeof(TelefoneService));
             // Repository Base
             services.AddScoped(typeof(IRepositoryBase<Produto>), typeof(ProdutoRepository));
             services.AddScoped(typeof(IRepositoryBase<Setor>), typeof(SetorRepository));
@@ -55,6 +58,7 @@ namespace Comercio
             // Repositorys
             services.AddScoped(typeof(IProdutoRepository), typeof(ProdutoRepository));
             services.AddScoped(typeof(IFornecedorRepository), typeof(FornecedorRepository));
+            services.AddScoped(typeof(ITelefoneRepository), typeof(TelefoneRepository));
 
             #endregion
         }
