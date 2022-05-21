@@ -1,6 +1,7 @@
 ﻿using Comercio.Entities;
 using Comercio.Exceptions.Fornecedor;
 using Comercio.Interfaces.FornecedorInterfaces;
+using Comercio.Interfaces.TelefoneInterfaces;
 using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,11 +14,16 @@ namespace Comercio.Controllers
     public class FornecedorController : Controller
     {
         private readonly IFornecedorService _service;
+        private readonly ITelefoneService _telefoneService;
         private readonly IFornecedorAdapter _mapper;
 
-        public FornecedorController(IFornecedorService fornecedorService, IFornecedorAdapter adaper)
+        public FornecedorController(
+            IFornecedorService fornecedorService,
+            IFornecedorAdapter adaper,
+            ITelefoneService telefoneService)
         {
             _service = fornecedorService;
+            _telefoneService = telefoneService;
             _mapper = adaper;
         }
 
@@ -66,6 +72,13 @@ namespace Comercio.Controllers
             {
                 try
                 {
+                    //Adaper.MontaTelefone... ou...
+                    //_telefoneService.InserirTelefoneFornecedor(fornecedorId, new Telefone
+                    //{
+                    //    Ddd = ddd,
+                    //    Numero = numero,
+                    //    Tipo_telefone = tipoTelefone
+                    //});
                     var fornecedorResponse = await _service.InserirTelefone(fornecedorId, ddd, numero, tipoTelefone);
                     if (fornecedorResponse is null)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
