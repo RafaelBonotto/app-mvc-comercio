@@ -13,5 +13,10 @@
                                                                 SET fornecTel.Ativo = 0
                                                                 WHERE fornecTel.fornecedor_id = @fornecedor_id
                                                                 AND fornecTel.telefone_id = @telefone_id";
+
+        public const string SELECT_ID_TELEFONE_FORNECEDOR = @"SELECT telefone_id
+                                                                FROM tb_telefone_fornecedor telFornec
+                                                                WHERE telFornec.fornecedor_id = @fornecedor_id
+                                                                AND telFornec.ativo = 1";
     }
 }
