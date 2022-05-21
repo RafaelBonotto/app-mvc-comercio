@@ -139,16 +139,7 @@ namespace Comercio.Data.Repositories.Fornecedores
         }
 
         public async Task<bool> InserirTelefone(int fornecedor_id, Telefone telefone)
-        {
-            try
-            {
-                return await _telefoneRepository.InserirTelefoneFornecedor(fornecedor_id, telefone);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+            => await _telefoneRepository.InserirTelefoneFornecedor(fornecedor_id, telefone);
         public async Task InserirVendedor(int fornecedor_id, Vendedor vendedor)
         {
             //try
@@ -181,75 +172,34 @@ namespace Comercio.Data.Repositories.Fornecedores
 
         public async Task<int> ObterIdTipoTelefone(string tipoTelefone)
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                //return connection.QueryFirstOrDefault<int>(
-                //    FornecedorQuerys.SELECT_ID_TIPO_TELEFONE, new { tipoTelefone });
-                return 0;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            using var connection = await _connection.GetConnectionAsync();
+            return await _telefoneRepository.ObterIdTipoTelefone(tipoTelefone);
         }
 
         public async Task<List<TipoTelefoneResponse>> ObterDescricaoTipoTelefone()
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                //return (await connection.QueryAsync<TipoTelefoneResponse>(
-                //    FornecedorQuerys.SELECT_TIPO_TELEFONE)).ToList();
-                return new List<TipoTelefoneResponse>();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            using var connection = await _connection.GetConnectionAsync();
+            return await _telefoneRepository.ListarDescricaoTipoTelefone();
         }
 
         public async Task<int> ObterIdTipoEndereco(string tipoEndereco)
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                return connection.QueryFirstOrDefault<int>(
-                    FornecedorQuerys.SELECT_ID_TIPO_ENDERECO, new { tipoEndereco});
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            using var connection = await _connection.GetConnectionAsync();
+            return connection.QueryFirstOrDefault<int>(
+                FornecedorQuerys.SELECT_ID_TIPO_ENDERECO, new { tipoEndereco });
         }
 
         public async Task<List<TipoEnderecoResponse>> ObterTipoEndereco()
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                return (await connection.QueryAsync<TipoEnderecoResponse>(
-                    FornecedorQuerys.SELECT_TIPO_ENDERECO)).ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            using var connection = await _connection.GetConnectionAsync();
+            return (await connection.QueryAsync<TipoEnderecoResponse>(
+                FornecedorQuerys.SELECT_TIPO_ENDERECO)).ToList();
         }
 
-        public async Task ExcluirTelefone(int fornecedor_id, int telefone_id)
+        public async Task<bool> ExcluirTelefone(int fornecedor_id, int telefone_id)
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                //await connection.QueryAsync(
-                //    sql: FornecedorQuerys.DESATIVAR_TELEFONE_FORNECEDOR,
-                //    param: new { fornecedor_id, telefone_id });
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            using var connection = await _connection.GetConnectionAsync();
+            return await _telefoneRepository.ExcluirTelefoneFornecedor(fornecedor_id, telefone_id);
         }
 
         #region Métodos privados
