@@ -1,9 +1,13 @@
 ﻿using Comercio.Data.ConnectionManager;
+using Comercio.Data.Querys;
+using Comercio.Data.Repositories.Response;
 using Comercio.Entities;
 using Comercio.Interfaces.TelefoneInterfaces;
+using Dapper;
 using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Comercio.Data.Repositories.Telefones
@@ -26,50 +30,75 @@ namespace Comercio.Data.Repositories.Telefones
             throw new System.NotImplementedException();
         }
 
-        public bool ExcluirTelefoneFornecedor(int fornecedor_id, int telefone_id)
+        public async Task<bool> ExcluirTelefoneFornecedor(int fornecedor_id, int telefone_id)
         {
-            throw new System.NotImplementedException();
+            using var connection = await _connection.GetConnectionAsync();
+            await connection.QueryAsync(
+                sql: TelefoneQuerys.DESATIVAR_TELEFONE_FORNECEDOR,
+                param: new { fornecedor_id, telefone_id });
+            return true;
         }
 
         public async Task<bool> InserirTelefoneFornecedor(int fornecedor_id, Telefone telefone)
         {
-            using (var connection = await _connection.GetConnectionAsync())
+            using var connection = await _connection.GetConnectionAsync();
+            using var transaction = connection.BeginTransaction();
+            try
             {
-                using (var transaction = connection.BeginTransaction())
-                {
-                    try
-                    {
-                        var telefone_id = await connection.InsertAsync<Telefone>(telefone, transaction);
-                        if (telefone_id <= 0)
-                            throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
+                var telefone_id = await connection.InsertAsync<Telefone>(telefone, transaction);
+                if (telefone_id <= 0)
+                    throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
 
-                        var row = await connection.InsertAsync<TelefoneFornecedor>(
-                            entityToInsert: _mapperTelefone.MontaTelefoneFornecedor(fornecedor_id, telefone_id), transaction);
-                        if (row <= 0)
-                        {
-                            transaction.Rollback();
-                            throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
-                        }
-                        transaction.Commit();
-                        return true;
-                    }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
+                var row = await connection.InsertAsync<TelefoneFornecedor>(
+                    entityToInsert: _mapperTelefone.MontaTelefoneFornecedor(fornecedor_id, telefone_id), transaction);
+                if (row <= 0)
+                {
+                    transaction.Rollback();
+                    throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
                 }
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
+                throw;
             }
         }
 
-        public List<string> ListarDescricaoTipoTelefone()
+        public async Task<List<TipoTelefoneResponse>> ListarDescricaoTipoTelefone()
         {
-            throw new System.NotImplementedException();
+            using var connection = await _connection.GetConnectionAsync();
+            return (await connection.QueryAsync<TipoTelefoneResponse>(
+                    TelefoneQuerys.SELECT_TIPO_TELEFONE)).ToList();
         }
 
-        public List<Telefone> ListarTelefoneFornecedor(int fornecedor_id)
+        public async Task<List<Telefone>> ListarTelefoneFornecedor(int fornecedor_id)
         {
-            throw new System.NotImplementedException();
+            List<Telefone> ret = new();
+            using var connection = await _connection.GetConnectionAsync();
+            var telefoneIds = await connection.QueryAsync<int>(
+                    sql: TelefoneQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
+                    param: new { fornecedor_id });
+            if (telefoneIds.Any())
+                foreach (var item in telefoneIds)
+                    ret.Add(connection.Get<Telefone>(item));
+
+            var tipoTelefoneDesc = (await connection.QueryAsync<TipoTelefoneResponse>(
+                    TelefoneQuerys.SELECT_TIPO_TELEFONE)).ToList();
+
+            foreach (var telef in ret)
+                telef.Tipo_telefone = tipoTelefoneDesc
+                        .Where(x => x.Id == telef.Tipo_telefone_id)
+                        .Select(x => x.Descricao).FirstOrDefault();
+            return ret;
+        }
+
+        public async Task<int> ObterIdTipoTelefone(string tipoTelefone)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            return connection.QueryFirstOrDefault<int>(
+            TelefoneQuerys.SELECT_ID_TIPO_TELEFONE, new { tipoTelefone });
         }
     }
 }
