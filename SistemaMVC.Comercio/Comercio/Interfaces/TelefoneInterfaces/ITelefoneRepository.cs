@@ -1,5 +1,6 @@
 ﻿using Comercio.Entities;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Comercio.Interfaces.TelefoneInterfaces
 {
@@ -7,7 +8,7 @@ namespace Comercio.Interfaces.TelefoneInterfaces
     {
         bool EditarTelefone(int id);
         List<string> ListarDescricaoTipoTelefone();
-        bool InserirTelefoneFornecedor(int fornecedor_id, Telefone telefone);
+        Task<bool> InserirTelefoneFornecedor(int fornecedor_id, Telefone telefone);
         bool ExcluirTelefoneFornecedor(int fornecedor_id, int telefone_id);
         List<Telefone> ListarTelefoneFornecedor(int fornecedor_id);
     }
