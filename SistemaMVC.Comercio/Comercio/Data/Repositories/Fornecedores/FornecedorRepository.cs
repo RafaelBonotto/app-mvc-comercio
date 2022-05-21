@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Comercio.Interfaces.FornecedorInterfaces;
 using MySqlConnector;
 using Comercio.Data.Repositories.Response;
+using Comercio.Interfaces.TelefoneInterfaces;
 
 namespace Comercio.Data.Repositories.Fornecedores
 {
@@ -18,12 +19,17 @@ namespace Comercio.Data.Repositories.Fornecedores
     {
         private readonly IMySqlConnectionManager _connection;
         private readonly IFornecedorAdapter _mapper;
+        private readonly ITelefoneRepository _telefoneRepository;
 
 
-        public FornecedorRepository(IMySqlConnectionManager connection, IFornecedorAdapter mapper)
+        public FornecedorRepository(
+            IMySqlConnectionManager connection, 
+            IFornecedorAdapter mapper,
+            ITelefoneRepository telefoneRepository)
         {
             _connection = connection;
             _mapper = mapper;
+            _telefoneRepository = telefoneRepository;
         }
 
         public async Task<Fornecedor> AddAsync(Fornecedor fornecedor)
@@ -132,36 +138,11 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
-        public async Task InserirTelefone(int fornecedor_id, Telefone telefone)
+        public async Task<bool> InserirTelefone(int fornecedor_id, Telefone telefone)
         {
             try
             {
-                using (var connection = await _connection.GetConnectionAsync())
-                {
-                    using (var transaction = connection.BeginTransaction())
-                    {
-                        try
-                        {
-                            var telefone_id = await connection.InsertAsync<Telefone>(telefone, transaction);
-                            if (telefone_id <= 0)
-                                throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
-
-                            var row = await connection.InsertAsync<TelefoneFornecedor>(
-                                _mapper.MontaTelefoneFornecedor(fornecedor_id, telefone_id), transaction);
-                            if (row <= 0)
-                            {
-                                transaction.Rollback();
-                                throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
-                            }
-                            transaction.Commit();
-                        }
-                        catch (Exception ex)
-                        {
-                            transaction.Rollback();
-                            throw;
-                        }
-                    }
-                }
+                return await _telefoneRepository.InserirTelefoneFornecedor(fornecedor_id, telefone);
             }
             catch (Exception)
             {
@@ -203,8 +184,9 @@ namespace Comercio.Data.Repositories.Fornecedores
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                return connection.QueryFirstOrDefault<int>(
-                    FornecedorQuerys.SELECT_ID_TIPO_TELEFONE, new { tipoTelefone });
+                //return connection.QueryFirstOrDefault<int>(
+                //    FornecedorQuerys.SELECT_ID_TIPO_TELEFONE, new { tipoTelefone });
+                return 0;
             }
             catch (Exception)
             {
@@ -217,8 +199,9 @@ namespace Comercio.Data.Repositories.Fornecedores
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                return (await connection.QueryAsync<TipoTelefoneResponse>(
-                    FornecedorQuerys.SELECT_TIPO_TELEFONE)).ToList();
+                //return (await connection.QueryAsync<TipoTelefoneResponse>(
+                //    FornecedorQuerys.SELECT_TIPO_TELEFONE)).ToList();
+                return new List<TipoTelefoneResponse>();
             }
             catch (Exception)
             {
@@ -259,9 +242,9 @@ namespace Comercio.Data.Repositories.Fornecedores
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                await connection.QueryAsync(
-                    sql: FornecedorQuerys.DESATIVAR_TELEFONE_FORNECEDOR,
-                    param: new { fornecedor_id, telefone_id });
+                //await connection.QueryAsync(
+                //    sql: FornecedorQuerys.DESATIVAR_TELEFONE_FORNECEDOR,
+                //    param: new { fornecedor_id, telefone_id });
             }
             catch (Exception ex)
             {
@@ -274,20 +257,20 @@ namespace Comercio.Data.Repositories.Fornecedores
         public static async Task<List<Telefone>> RetornarTelefoneDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
             List<Telefone> ret = new();
-            var telefoneIds = await connection.QueryAsync<int>(
-                    sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
-                    param: new { fornecedor_id });
-            if(telefoneIds.Any())
-                foreach (var item in telefoneIds)
-                    ret.Add(connection.Get<Telefone>(item));
+            //var telefoneIds = await connection.QueryAsync<int>(
+            //        sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
+            //        param: new { fornecedor_id });
+            //if(telefoneIds.Any())
+            //    foreach (var item in telefoneIds)
+            //        ret.Add(connection.Get<Telefone>(item));
 
-            var tipoTelefoneDesc = (await connection.QueryAsync<TipoTelefoneResponse>(
-                    FornecedorQuerys.SELECT_TIPO_TELEFONE)).ToList();
+            //var tipoTelefoneDesc = (await connection.QueryAsync<TipoTelefoneResponse>(
+            //        FornecedorQuerys.SELECT_TIPO_TELEFONE)).ToList();
 
-            foreach (var telef in ret)
-                telef.Tipo_telefone = tipoTelefoneDesc
-                        .Where(x => x.Id == telef.Tipo_telefone_id)
-                        .Select(x => x.Descricao).FirstOrDefault();
+            //foreach (var telef in ret)
+            //    telef.Tipo_telefone = tipoTelefoneDesc
+            //            .Where(x => x.Id == telef.Tipo_telefone_id)
+            //            .Select(x => x.Descricao).FirstOrDefault();
             return ret;
         }
 
