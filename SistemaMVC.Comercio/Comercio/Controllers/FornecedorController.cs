@@ -14,16 +14,13 @@ namespace Comercio.Controllers
     public class FornecedorController : Controller
     {
         private readonly IFornecedorService _service;
-        private readonly ITelefoneService _telefoneService;
         private readonly IFornecedorAdapter _mapper;
 
         public FornecedorController(
             IFornecedorService fornecedorService,
-            IFornecedorAdapter adaper,
-            ITelefoneService telefoneService)
+            IFornecedorAdapter adaper)
         {
             _service = fornecedorService;
-            _telefoneService = telefoneService;
             _mapper = adaper;
         }
 
