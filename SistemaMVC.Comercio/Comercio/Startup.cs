@@ -46,6 +46,7 @@ namespace Comercio
             services.AddScoped(typeof(IProdutoAdapter), typeof(ProdutoAdapter));
             services.AddScoped(typeof(ISetorAdapter), typeof(SetorAdapter));
             services.AddScoped(typeof(IFornecedorAdapter), typeof(FornecedorAdapter));
+            services.AddScoped(typeof(ITelefoneAdapter), typeof(TelefoneAdapter));
             // Services
             services.AddScoped(typeof(IProdutoService), typeof(ProdutoService));
             services.AddScoped(typeof(ISetorService), typeof(SetorService));
