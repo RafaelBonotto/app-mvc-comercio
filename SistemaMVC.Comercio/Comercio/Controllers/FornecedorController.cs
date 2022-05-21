@@ -1,7 +1,5 @@
-﻿using Comercio.Entities;
-using Comercio.Exceptions.Fornecedor;
+﻿using Comercio.Exceptions.Fornecedor;
 using Comercio.Interfaces.FornecedorInterfaces;
-using Comercio.Interfaces.TelefoneInterfaces;
 using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
