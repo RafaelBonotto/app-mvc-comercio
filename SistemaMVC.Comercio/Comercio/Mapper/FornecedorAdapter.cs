@@ -77,17 +77,5 @@ namespace Comercio.Mapper
                 Data_alteracao = DateTime.Now
             };
         }
-
-        public TelefoneFornecedor MontaTelefoneFornecedor(int fornecedorId, int telefoneId)
-        {
-            return new TelefoneFornecedor()
-            {
-                Fornecedor_id = fornecedorId,
-                Telefone_id = telefoneId,
-                Ativo = 1,
-                Data_criacao = DateTime.Now,
-                Data_alteracao = DateTime.Now
-            };
-        }
     }
 }
