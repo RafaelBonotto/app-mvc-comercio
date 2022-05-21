@@ -271,7 +271,7 @@ namespace Comercio.Data.Repositories.Fornecedores
 
         #region Métodos privados
 
-        static async Task<List<Telefone>> RetornarTelefoneDoFornecedor(int fornecedor_id, MySqlConnection connection)
+        public static async Task<List<Telefone>> RetornarTelefoneDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
             List<Telefone> ret = new();
             var telefoneIds = await connection.QueryAsync<int>(
@@ -280,6 +280,14 @@ namespace Comercio.Data.Repositories.Fornecedores
             if(telefoneIds.Any())
                 foreach (var item in telefoneIds)
                     ret.Add(connection.Get<Telefone>(item));
+
+            var tipoTelefoneDesc = (await connection.QueryAsync<TipoTelefoneResponse>(
+                    FornecedorQuerys.SELECT_TIPO_TELEFONE)).ToList();
+
+            foreach (var telef in ret)
+                telef.Tipo_telefone = tipoTelefoneDesc
+                        .Where(x => x.Id == telef.Tipo_telefone_id)
+                        .Select(x => x.Descricao).FirstOrDefault();
             return ret;
         }
 
