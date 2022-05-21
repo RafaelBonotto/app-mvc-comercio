@@ -3,6 +3,7 @@ using Comercio.Entities;
 using Comercio.Exceptions.Fornecedor;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.FornecedorInterfaces;
+using Comercio.Interfaces.TelefoneInterfaces;
 using Comercio.Models;
 using System;
 using System.Collections.Generic;
@@ -13,14 +14,20 @@ namespace Comercio.Services
 {
     public class FornecedorService : IFornecedorService
     {
-        private readonly IRepositoryBase<Fornecedor> _repositoryBase;
-        private readonly IFornecedorRepository _repository;
+        private readonly IRepositoryBase<Fornecedor> Fornecedor;
+        private readonly IFornecedorRepository _repositoryFornecedor;
+        private readonly ITelefoneRepository _repositoryTelefone;
         private readonly IFornecedorAdapter _mapper;
 
-        public FornecedorService(IRepositoryBase<Fornecedor> repository, IFornecedorRepository fornecedorRepository, IFornecedorAdapter mapper)
+        public FornecedorService(
+            IRepositoryBase<Fornecedor> repository, 
+            IFornecedorRepository fornecedorRepository, 
+            IFornecedorAdapter mapper,
+            ITelefoneRepository repositoryTelefone)
         {
-            _repositoryBase = repository;
-            _repository = fornecedorRepository;
+            Fornecedor = repository;
+            _repositoryFornecedor = fornecedorRepository;
+            _repositoryTelefone = repositoryTelefone;
             _mapper = mapper;
         }
 
@@ -35,7 +42,7 @@ namespace Comercio.Services
             {
                 if (string.IsNullOrEmpty(fornecedor.Cnpj))
                 {
-                    var checkFornecedor = await _repositoryBase.GetByKeyAsync(fornecedor.Cnpj);
+                    var checkFornecedor = await Fornecedor.GetByKeyAsync(fornecedor.Cnpj);
                     if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 1)
                         throw new CnpjInvalidoException();
                     if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 0)
@@ -45,7 +52,7 @@ namespace Comercio.Services
                     }
                 }
                 var fornecedorRepository = _mapper.MontaFornecedorInsertRepositorio(fornecedor);
-                var fornecedorResponse =  await _repositoryBase.AddAsync(fornecedorRepository);       
+                var fornecedorResponse =  await Fornecedor.AddAsync(fornecedorRepository);       
                 return fornecedorResponse;
             }
             catch (System.Exception)
@@ -58,7 +65,7 @@ namespace Comercio.Services
         {
             try
             {
-                var tipoTelefoneId = await _repository.ObterIdTipoTelefone(tipoTelefone);
+                var tipoTelefoneId = await _repositoryFornecedor.ObterIdTipoTelefone(tipoTelefone);
                 var telefone = new Telefone()
                 {
                     Ddd = ddd,
@@ -68,8 +75,8 @@ namespace Comercio.Services
                     Data_criacao = DateTime.Now,
                     Data_alteracao = DateTime.Now
                 };
-                await _repository.InserirTelefone(fornecedor_id, telefone);
-                return await _repositoryBase.GetByIdAsync(fornecedor_id);
+                await _repositoryFornecedor.InserirTelefone(fornecedor_id, telefone);
+                return await Fornecedor.GetByIdAsync(fornecedor_id);
             }
             catch (System.Exception)
             {
@@ -100,9 +107,9 @@ namespace Comercio.Services
                     cidade: cidade,
                     estado: estado,
                     uf: uf);
-                endereco.Tipo_endereco_id = await _repository.ObterIdTipoEndereco(tipoEndereco);
-                await _repository.InserirEndereco(fornecedor_id, endereco);
-                return await _repositoryBase.GetByIdAsync(fornecedor_id);
+                endereco.Tipo_endereco_id = await _repositoryFornecedor.ObterIdTipoEndereco(tipoEndereco);
+                await _repositoryFornecedor.InserirEndereco(fornecedor_id, endereco);
+                return await Fornecedor.GetByIdAsync(fornecedor_id);
             }
             catch (System.Exception)
             {
@@ -114,7 +121,7 @@ namespace Comercio.Services
         {
             try
             {
-                return await _repositoryBase.GetAllAsync();
+                return await Fornecedor.GetAllAsync();
             }
             catch (System.Exception)
             {
@@ -126,7 +133,7 @@ namespace Comercio.Services
         {
             try
             {
-                return await _repositoryBase.GetByIdAsync(id);
+                return await Fornecedor.GetByIdAsync(id);
             }
             catch (System.Exception)
             {
@@ -138,7 +145,7 @@ namespace Comercio.Services
         {
             try
             {
-                return await _repository.ObterTipoEndereco();
+                return await _repositoryFornecedor.ObterTipoEndereco();
             }
             catch (System.Exception)
             {
@@ -150,7 +157,7 @@ namespace Comercio.Services
         {
             try
             {
-                return await _repository.ObterDescricaoTipoTelefone();
+                return await _repositoryFornecedor.ObterDescricaoTipoTelefone();
             }
             catch (System.Exception)
             {
@@ -162,8 +169,8 @@ namespace Comercio.Services
         {
             try
             {
-                await _repository.ExcluirTelefone(fornecedor_id, telefone_id);
-                return await _repositoryBase.GetByIdAsync(fornecedor_id); 
+                await _repositoryFornecedor.ExcluirTelefone(fornecedor_id, telefone_id);
+                return await Fornecedor.GetByIdAsync(fornecedor_id); 
             }
             catch (Exception)
             {
