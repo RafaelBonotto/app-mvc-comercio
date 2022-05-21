@@ -11,7 +11,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
             string logradouro, string numero, string complemento, string cep, 
             string bairro, string cidade, string estado, string uf);
         EnderecoFornecedor MontaEnderecoFornecedor(int fornecedorId, int enderecoId);
-        TelefoneFornecedor MontaTelefoneFornecedor(int fornecedorId, int telefoneId);
+        //TelefoneFornecedor MontaTelefoneFornecedor(int fornecedorId, int telefoneId);
         //List<FornecedorVendedor> MontaVendedorFornecedor(FornecedorViewModel fornecedor);
         FornecedorViewModel CriarFornecedorViewModel(Fornecedor fornecedor);
     }
