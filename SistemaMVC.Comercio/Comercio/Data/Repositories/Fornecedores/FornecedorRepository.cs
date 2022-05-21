@@ -34,21 +34,14 @@ namespace Comercio.Data.Repositories.Fornecedores
 
         public async Task<Fornecedor> AddAsync(Fornecedor fornecedor)
         {
-            try
+            int fornecdorId;
+            using (var connection = await _connection.GetConnectionAsync())
             {
-                int fornecdorId;
-                using (var connection = await _connection.GetConnectionAsync())
-                {
-                    fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
-                    if (fornecdorId <= 0)
-                        throw new Exception("Erro ao tentar inserir o fornecedor");
-                }
-                return await this.GetByIdAsync(fornecdorId);
+                fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
+                if (fornecdorId <= 0)
+                    throw new Exception("Erro ao tentar inserir o fornecedor");
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            return await this.GetByIdAsync(fornecdorId);
         }
 
         public Task<Fornecedor> DeleteAsync(int id)
@@ -58,83 +51,54 @@ namespace Comercio.Data.Repositories.Fornecedores
 
         public async Task<List<Fornecedor>> GetAllAsync()
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                var fornecedor = await connection.GetAllAsync<Fornecedor>();
-                return fornecedor.ToList();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            using var connection = await _connection.GetConnectionAsync();
+            var fornecedor = await connection.GetAllAsync<Fornecedor>();
+            return fornecedor.ToList();
         }
 
         public async Task<Fornecedor> GetByIdAsync(int id)
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                var fornecedor = connection.Get<Fornecedor>(id);
-                fornecedor.Telefone = await RetornarTelefoneDoFornecedor(fornecedor.Id, connection);
-                fornecedor.Endereco = await RetornarEnderecoDoFornecedor(fornecedor.Id, connection);
-                //fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
-                return fornecedor;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            using var connection = await _connection.GetConnectionAsync();
+            var fornecedor = connection.Get<Fornecedor>(id);
+            fornecedor.Telefone = await RetornarTelefoneDoFornecedor(fornecedor.Id);
+            fornecedor.Endereco = await RetornarEnderecoDoFornecedor(fornecedor.Id, connection);
+            //fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
+            return fornecedor;
         }
 
         public async Task<List<Fornecedor>> GetByKeyAsync(string cnpj)
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                return (connection.Query<Fornecedor>(FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            using var connection = await _connection.GetConnectionAsync();
+            return (connection.Query<Fornecedor>(FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
         }
 
         public async Task InserirEndereco(int fornecedor_id, Endereco endereco)
         {
-            try
+            using (var connection = await _connection.GetConnectionAsync())
             {
-                using (var connection = await _connection.GetConnectionAsync())
+                using (var transaction = connection.BeginTransaction())
                 {
-                    using (var transaction = connection.BeginTransaction())
+                    try
                     {
-                        try
-                        {
-                            var endereco_id = await connection.InsertAsync<Endereco>(endereco, transaction);
-                            if (endereco_id <= 0)
-                                throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
+                        var endereco_id = await connection.InsertAsync<Endereco>(endereco, transaction);
+                        if (endereco_id <= 0)
+                            throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
 
-                            var row = await connection.InsertAsync<EnderecoFornecedor>(
-                                _mapper.MontaEnderecoFornecedor(fornecedor_id, endereco_id),transaction);
-                            if (row <= 0)
-                            {
-                                transaction.Rollback();
-                                throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
-                            }
-                            transaction.Commit();
-                        }
-                        catch (Exception)
+                        var row = await connection.InsertAsync<EnderecoFornecedor>(
+                            _mapper.MontaEnderecoFornecedor(fornecedor_id, endereco_id), transaction);
+                        if (row <= 0)
                         {
                             transaction.Rollback();
-                            throw;
+                            throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
                         }
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
                     }
                 }
-            }
-            catch (Exception)
-            {
-                throw;
             }
         }
 
@@ -142,27 +106,20 @@ namespace Comercio.Data.Repositories.Fornecedores
             => await _telefoneRepository.InserirTelefoneFornecedor(fornecedor_id, telefone);
         public async Task InserirVendedor(int fornecedor_id, Vendedor vendedor)
         {
-            //try
-            //{
-            //    foreach (var vendedor in vendedores)
+            //foreach (var vendedor in vendedores)
             //    {
             //        var pessoa_id = await connection.InsertAsync<Pessoa>(vendedor);
             //        if (pessoa_id <= 0)
             //            throw new Exception("Erro ao tentar inserir o vendedor");
 
-            //        var row = await connection.InsertAsync<FornecedorVendedor>(new FornecedorVendedor()
-            //        {
-            //            Fornecedor_id = fornecedor_id,
-            //            Pessoa_id = pessoa_id
-            //        });
-            //        if (row <= 0)
-            //            throw new Exception("Erro ao tentar inserir o vendedor");
-            //    }
-            //}
-            //catch (Exception)
-            //{
-            //    throw;
-            //}
+                //        var row = await connection.InsertAsync<FornecedorVendedor>(new FornecedorVendedor()
+                //        {
+                //            Fornecedor_id = fornecedor_id,
+                //            Pessoa_id = pessoa_id
+                //        });
+                //        if (row <= 0)
+                //            throw new Exception("Erro ao tentar inserir o vendedor");
+                //    }
         }
 
         public Task<Fornecedor> UpdateAsync(Fornecedor entity)
@@ -171,16 +128,10 @@ namespace Comercio.Data.Repositories.Fornecedores
         }
 
         public async Task<int> ObterIdTipoTelefone(string tipoTelefone)
-        {
-            using var connection = await _connection.GetConnectionAsync();
-            return await _telefoneRepository.ObterIdTipoTelefone(tipoTelefone);
-        }
+            => await _telefoneRepository.ObterIdTipoTelefone(tipoTelefone);
 
         public async Task<List<TipoTelefoneResponse>> ObterDescricaoTipoTelefone()
-        {
-            using var connection = await _connection.GetConnectionAsync();
-            return await _telefoneRepository.ListarDescricaoTipoTelefone();
-        }
+            => await _telefoneRepository.ListarDescricaoTipoTelefone();
 
         public async Task<int> ObterIdTipoEndereco(string tipoEndereco)
         {
@@ -197,32 +148,12 @@ namespace Comercio.Data.Repositories.Fornecedores
         }
 
         public async Task<bool> ExcluirTelefone(int fornecedor_id, int telefone_id)
-        {
-            using var connection = await _connection.GetConnectionAsync();
-            return await _telefoneRepository.ExcluirTelefoneFornecedor(fornecedor_id, telefone_id);
-        }
+            => await _telefoneRepository.ExcluirTelefoneFornecedor(fornecedor_id, telefone_id);
 
         #region Métodos privados
 
-        public static async Task<List<Telefone>> RetornarTelefoneDoFornecedor(int fornecedor_id, MySqlConnection connection)
-        {
-            List<Telefone> ret = new();
-            //var telefoneIds = await connection.QueryAsync<int>(
-            //        sql: FornecedorQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
-            //        param: new { fornecedor_id });
-            //if(telefoneIds.Any())
-            //    foreach (var item in telefoneIds)
-            //        ret.Add(connection.Get<Telefone>(item));
-
-            //var tipoTelefoneDesc = (await connection.QueryAsync<TipoTelefoneResponse>(
-            //        FornecedorQuerys.SELECT_TIPO_TELEFONE)).ToList();
-
-            //foreach (var telef in ret)
-            //    telef.Tipo_telefone = tipoTelefoneDesc
-            //            .Where(x => x.Id == telef.Tipo_telefone_id)
-            //            .Select(x => x.Descricao).FirstOrDefault();
-            return ret;
-        }
+        private async Task<List<Telefone>> RetornarTelefoneDoFornecedor(int fornecedor_id)
+            => await _telefoneRepository.ListarTelefoneFornecedor(fornecedor_id);
 
         static async Task<List<Endereco>> RetornarEnderecoDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
