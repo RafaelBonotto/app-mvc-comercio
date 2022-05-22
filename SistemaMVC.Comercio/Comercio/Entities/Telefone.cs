@@ -1,6 +1,7 @@
 ﻿using Comercio.Enums;
 using Dapper.Contrib.Extensions;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Comercio.Entities
 {
@@ -11,11 +12,16 @@ namespace Comercio.Entities
         public int Tipo_telefone_id { get; set; }
 
         [Write(false)]
+        [Display(Name = "TIPO")]
         public string Tipo_telefone { get; set; }
+
+        [Display(Name = "DDD")]
         public string Ddd { get; set; }
+
+        [Display(Name = "NÚMERO")]
         public string Numero { get; set; }
         public sbyte Ativo { get; set; }
-        public DateTime Data_criacao { get; set; }
-        public DateTime Data_alteracao { get; set; }
+        public DateTime Data_criacao { get; set; } 
+        public DateTime Data_alteracao { get; set; } 
     }
 }
