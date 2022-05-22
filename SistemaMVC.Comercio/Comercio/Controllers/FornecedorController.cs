@@ -67,16 +67,36 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    //Adaper.MontaTelefone... ou...
-                    //_telefoneService.InserirTelefoneFornecedor(fornecedorId, new Telefone
-                    //{
-                    //    Ddd = ddd,
-                    //    Numero = numero,
-                    //    Tipo_telefone = tipoTelefone
-                    //});
                     var fornecedorResponse = await _service.InserirTelefone(fornecedorId, ddd, numero, tipoTelefone);
                     if (fornecedorResponse is null)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
+                    return View("Detalhes", fornecedorViewModel);
+                }
+                catch (System.Exception)
+                {
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+                }
+            }
+            else
+            {
+                return View("Error", new ErrorViewModel().ErroDeValidacao());
+            }
+        }
+
+        [HttpPost]
+        [Route("[controller]/editar-telefone/")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditarTelefone(int fornecedor_id, int telefone_id, string ddd, string numero, string tipoTelefone)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var update = await _service.EditarTelefone(telefone_id, ddd, numero, tipoTelefone);
+                    if (!update)
+                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // Erro ao tentar atualizar o telefone...
+                    var fornecedorResponse = await _service.BuscarFornecedor(fornecedor_id);
                     var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
                     return View("Detalhes", fornecedorViewModel);
                 }
