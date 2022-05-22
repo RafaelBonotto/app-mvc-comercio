@@ -21,7 +21,6 @@ namespace Comercio.Data.Repositories.Fornecedores
         private readonly IFornecedorAdapter _mapper;
         private readonly ITelefoneRepository _telefoneRepository;
 
-
         public FornecedorRepository(
             IMySqlConnectionManager connection, 
             IFornecedorAdapter mapper,
@@ -60,7 +59,7 @@ namespace Comercio.Data.Repositories.Fornecedores
         {
             using var connection = await _connection.GetConnectionAsync();
             var fornecedor = connection.Get<Fornecedor>(id);
-            fornecedor.Telefone = await RetornarTelefoneDoFornecedor(fornecedor.Id);
+            fornecedor.Telefone = await _telefoneRepository.ListarTelefoneFornecedor(id);
             fornecedor.Endereco = await RetornarEnderecoDoFornecedor(fornecedor.Id, connection);
             //fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
             return fornecedor;
@@ -151,9 +150,6 @@ namespace Comercio.Data.Repositories.Fornecedores
             => await _telefoneRepository.ExcluirTelefoneFornecedor(fornecedor_id, telefone_id);
 
         #region Métodos privados
-
-        private async Task<List<Telefone>> RetornarTelefoneDoFornecedor(int fornecedor_id)
-            => await _telefoneRepository.ListarTelefoneFornecedor(fornecedor_id);
 
         static async Task<List<Endereco>> RetornarEnderecoDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
