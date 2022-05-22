@@ -25,9 +25,18 @@ namespace Comercio.Data.Repositories.Telefones
             _mapperTelefone = mapperTelefone;
         }
 
-        public bool EditarTelefone(int id)
+        public async Task<bool> AtualizarTelefone(Telefone telefone)
         {
-            throw new System.NotImplementedException();
+            using var connection = await _connection.GetConnectionAsync();
+            var telefoneBanco = connection.Get<Telefone>(telefone.Id);
+            if(telefoneBanco is null)
+                return false; // EXCEPTION...
+            telefoneBanco.Ddd = telefone.Ddd;
+            telefoneBanco.Numero = telefone.Numero;
+            telefoneBanco.Tipo_telefone_id = telefone.Tipo_telefone_id;
+            telefoneBanco.Ativo = 1;
+            telefoneBanco.Data_alteracao = DateTime.Now;
+            return connection.Update<Telefone>(telefoneBanco);
         }
 
         public async Task<bool> ExcluirTelefoneFornecedor(int fornecedor_id, int telefone_id)
@@ -81,8 +90,8 @@ namespace Comercio.Data.Repositories.Telefones
                     sql: TelefoneQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
                     param: new { fornecedor_id });
             if (telefoneIds.Any())
-                foreach (var item in telefoneIds)
-                    ret.Add(connection.Get<Telefone>(item));
+                foreach (var id in telefoneIds)
+                    ret.Add(connection.Get<Telefone>(id));
 
             var tipoTelefoneDesc = (await connection.QueryAsync<TipoTelefoneResponse>(
                     TelefoneQuerys.SELECT_TIPO_TELEFONE)).ToList();
