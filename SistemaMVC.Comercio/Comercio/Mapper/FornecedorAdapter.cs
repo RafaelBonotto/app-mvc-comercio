@@ -77,5 +77,16 @@ namespace Comercio.Mapper
                 Data_alteracao = DateTime.Now
             };
         }
+
+        public Telefone MontaUpdateTelefone(int telefone_id, string ddd, string numero, int tipoTelefone_id)
+        {
+            return new Telefone
+            {
+                Id = telefone_id,
+                Ddd = ddd,
+                Numero = numero,
+                Tipo_telefone_id = tipoTelefone_id
+            };
+        }
     }
 }
