@@ -56,14 +56,14 @@ namespace Comercio.Data.Repositories.Telefones
             {
                 var telefone_id = await connection.InsertAsync<Telefone>(telefone, transaction);
                 if (telefone_id <= 0)
-                    throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
+                    return false;
 
                 var row = await connection.InsertAsync<TelefoneFornecedor>(
                     entityToInsert: _mapperTelefone.MontaTelefoneFornecedor(fornecedor_id, telefone_id), transaction);
                 if (row <= 0)
                 {
                     transaction.Rollback();
-                    throw new Exception("Erro ao tentar inserir o telefone do fornecedor");
+                    return false;
                 }
                 transaction.Commit();
                 return true;
