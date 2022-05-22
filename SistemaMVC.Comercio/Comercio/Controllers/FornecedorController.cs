@@ -61,16 +61,19 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/adicionar-telefone/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdicionarTelefone(int fornecedorId, string ddd, string numero, string tipoTelefone)
+        public async Task<IActionResult> AdicionarTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var fornecedorResponse = await _service.InserirTelefone(fornecedorId, ddd, numero, tipoTelefone);
-                    if (fornecedorResponse is null)
-                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
-                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
+                    var insert = await _service.InserirTelefone(fornecedor_id, ddd, numero, tipoTelefone);
+                    if (!insert)
+                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR ADICIONAR
+                    var fornecedorResponse = await _service.BuscarFornecedor(fornecedor_id);
+                    var tipoTelefoneBanco = await _service.ObterTipoTelefone();
+                    var tipoEnderecoBanco = await _service.ObterTipoEndereco();
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -97,7 +100,9 @@ namespace Comercio.Controllers
                     if (!update)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // Erro ao tentar atualizar o telefone...
                     var fornecedorResponse = await _service.BuscarFornecedor(fornecedor_id);
-                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
+                    var tipoTelefoneBanco = await _service.ObterTipoTelefone();
+                    var tipoEnderecoBanco = await _service.ObterTipoEndereco();
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -116,10 +121,13 @@ namespace Comercio.Controllers
         {
             try
             {
-                var fornecedorResponse = await _service.ExcluirTelefone(fornecedor_id, telefone_id);
-                if (fornecedorResponse is null)
-                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
-                var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
+                var delete = await _service.ExcluirTelefone(fornecedor_id, telefone_id);
+                if (!delete)
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR EXCLUIR
+                var fornecedorResponse = await _service.BuscarFornecedor(fornecedor_id);
+                var tipoTelefoneBanco = await _service.ObterTipoTelefone();
+                var tipoEnderecoBanco = await _service.ObterTipoEndereco();
+                var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
                 return View("Detalhes", fornecedorViewModel);
             }
             catch (System.Exception)
@@ -195,18 +203,9 @@ namespace Comercio.Controllers
                 var fornecedor = await _service.BuscarFornecedor(id);
                 if (fornecedor is null)
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());// Alterar erro
-
-                var viewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                 var tipoTelefone = await _service.ObterTipoTelefone();
-                viewModel.TipoTelefone = new SelectList(tipoTelefone);
-                viewModel.TipoEndereco = new SelectList(await _service.ObterTipoEndereco());
-                foreach (var telefone in viewModel.Telefone)
-                {
-                    telefone.Tipo_telefone = tipoTelefone
-                        .Where(x => x.Id == telefone.Tipo_telefone_id)
-                        .Select(x => x.Descricao)
-                        .FirstOrDefault();
-                }
+                var tipoEndereco = await _service.ObterTipoEndereco();
+                var viewModel = _mapper.CriarFornecedorViewModel(fornecedor, tipoTelefone, tipoEndereco);
                 return View("Detalhes", viewModel);
             }
             catch (System.Exception)
