@@ -103,6 +103,7 @@ namespace Comercio.Data.Repositories.Fornecedores
 
         public async Task<bool> InserirTelefone(int fornecedor_id, Telefone telefone)
             => await _telefoneRepository.InserirTelefoneFornecedor(fornecedor_id, telefone);
+
         public async Task InserirVendedor(int fornecedor_id, Vendedor vendedor)
         {
             //foreach (var vendedor in vendedores)
