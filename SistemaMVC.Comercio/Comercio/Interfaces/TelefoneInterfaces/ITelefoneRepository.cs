@@ -7,7 +7,7 @@ namespace Comercio.Interfaces.TelefoneInterfaces
 {
     public interface ITelefoneRepository
     {
-        bool EditarTelefone(int id);
+        Task<bool> AtualizarTelefone(Telefone telefone);
         Task<int> ObterIdTipoTelefone(string tipoTelefone);
         Task<List<TipoTelefoneResponse>> ListarDescricaoTipoTelefone();
         Task<bool> InserirTelefoneFornecedor(int fornecedor_id, Telefone telefone);
