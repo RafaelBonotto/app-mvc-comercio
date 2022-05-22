@@ -1,8 +1,11 @@
-﻿using Comercio.Entities;
+﻿using Comercio.Data.Repositories.Response;
+using Comercio.Entities;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
 using System;
+using System.Linq;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Comercio.Mapper
 {
@@ -10,7 +13,7 @@ namespace Comercio.Mapper
     {
         public FornecedorViewModel CriarFornecedorViewModel(Fornecedor fornecedor)
         {
-            return new FornecedorViewModel()
+            return new FornecedorViewModel
             {
                 Id = fornecedor.Id,
                 Cnpj = fornecedor.Cnpj,
@@ -18,6 +21,38 @@ namespace Comercio.Mapper
                 Telefone = fornecedor.Telefone,
                 Endereco = fornecedor.Endereco
             };
+        }
+
+        public FornecedorViewModel CriarFornecedorViewModel(
+            Fornecedor fornecedor, 
+            List<TipoTelefoneResponse> tipoTelRepositorio, 
+            List<TipoEnderecoResponse> tipoEndRepositorio)
+        {
+            foreach (var telefone in fornecedor.Telefone)
+            {
+                telefone.Tipo_telefone = tipoTelRepositorio
+                    .Where(x => x.Id == telefone.Tipo_telefone_id)
+                    .Select(x => x.Descricao)
+                    .FirstOrDefault();
+            }
+            //foreach (var endereco in fornecedor.Endereco)
+            //{
+            //    endereco.tipo_endereco = tipoEndRepositorio
+            //        .Where(x => x.Id == endereco.Tipo_endereco_id)
+            //        .Select(x => x.Descricao)
+            //        .FirstOrDefault();
+            //}
+            var ret = new FornecedorViewModel()
+            {
+                Id = fornecedor.Id,
+                Cnpj = fornecedor.Cnpj,
+                Nome_empresa = fornecedor.Nome_empresa.ToUpper(),
+                Telefone = fornecedor.Telefone,
+                Endereco = fornecedor.Endereco
+            };
+            ret.TipoTelefone = new SelectList(tipoTelRepositorio);
+            ret.TipoEndereco = new SelectList(tipoEndRepositorio);
+            return ret;
         }
 
         public EnderecoFornecedor MontaFornecedorEndereco(FornecedorViewModel fornecedor)
@@ -72,6 +107,19 @@ namespace Comercio.Mapper
             {
                 Fornecedor_id = fornecedorId,
                 Endereco_id = enderecoId,
+                Ativo = 1,
+                Data_criacao = DateTime.Now,
+                Data_alteracao = DateTime.Now
+            };
+        }
+
+        public Telefone MontaInsertTelefone(string ddd, string numero, int tipoTelefone_id)
+        {
+            return new Telefone
+            {
+                Ddd = ddd,
+                Numero = numero,
+                Tipo_telefone_id = tipoTelefone_id,
                 Ativo = 1,
                 Data_criacao = DateTime.Now,
                 Data_alteracao = DateTime.Now
