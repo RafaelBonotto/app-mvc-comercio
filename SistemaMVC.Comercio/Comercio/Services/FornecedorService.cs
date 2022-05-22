@@ -84,6 +84,13 @@ namespace Comercio.Services
             }
         }
 
+        public async Task<bool> EditarTelefone(int telefone_id, string ddd, string numero, string tipoTelefone)
+        {
+            var tipoTelefoneId = await _repositoryFornecedor.ObterIdTipoTelefone(tipoTelefone);
+            Telefone telefone = _mapper.MontaUpdateTelefone(telefone_id, ddd, numero, tipoTelefoneId);
+            return await _repositoryTelefone.AtualizarTelefone(telefone);
+        }
+
         public async Task<Fornecedor> InserirEndereco(
             int fornecedor_id, 
             string logradouro, 
@@ -130,16 +137,7 @@ namespace Comercio.Services
         }
 
         public async Task<Fornecedor> BuscarFornecedor(int id)
-        {
-            try
-            {
-                return await Fornecedor.GetByIdAsync(id);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
+            => await Fornecedor.GetByIdAsync(id);
 
         public async Task<List<TipoEnderecoResponse>> ObterTipoEndereco()
         {
