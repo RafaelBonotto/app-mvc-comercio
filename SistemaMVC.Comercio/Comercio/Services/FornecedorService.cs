@@ -38,50 +38,27 @@ namespace Comercio.Services
 
         public async Task<Fornecedor> InserirFornecedor(FornecedorViewModel fornecedor)
         {
-            try
+            if (string.IsNullOrEmpty(fornecedor.Cnpj))
             {
-                if (string.IsNullOrEmpty(fornecedor.Cnpj))
+                var checkFornecedor = await Fornecedor.GetByKeyAsync(fornecedor.Cnpj);
+                if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 1)
+                    throw new CnpjInvalidoException();
+                if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 0)
                 {
-                    var checkFornecedor = await Fornecedor.GetByKeyAsync(fornecedor.Cnpj);
-                    if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 1)
-                        throw new CnpjInvalidoException();
-                    if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 0)
-                    {
-                        fornecedor.Id = checkFornecedor.First().Id;
-                        //return await this.AtualizarFornecedor(fornecedor);
-                    }
+                    fornecedor.Id = checkFornecedor.First().Id;
+                    //return await this.AtualizarFornecedor(fornecedor);
                 }
-                var fornecedorRepository = _mapper.MontaFornecedorInsertRepositorio(fornecedor);
-                var fornecedorResponse =  await Fornecedor.AddAsync(fornecedorRepository);       
-                return fornecedorResponse;
             }
-            catch (System.Exception)
-            {
-                throw;
-            }
+            var fornecedorRepository = _mapper.MontaFornecedorInsertRepositorio(fornecedor);
+            var fornecedorResponse = await Fornecedor.AddAsync(fornecedorRepository);
+            return fornecedorResponse;
         }
 
-        public async Task<Fornecedor> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
+        public async Task<bool> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
         {
-            try
-            {
-                var tipoTelefoneId = await _repositoryFornecedor.ObterIdTipoTelefone(tipoTelefone);
-                var telefone = new Telefone()
-                {
-                    Ddd = ddd,
-                    Numero = numero,
-                    Tipo_telefone_id = tipoTelefoneId,
-                    Ativo = 1,
-                    Data_criacao = DateTime.Now,
-                    Data_alteracao = DateTime.Now
-                };
-                await _repositoryFornecedor.InserirTelefone(fornecedor_id, telefone);
-                return await Fornecedor.GetByIdAsync(fornecedor_id);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
+            var tipoTelefoneId = await _repositoryFornecedor.ObterIdTipoTelefone(tipoTelefone);
+            var telefone = _mapper.MontaInsertTelefone(ddd, numero, tipoTelefoneId);
+            return await _repositoryFornecedor.InserirTelefone(fornecedor_id, telefone);
         }
 
         public async Task<bool> EditarTelefone(int telefone_id, string ddd, string numero, string tipoTelefone)
@@ -125,56 +102,18 @@ namespace Comercio.Services
         }
 
         public async Task<List<Fornecedor>> ListarFornecedores()
-        {
-            try
-            {
-                return await Fornecedor.GetAllAsync();
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
+            => await Fornecedor.GetAllAsync();
 
         public async Task<Fornecedor> BuscarFornecedor(int id)
             => await Fornecedor.GetByIdAsync(id);
-
+            
         public async Task<List<TipoEnderecoResponse>> ObterTipoEndereco()
-        {
-            try
-            {
-                return await _repositoryFornecedor.ObterTipoEndereco();
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
+            => await _repositoryFornecedor.ObterTipoEndereco();
 
         public async Task<List<TipoTelefoneResponse>> ObterTipoTelefone()
-        {
-            try
-            {
-                return await _repositoryFornecedor.ObterDescricaoTipoTelefone();
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
+            => await _repositoryFornecedor.ObterDescricaoTipoTelefone();
 
-        public async Task<Fornecedor> ExcluirTelefone(int fornecedor_id, int telefone_id)
-        {
-            try
-            {
-                await _repositoryFornecedor.ExcluirTelefone(fornecedor_id, telefone_id);
-                return await Fornecedor.GetByIdAsync(fornecedor_id); 
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
+        public async Task<bool> ExcluirTelefone(int fornecedor_id, int telefone_id)
+            => await _repositoryFornecedor.ExcluirTelefone(fornecedor_id, telefone_id);
     }
 }
