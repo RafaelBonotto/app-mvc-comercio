@@ -97,7 +97,7 @@ namespace Comercio.Services
             return await _repositoryEndereco.InserirEnderecoFornecedor(fornecedor_id, endereco);
         }
 
-        public async Task<bool> EditarEndereco(
+        public async Task<bool> AtualizarEndereco(
             int endereco_id,
             string logradouro,
             string numero,
@@ -119,7 +119,7 @@ namespace Comercio.Services
                     estado: estado,
                     uf: uf);
             endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(tipoEndereco);
-            return await _repositoryEndereco.EditarEnderecoFornecedor(endereco);
+            return await _repositoryEndereco.AtualizarEndereco(endereco);
         }
 
         public async Task<bool> ExcluirEndereco(int fornecedor_id, int endereco_id)
