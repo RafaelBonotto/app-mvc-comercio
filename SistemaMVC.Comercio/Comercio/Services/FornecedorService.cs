@@ -72,21 +72,19 @@ namespace Comercio.Services
             return await _repositoryTelefone.AtualizarTelefone(telefone);
         }
 
-        public async Task<Fornecedor> InserirEndereco(
-            int fornecedor_id, 
-            string logradouro, 
-            string numero, 
-            string complemento, 
-            string cep, 
+        public async Task<bool> InserirEndereco(
+            int fornecedor_id,
+            string logradouro,
+            string numero,
+            string complemento,
+            string cep,
             string bairro,
             string cidade,
             string estado,
             string uf,
             string tipoEndereco)
         {
-            try
-            {
-                var endereco = _mapper.MontarInsertEndereco(
+            var endereco = _mapper.MontarInsertEndereco(
                     logradouro: logradouro,
                     numero: numero,
                     complemento: complemento,
@@ -95,15 +93,37 @@ namespace Comercio.Services
                     cidade: cidade,
                     estado: estado,
                     uf: uf);
-                endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(tipoEndereco);
-                await _repositoryEndereco.InserirEnderecoFornecedor(fornecedor_id, endereco);
-                return await Fornecedor.GetByIdAsync(fornecedor_id);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
+            endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(tipoEndereco);
+            return await _repositoryEndereco.InserirEnderecoFornecedor(fornecedor_id, endereco);
         }
+
+        public async Task<bool> EditarEndereco(
+            int endereco_id,
+            string logradouro,
+            string numero,
+            string complemento,
+            string cep,
+            string bairro,
+            string cidade,
+            string estado,
+            string uf,
+            string tipoEndereco)
+        {
+            var endereco = _mapper.MontarInsertEndereco(
+                    logradouro: logradouro,
+                    numero: numero,
+                    complemento: complemento,
+                    cep: cep,
+                    bairro: bairro,
+                    cidade: cidade,
+                    estado: estado,
+                    uf: uf);
+            endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(tipoEndereco);
+            return await _repositoryEndereco.EditarEnderecoFornecedor(endereco);
+        }
+
+        public async Task<bool> ExcluirEndereco(int fornecedor_id, int endereco_id)
+           => await _repositoryEndereco.ExcluirEnderecoFornecedor(fornecedor_id, endereco_id);
 
         public async Task<List<Fornecedor>> ListarFornecedores()
             => await Fornecedor.GetAllAsync();
