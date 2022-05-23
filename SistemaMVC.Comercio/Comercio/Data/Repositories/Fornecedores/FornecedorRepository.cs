@@ -63,7 +63,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             using var connection = await _connection.GetConnectionAsync();
             var fornecedor = connection.Get<Fornecedor>(id);
             fornecedor.Telefone = await _telefoneRepository.ListarTelefoneFornecedor(id);
-            fornecedor.Endereco = await _enderecoRepository.ObterEnderecoDoFornecedor(fornecedor.Id);
+            fornecedor.Endereco = await _enderecoRepository.ObterEnderecoFornecedor(fornecedor.Id);
             //fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
             return fornecedor;
         }
