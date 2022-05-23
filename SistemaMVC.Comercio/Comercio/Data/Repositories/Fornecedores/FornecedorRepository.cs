@@ -101,9 +101,6 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
-        public async Task<bool> InserirTelefone(int fornecedor_id, Telefone telefone)
-            => await _telefoneRepository.InserirTelefoneFornecedor(fornecedor_id, telefone);
-
         public async Task InserirVendedor(int fornecedor_id, Vendedor vendedor)
         {
             //foreach (var vendedor in vendedores)
@@ -127,12 +124,6 @@ namespace Comercio.Data.Repositories.Fornecedores
             throw new NotImplementedException();
         }
 
-        public async Task<int> ObterIdTipoTelefone(string tipoTelefone)
-            => await _telefoneRepository.ObterIdTipoTelefone(tipoTelefone);
-
-        public async Task<List<TipoTelefoneResponse>> ObterDescricaoTipoTelefone()
-            => await _telefoneRepository.ListarDescricaoTipoTelefone();
-
         public async Task<int> ObterIdTipoEndereco(string tipoEndereco)
         {
             using var connection = await _connection.GetConnectionAsync();
@@ -146,9 +137,6 @@ namespace Comercio.Data.Repositories.Fornecedores
             return (await connection.QueryAsync<TipoEnderecoResponse>(
                 FornecedorQuerys.SELECT_TIPO_ENDERECO)).ToList();
         }
-
-        public async Task<bool> ExcluirTelefone(int fornecedor_id, int telefone_id)
-            => await _telefoneRepository.ExcluirTelefoneFornecedor(fornecedor_id, telefone_id);
 
         #region Métodos privados
 
