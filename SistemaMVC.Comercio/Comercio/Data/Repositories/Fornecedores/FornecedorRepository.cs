@@ -2,16 +2,16 @@
 using Comercio.Data.Querys;
 using Comercio.Entities;
 using Comercio.Interfaces.Base;
+using Comercio.Interfaces.EnderecoInterfaces;
+using Comercio.Interfaces.FornecedorInterfaces;
+using Comercio.Interfaces.TelefoneInterfaces;
 using Dapper;
 using Dapper.Contrib.Extensions;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Comercio.Interfaces.FornecedorInterfaces;
 using MySqlConnector;
-using Comercio.Data.Repositories.Response;
-using Comercio.Interfaces.TelefoneInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Comercio.Data.Repositories.Fornecedores
 {
@@ -20,15 +20,18 @@ namespace Comercio.Data.Repositories.Fornecedores
         private readonly IMySqlConnectionManager _connection;
         private readonly IFornecedorAdapter _mapper;
         private readonly ITelefoneRepository _telefoneRepository;
+        private readonly IEnderecoRepository _enderecoRepository;
 
         public FornecedorRepository(
             IMySqlConnectionManager connection, 
             IFornecedorAdapter mapper,
-            ITelefoneRepository telefoneRepository)
+            ITelefoneRepository telefoneRepository,
+            IEnderecoRepository enderecoRepository)
         {
             _connection = connection;
             _mapper = mapper;
             _telefoneRepository = telefoneRepository;
+            _enderecoRepository = enderecoRepository;
         }
 
         public async Task<Fornecedor> AddAsync(Fornecedor fornecedor)
@@ -60,7 +63,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             using var connection = await _connection.GetConnectionAsync();
             var fornecedor = connection.Get<Fornecedor>(id);
             fornecedor.Telefone = await _telefoneRepository.ListarTelefoneFornecedor(id);
-            fornecedor.Endereco = await RetornarEnderecoDoFornecedor(fornecedor.Id, connection);
+            fornecedor.Endereco = await _enderecoRepository.ObterEnderecoDoFornecedor(fornecedor.Id);
             //fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
             return fornecedor;
         }
@@ -69,36 +72,6 @@ namespace Comercio.Data.Repositories.Fornecedores
         {
             using var connection = await _connection.GetConnectionAsync();
             return (connection.Query<Fornecedor>(FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
-        }
-
-        public async Task InserirEndereco(int fornecedor_id, Endereco endereco)
-        {
-            using (var connection = await _connection.GetConnectionAsync())
-            {
-                using (var transaction = connection.BeginTransaction())
-                {
-                    try
-                    {
-                        var endereco_id = await connection.InsertAsync<Endereco>(endereco, transaction);
-                        if (endereco_id <= 0)
-                            throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
-
-                        var row = await connection.InsertAsync<EnderecoFornecedor>(
-                            _mapper.MontaEnderecoFornecedor(fornecedor_id, endereco_id), transaction);
-                        if (row <= 0)
-                        {
-                            transaction.Rollback();
-                            throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
-                        }
-                        transaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
-            }
         }
 
         public async Task InserirVendedor(int fornecedor_id, Vendedor vendedor)
@@ -124,34 +97,10 @@ namespace Comercio.Data.Repositories.Fornecedores
             throw new NotImplementedException();
         }
 
-        public async Task<int> ObterIdTipoEndereco(string tipoEndereco)
-        {
-            using var connection = await _connection.GetConnectionAsync();
-            return connection.QueryFirstOrDefault<int>(
-                FornecedorQuerys.SELECT_ID_TIPO_ENDERECO, new { tipoEndereco });
-        }
-
-        public async Task<List<TipoEnderecoResponse>> ObterTipoEndereco()
-        {
-            using var connection = await _connection.GetConnectionAsync();
-            return (await connection.QueryAsync<TipoEnderecoResponse>(
-                FornecedorQuerys.SELECT_TIPO_ENDERECO)).ToList();
-        }
+        
 
         #region Métodos privados
-
-        static async Task<List<Endereco>> RetornarEnderecoDoFornecedor(int fornecedor_id, MySqlConnection connection)
-        {
-            List<Endereco> ret = new();
-            var enderecosIds = await connection.QueryAsync<int>(
-                    sql: FornecedorQuerys.SELECT_ID_ENDERECO_FORNECEDOR,
-                    param: new { fornecedor_id });
-            if(enderecosIds.Any())
-                foreach (var item in enderecosIds)
-                    ret.Add(connection.Get<Endereco>(item));
-            return ret;
-        }
-
+        
         static async Task<List<Vendedor>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
             List<Vendedor> ret = new();
