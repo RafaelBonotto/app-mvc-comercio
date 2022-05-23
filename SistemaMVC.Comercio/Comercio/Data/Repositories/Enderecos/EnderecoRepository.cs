@@ -25,7 +25,7 @@ namespace Comercio.Data.Repositories.Enderecos
             _mapper = mapper;
         }
 
-        public async Task InserirEnderecoFornecedor(int fornecedor_id, Endereco endereco)
+        public async Task<bool> InserirEnderecoFornecedor(int fornecedor_id, Endereco endereco)
         {
             using (var connection = await _connection.GetConnectionAsync())
             {
@@ -35,16 +35,17 @@ namespace Comercio.Data.Repositories.Enderecos
                     {
                         var endereco_id = await connection.InsertAsync<Endereco>(endereco, transaction);
                         if (endereco_id <= 0)
-                            throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
+                            return false;
 
                         var row = await connection.InsertAsync<EnderecoFornecedor>(
                             _mapper.MontaInsertEnderecoFornecedor(fornecedor_id, endereco_id), transaction);
                         if (row <= 0)
                         {
                             transaction.Rollback();
-                            throw new Exception("Erro ao tentar inserir o endereço do fornecedor");
+                            return false;
                         }
                         transaction.Commit();
+                        return true;
                     }
                     catch (Exception)
                     {
