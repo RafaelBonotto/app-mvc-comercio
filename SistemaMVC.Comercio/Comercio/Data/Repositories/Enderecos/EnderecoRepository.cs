@@ -69,7 +69,7 @@ namespace Comercio.Data.Repositories.Enderecos
                 EnderecoQuerys.SELECT_TIPO_ENDERECO)).ToList();
         }
 
-        public async Task<List<Endereco>> ObterEnderecoDoFornecedor(int fornecedor_id)
+        public async Task<List<Endereco>> ObterEnderecoFornecedor(int fornecedor_id)
         {
             List<Endereco> ret = new();
             using var connection = await _connection.GetConnectionAsync();
@@ -90,5 +90,32 @@ namespace Comercio.Data.Repositories.Enderecos
             return ret;
         }
 
+        public async Task<bool> AtualizarEndereco(Endereco endereco)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            var enderecoBanco = connection.Get<Endereco>(endereco.Id);
+            if (enderecoBanco is null)
+                return false; // EXCEPTION...
+            enderecoBanco.Logradouro = endereco.Logradouro;
+            enderecoBanco.Numero = endereco.Numero;
+            enderecoBanco.Complemento = endereco.Complemento;
+            enderecoBanco.Cep = endereco.Cep;
+            enderecoBanco.Bairro = endereco.Bairro;
+            enderecoBanco.Cidade = endereco.Cidade;
+            enderecoBanco.Estado = endereco.Estado;
+            enderecoBanco.UF = endereco.UF;
+            enderecoBanco.Ativo = endereco.Ativo;
+            enderecoBanco.Data_alteracao = DateTime.Now;
+            return connection.Update<Endereco>(enderecoBanco);
+        }
+
+        public async Task<bool> ExcluirEnderecoFornecedor(int fornecedor_id, int endereco_id)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            await connection.QueryAsync(
+                sql: EnderecoQuerys.DESATIVAR_ENDERECO_FORNECEDOR,
+                param: new { fornecedor_id, endereco_id });
+            return true;
+        }
     }
 }
