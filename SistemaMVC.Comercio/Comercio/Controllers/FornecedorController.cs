@@ -2,9 +2,7 @@
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Comercio.Controllers
@@ -155,12 +153,58 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    var fornecedorResponse = await _service.InserirEndereco(
+                    var insert = await _service.InserirEndereco(
                         fornecedorId, logradouro, numero, complemento, cep, bairro, cidade, estado, uf, tipoEndereco);
 
-                    if (fornecedorResponse is null)
-                        return View("Error", new ErrorViewModel().ProdutoErroAoTentarInserir());
-                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
+                    if (!insert)
+                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO
+                    var fornecedorResponse = await _service.BuscarFornecedor(fornecedorId);
+                    var tipoTelefoneBanco = await _service.ObterTipoTelefone();
+                    var tipoEnderecoBanco = await _service.ObterTipoEndereco();
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
+                    return View("Detalhes", fornecedorViewModel);
+                }
+                catch (System.Exception)
+                {
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+                }
+            }
+            else
+            {
+                return View("Error", new ErrorViewModel().ErroDeValidacao());
+            }
+        }
+
+        [HttpPost]
+        [Route("[controller]/editar-endereco/")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditarEndereco(
+            int fornecedor_id,
+            int endereco_id,
+            string logradouro,
+            string numero,
+            string complemento,
+            string cep,
+            string bairro,
+            string cidade,
+            string estado,
+            string uf,
+            string tipoEndereco)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var update = await _service.AtualizarEndereco(
+                        endereco_id, logradouro, numero, complemento, cep, bairro, cidade, estado, uf, tipoEndereco);
+
+                    if (!update)
+                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO 
+
+                    var fornecedorResponse = await _service.BuscarFornecedor(fornecedor_id);
+                    var tipoTelefoneBanco = await _service.ObterTipoTelefone();
+                    var tipoEnderecoBanco = await _service.ObterTipoEndereco();
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
