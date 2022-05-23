@@ -1,5 +1,4 @@
-﻿using Comercio.Enums;
-using Dapper.Contrib.Extensions;
+﻿using Dapper.Contrib.Extensions;
 using System;
 
 namespace Comercio.Entities
@@ -20,5 +19,8 @@ namespace Comercio.Entities
         public sbyte Ativo { get; set; }
         public DateTime Data_criacao { get; set; }
         public DateTime Data_alteracao { get; set; }
+
+        [Write(false)]
+        public string Tipo_endereco { get; set; }
     }
 }
