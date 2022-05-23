@@ -56,14 +56,14 @@ namespace Comercio.Services
 
         public async Task<bool> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
         {
-            var tipoTelefoneId = await _repositoryFornecedor.ObterIdTipoTelefone(tipoTelefone);
+            var tipoTelefoneId = await _repositoryTelefone.ObterIdTipoTelefone(tipoTelefone);
             var telefone = _mapper.MontaInsertTelefone(ddd, numero, tipoTelefoneId);
-            return await _repositoryFornecedor.InserirTelefone(fornecedor_id, telefone);
+            return await _repositoryTelefone.InserirTelefoneFornecedor(fornecedor_id, telefone);
         }
 
         public async Task<bool> EditarTelefone(int telefone_id, string ddd, string numero, string tipoTelefone)
         {
-            var tipoTelefoneId = await _repositoryFornecedor.ObterIdTipoTelefone(tipoTelefone);
+            var tipoTelefoneId = await _repositoryTelefone.ObterIdTipoTelefone(tipoTelefone);
             Telefone telefone = _mapper.MontaUpdateTelefone(telefone_id, ddd, numero, tipoTelefoneId);
             return await _repositoryTelefone.AtualizarTelefone(telefone);
         }
@@ -111,9 +111,9 @@ namespace Comercio.Services
             => await _repositoryFornecedor.ObterTipoEndereco();
 
         public async Task<List<TipoTelefoneResponse>> ObterTipoTelefone()
-            => await _repositoryFornecedor.ObterDescricaoTipoTelefone();
+            => await _repositoryTelefone.ListarDescricaoTipoTelefone();
 
         public async Task<bool> ExcluirTelefone(int fornecedor_id, int telefone_id)
-            => await _repositoryFornecedor.ExcluirTelefone(fornecedor_id, telefone_id);
+            => await _repositoryTelefone.ExcluirTelefoneFornecedor(fornecedor_id, telefone_id);
     }
 }
