@@ -8,7 +8,7 @@ namespace Comercio.Interfaces.EnderecoInterfaces
     public interface IEnderecoRepository
     {
         Task<bool> AtualizarEndereco(Endereco endereco);
-        Task InserirEnderecoFornecedor(int fornecedor_id, Endereco endereco);
+        Task<bool> InserirEnderecoFornecedor(int fornecedor_id, Endereco endereco);
         Task<bool> ExcluirEnderecoFornecedor(int fornecedor_id, int endereco_id);
         Task<int> ObterIdTipoEndereco(string tipoEndereco);
         Task<List<TipoEnderecoResponse>> ObterDescricaoTipoEndereco();
