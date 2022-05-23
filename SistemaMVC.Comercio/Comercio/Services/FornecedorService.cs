@@ -2,6 +2,7 @@
 using Comercio.Entities;
 using Comercio.Exceptions.Fornecedor;
 using Comercio.Interfaces.Base;
+using Comercio.Interfaces.EnderecoInterfaces;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.TelefoneInterfaces;
 using Comercio.Models;
@@ -17,17 +18,20 @@ namespace Comercio.Services
         private readonly IRepositoryBase<Fornecedor> Fornecedor;
         private readonly IFornecedorRepository _repositoryFornecedor;
         private readonly ITelefoneRepository _repositoryTelefone;
+        private readonly IEnderecoRepository _repositoryEndereco;
         private readonly IFornecedorAdapter _mapper;
 
         public FornecedorService(
             IRepositoryBase<Fornecedor> repository, 
             IFornecedorRepository fornecedorRepository, 
             IFornecedorAdapter mapper,
-            ITelefoneRepository repositoryTelefone)
+            ITelefoneRepository repositoryTelefone,
+            IEnderecoRepository repositoryEndereco)
         {
             Fornecedor = repository;
             _repositoryFornecedor = fornecedorRepository;
             _repositoryTelefone = repositoryTelefone;
+            _repositoryEndereco = repositoryEndereco;
             _mapper = mapper;
         }
 
@@ -91,8 +95,8 @@ namespace Comercio.Services
                     cidade: cidade,
                     estado: estado,
                     uf: uf);
-                endereco.Tipo_endereco_id = await _repositoryFornecedor.ObterIdTipoEndereco(tipoEndereco);
-                await _repositoryFornecedor.InserirEndereco(fornecedor_id, endereco);
+                endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(tipoEndereco);
+                await _repositoryEndereco.InserirEnderecoFornecedor(fornecedor_id, endereco);
                 return await Fornecedor.GetByIdAsync(fornecedor_id);
             }
             catch (System.Exception)
@@ -108,7 +112,7 @@ namespace Comercio.Services
             => await Fornecedor.GetByIdAsync(id);
             
         public async Task<List<TipoEnderecoResponse>> ObterTipoEndereco()
-            => await _repositoryFornecedor.ObterTipoEndereco();
+            => await _repositoryEndereco.ObterDescricaoTipoEndereco();
 
         public async Task<List<TipoTelefoneResponse>> ObterTipoTelefone()
             => await _repositoryTelefone.ListarDescricaoTipoTelefone();
