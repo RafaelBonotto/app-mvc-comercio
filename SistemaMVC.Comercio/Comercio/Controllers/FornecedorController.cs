@@ -218,6 +218,26 @@ namespace Comercio.Controllers
             }
         }
 
+        [HttpGet("[controller]/excluir-endereco")]
+        public async Task<IActionResult> ExcluirEndereco(int fornecedor_id, int endereco_id)
+        {
+            try
+            {
+                var delete = await _service.ExcluirEndereco(fornecedor_id, endereco_id);
+                if (!delete)
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO AO TENTAR EXCLUIR
+                var fornecedorResponse = await _service.BuscarFornecedor(fornecedor_id);
+                var tipoTelefoneBanco = await _service.ObterTipoTelefone();
+                var tipoEnderecoBanco = await _service.ObterTipoEndereco();
+                var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
+                return View("Detalhes", fornecedorViewModel);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
+
         [HttpGet("[controller]/listar")]
         public async Task<IActionResult> ListarFornecedores()
         {
