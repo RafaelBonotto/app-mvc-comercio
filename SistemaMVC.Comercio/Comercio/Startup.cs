@@ -1,18 +1,17 @@
 using Comercio.Data.ConnectionManager;
-using Comercio.Data.Repositories;
+using Comercio.Data.Repositories.Enderecos;
 using Comercio.Data.Repositories.Fornecedores;
 using Comercio.Data.Repositories.Produtos;
 using Comercio.Data.Repositories.Setores;
 using Comercio.Data.Repositories.Telefones;
 using Comercio.Entities;
-using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
+using Comercio.Interfaces.EnderecoInterfaces;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Interfaces.SetorInterfaces;
 using Comercio.Interfaces.TelefoneInterfaces;
 using Comercio.Mapper;
-using Comercio.Models;
 using Comercio.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +46,7 @@ namespace Comercio
             services.AddScoped(typeof(ISetorAdapter), typeof(SetorAdapter));
             services.AddScoped(typeof(IFornecedorAdapter), typeof(FornecedorAdapter));
             services.AddScoped(typeof(ITelefoneAdapter), typeof(TelefoneAdapter));
+            services.AddScoped(typeof(IEnderecoAdapter), typeof(EnderecoAdapter));
             // Services
             services.AddScoped(typeof(IProdutoService), typeof(ProdutoService));
             services.AddScoped(typeof(ISetorService), typeof(SetorService));
@@ -59,6 +59,7 @@ namespace Comercio
             services.AddScoped(typeof(IProdutoRepository), typeof(ProdutoRepository));
             services.AddScoped(typeof(IFornecedorRepository), typeof(FornecedorRepository));
             services.AddScoped(typeof(ITelefoneRepository), typeof(TelefoneRepository));
+            services.AddScoped(typeof(IEnderecoRepository), typeof(EnderecoRepository));
 
             #endregion
         }
