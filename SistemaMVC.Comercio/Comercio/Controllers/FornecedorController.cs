@@ -68,10 +68,8 @@ namespace Comercio.Controllers
                     var insert = await _service.InserirTelefone(fornecedor_id, ddd, numero, tipoTelefone);
                     if (!insert)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR ADICIONAR
-                    var fornecedorResponse = await _service.BuscarFornecedor(fornecedor_id);
-                    var tipoTelefoneBanco = await _service.ObterTipoTelefone();
-                    var tipoEnderecoBanco = await _service.ObterTipoEndereco();
-                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
+
+                    var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -97,10 +95,8 @@ namespace Comercio.Controllers
                     var update = await _service.EditarTelefone(telefone_id, ddd, numero, tipoTelefone);
                     if (!update)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // Erro ao tentar atualizar o telefone...
-                    var fornecedorResponse = await _service.BuscarFornecedor(fornecedor_id);
-                    var tipoTelefoneBanco = await _service.ObterTipoTelefone();
-                    var tipoEnderecoBanco = await _service.ObterTipoEndereco();
-                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
+
+                    var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -122,10 +118,8 @@ namespace Comercio.Controllers
                 var delete = await _service.ExcluirTelefone(fornecedor_id, telefone_id);
                 if (!delete)
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR EXCLUIR
-                var fornecedorResponse = await _service.BuscarFornecedor(fornecedor_id);
-                var tipoTelefoneBanco = await _service.ObterTipoTelefone();
-                var tipoEnderecoBanco = await _service.ObterTipoEndereco();
-                var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
+
+                var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
                 return View("Detalhes", fornecedorViewModel);
             }
             catch (System.Exception)
@@ -158,10 +152,8 @@ namespace Comercio.Controllers
 
                     if (!insert)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO
-                    var fornecedorResponse = await _service.BuscarFornecedor(fornecedorId);
-                    var tipoTelefoneBanco = await _service.ObterTipoTelefone();
-                    var tipoEnderecoBanco = await _service.ObterTipoEndereco();
-                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
+
+                    var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedorId);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -201,10 +193,7 @@ namespace Comercio.Controllers
                     if (!update)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO 
 
-                    var fornecedorResponse = await _service.BuscarFornecedor(fornecedor_id);
-                    var tipoTelefoneBanco = await _service.ObterTipoTelefone();
-                    var tipoEnderecoBanco = await _service.ObterTipoEndereco();
-                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
+                    var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -226,10 +215,8 @@ namespace Comercio.Controllers
                 var delete = await _service.ExcluirEndereco(fornecedor_id, endereco_id);
                 if (!delete)
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO AO TENTAR EXCLUIR
-                var fornecedorResponse = await _service.BuscarFornecedor(fornecedor_id);
-                var tipoTelefoneBanco = await _service.ObterTipoTelefone();
-                var tipoEnderecoBanco = await _service.ObterTipoEndereco();
-                var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
+
+                var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
                 return View("Detalhes", fornecedorViewModel);
             }
             catch (System.Exception)
