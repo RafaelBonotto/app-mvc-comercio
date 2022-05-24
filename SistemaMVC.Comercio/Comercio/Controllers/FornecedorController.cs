@@ -132,7 +132,7 @@ namespace Comercio.Controllers
         [Route("[controller]/adicionar-endereco/")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AdicionarEndereco(
-            int fornecedorId,
+            int fornecedor_id,
             string logradouro,
             string numero,
             string complemento,
@@ -148,12 +148,12 @@ namespace Comercio.Controllers
                 try
                 {
                     var insert = await _service.InserirEndereco(
-                        fornecedorId, logradouro, numero, complemento, cep, bairro, cidade, estado, uf, tipoEndereco);
+                        fornecedor_id, logradouro, numero, complemento, cep, bairro, cidade, estado, uf, tipoEndereco);
 
                     if (!insert)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO
 
-                    var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedorId);
+                    var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
