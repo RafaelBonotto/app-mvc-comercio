@@ -35,13 +35,13 @@ namespace Comercio.Mapper
                     .Select(x => x.Descricao)
                     .FirstOrDefault();
             }
-            //foreach (var endereco in fornecedor.Endereco)
-            //{
-            //    endereco.tipo_endereco = tipoEndRepositorio
-            //        .Where(x => x.Id == endereco.Tipo_endereco_id)
-            //        .Select(x => x.Descricao)
-            //        .FirstOrDefault();
-            //}
+            foreach (var endereco in fornecedor.Endereco)
+            {
+                endereco.Tipo_endereco = tipoEndRepositorio
+                    .Where(x => x.Id == endereco.Tipo_endereco_id)
+                    .Select(x => x.Descricao)
+                    .FirstOrDefault();
+            }
             var ret = new FornecedorViewModel()
             {
                 Id = fornecedor.Id,
