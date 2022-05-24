@@ -15,7 +15,7 @@ namespace Comercio.Services
 {
     public class FornecedorService : IFornecedorService
     {
-        private readonly IRepositoryBase<Fornecedor> Fornecedor;
+        private readonly IRepositoryBase<Fornecedor> _repositoryBase;
         private readonly IFornecedorRepository _repositoryFornecedor;
         private readonly ITelefoneRepository _repositoryTelefone;
         private readonly IEnderecoRepository _repositoryEndereco;
@@ -28,7 +28,7 @@ namespace Comercio.Services
             ITelefoneRepository repositoryTelefone,
             IEnderecoRepository repositoryEndereco)
         {
-            Fornecedor = repository;
+            _repositoryBase = repository;
             _repositoryFornecedor = fornecedorRepository;
             _repositoryTelefone = repositoryTelefone;
             _repositoryEndereco = repositoryEndereco;
@@ -44,7 +44,7 @@ namespace Comercio.Services
         {
             if (string.IsNullOrEmpty(fornecedor.Cnpj))
             {
-                var checkFornecedor = await Fornecedor.GetByKeyAsync(fornecedor.Cnpj);
+                var checkFornecedor = await _repositoryBase.GetByKeyAsync(fornecedor.Cnpj);
                 if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 1)
                     throw new CnpjInvalidoException();
                 if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 0)
@@ -54,7 +54,7 @@ namespace Comercio.Services
                 }
             }
             var fornecedorRepository = _mapper.MontaFornecedorInsertRepositorio(fornecedor);
-            var fornecedorResponse = await Fornecedor.AddAsync(fornecedorRepository);
+            var fornecedorResponse = await _repositoryBase.AddAsync(fornecedorRepository);
             return fornecedorResponse;
         }
 
@@ -122,15 +122,24 @@ namespace Comercio.Services
             return await _repositoryEndereco.AtualizarEndereco(endereco);
         }
 
+        public async Task<FornecedorViewModel> RetornarForncedorViewModel(int fornecedor_id)
+        {
+            var fornecedorResponse = await this.BuscarFornecedor(fornecedor_id);
+            var tipoTelefoneBanco = await this.ObterTipoTelefone();
+            var tipoEnderecoBanco = await this.ObterTipoEndereco();
+            return _mapper.CriarFornecedorViewModel(
+                fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
+        }
+
         public async Task<bool> ExcluirEndereco(int fornecedor_id, int endereco_id)
            => await _repositoryEndereco.ExcluirEnderecoFornecedor(fornecedor_id, endereco_id);
 
         public async Task<List<Fornecedor>> ListarFornecedores()
-            => await Fornecedor.GetAllAsync();
+            => await _repositoryBase.GetAllAsync();
 
         public async Task<Fornecedor> BuscarFornecedor(int id)
-            => await Fornecedor.GetByIdAsync(id);
-            
+            => await _repositoryBase.GetByIdAsync(id);
+
         public async Task<List<TipoEnderecoResponse>> ObterTipoEndereco()
             => await _repositoryEndereco.ObterDescricaoTipoEndereco();
 
