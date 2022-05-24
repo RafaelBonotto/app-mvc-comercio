@@ -1,4 +1,5 @@
-﻿using Dapper.Contrib.Extensions;
+﻿using Comercio.Data.Repositories.Response;
+using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
 
@@ -16,14 +17,20 @@ namespace Comercio.Entities
 
         [Write(false)]
         public virtual List<Produto> Produtos { get; set; }
-         
+
         [Write(false)]
         public virtual List<Endereco> Endereco { get; set; }
-        
+
         [Write(false)]
         public virtual List<Telefone> Telefone { get; set; }
-        
+
         [Write(false)]
         public virtual List<Vendedor> Vendedor { get; set; }
+
+        [Write(false)]
+        public virtual List<TipoTelefoneResponse> DescricaoTipoTelefone { get; set; }
+
+        [Write(false)]
+        public virtual List<TipoEnderecoResponse> DescricaoTipoEndereco { get; set; }
     }
 }
