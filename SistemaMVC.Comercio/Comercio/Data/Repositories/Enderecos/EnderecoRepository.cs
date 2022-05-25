@@ -72,23 +72,32 @@ namespace Comercio.Data.Repositories.Enderecos
 
         public async Task<List<Endereco>> ObterEnderecoFornecedor(int fornecedor_id)
         {
-            List<Endereco> ret = new();
-            using var connection = await _connection.GetConnectionAsync();
-            var enderecosIds = await connection.QueryAsync<int>(
-                    sql: EnderecoQuerys.SELECT_ID_ENDERECO_FORNECEDOR,
-                    param: new { fornecedor_id });
-            if (enderecosIds.Any())
-                foreach (var item in enderecosIds)
-                    ret.Add(connection.Get<Endereco>(item));
+            try
+            {
+                List<Endereco> ret = new();
+                using var connection = await _connection.GetConnectionAsync();
+                var enderecosIds = await connection.QueryAsync<int>(
+                        sql: EnderecoQuerys.SELECT_ID_ENDERECO_FORNECEDOR,
+                        param: new { fornecedor_id });
+                if (enderecosIds.Any())
+                    foreach (var item in enderecosIds)
+                        ret.Add(connection.Get<Endereco>(item));
 
-            var tipoEnderecoDesc = (await connection.QueryAsync<TipoTelefoneResponse>(
-                    EnderecoQuerys.SELECT_ID_TIPO_ENDERECO)).ToList();
+                var tipoEnderecoDesc = (await connection.QueryAsync<TipoTelefoneResponse>(
+                        EnderecoQuerys.SELECT_TIPO_ENDERECO)).ToList();
 
-            foreach (var endereco in ret)
-                endereco.Tipo_endereco = tipoEnderecoDesc
-                        .Where(x => x.Id == endereco.Tipo_endereco_id)
-                        .Select(x => x.Descricao).FirstOrDefault();
-            return ret;
+                foreach (var endereco in ret)
+                    endereco.Tipo_endereco = tipoEnderecoDesc
+                            .Where(x => x.Id == endereco.Tipo_endereco_id)
+                            .Select(x => x.Descricao).FirstOrDefault();
+                return ret;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
         }
 
         public async Task<bool> AtualizarEndereco(Endereco endereco)
