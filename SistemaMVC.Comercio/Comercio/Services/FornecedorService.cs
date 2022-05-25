@@ -109,7 +109,8 @@ namespace Comercio.Services
             string uf,
             string tipoEndereco)
         {
-            var endereco = _mapper.MontarInsertEndereco(
+            var endereco = _mapper.MontarUpdateEndereco(
+                    id: endereco_id,
                     logradouro: logradouro,
                     numero: numero,
                     complemento: complemento,
@@ -127,7 +128,7 @@ namespace Comercio.Services
             var fornecedorResponse = await this.BuscarFornecedor(fornecedor_id);
             var tipoTelefoneBanco = await this.ObterTipoTelefone();
             var tipoEnderecoBanco = await this.ObterTipoEndereco();
-            return _mapper.CriarFornecedorViewModel(
+            return await _mapper.CriarFornecedorViewModel(
                 fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
         }
 
