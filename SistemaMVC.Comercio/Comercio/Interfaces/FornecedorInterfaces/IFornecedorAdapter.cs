@@ -2,6 +2,7 @@
 using Comercio.Entities;
 using Comercio.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Comercio.Interfaces.FornecedorInterfaces
 {
@@ -13,9 +14,12 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Endereco MontarInsertEndereco(
             string logradouro, string numero, string complemento, string cep, 
             string bairro, string cidade, string estado, string uf);
+        Endereco MontarUpdateEndereco(int id,
+            string logradouro, string numero, string complemento, string cep, 
+            string bairro, string cidade, string estado, string uf);
         EnderecoFornecedor MontaEnderecoFornecedor(int fornecedorId, int enderecoId);
         FornecedorViewModel CriarFornecedorViewModel(Fornecedor fornecedor);
-        FornecedorViewModel CriarFornecedorViewModel(
+        Task<FornecedorViewModel> CriarFornecedorViewModel(
             Fornecedor fornecedor,
             List<TipoTelefoneResponse> tipoTelRepositorio,
             List<TipoEnderecoResponse> tipoEndRepositorio);
