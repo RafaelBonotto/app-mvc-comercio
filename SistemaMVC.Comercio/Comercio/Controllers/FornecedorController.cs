@@ -69,7 +69,7 @@ namespace Comercio.Controllers
                     if (!insert)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR ADICIONAR
 
-                    var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
+                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -96,7 +96,7 @@ namespace Comercio.Controllers
                     if (!update)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // Erro ao tentar atualizar o telefone...
 
-                    var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
+                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -119,7 +119,7 @@ namespace Comercio.Controllers
                 if (!delete)
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR EXCLUIR
 
-                var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
+                var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
                 return View("Detalhes", fornecedorViewModel);
             }
             catch (System.Exception)
@@ -153,7 +153,7 @@ namespace Comercio.Controllers
                     if (!insert)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO
 
-                    var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
+                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -193,7 +193,7 @@ namespace Comercio.Controllers
                     if (!update)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO 
 
-                    var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
+                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -216,7 +216,7 @@ namespace Comercio.Controllers
                 if (!delete)
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO AO TENTAR EXCLUIR
 
-                var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
+                var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
                 return View("Detalhes", fornecedorViewModel);
             }
             catch (System.Exception)
@@ -254,10 +254,9 @@ namespace Comercio.Controllers
                 var fornecedor = await _service.BuscarFornecedor(id);
                 if (fornecedor is null)
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());// Alterar erro
-                var tipoTelefone = await _service.ObterTipoTelefone();
-                var tipoEndereco = await _service.ObterTipoEndereco();
-                var viewModel = _mapper.CriarFornecedorViewModel(fornecedor, tipoTelefone, tipoEndereco);
-                return View("Detalhes", viewModel);
+
+                var fornecedorViewModel = await _service.RetornarForncedorViewModel(id);
+                return View("Detalhes", fornecedorViewModel);
             }
             catch (System.Exception)
             {
