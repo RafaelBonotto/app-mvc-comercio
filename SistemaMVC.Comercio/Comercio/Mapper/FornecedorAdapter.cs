@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Threading.Tasks;
 
 namespace Comercio.Mapper
 {
@@ -23,7 +24,7 @@ namespace Comercio.Mapper
             };
         }
 
-        public FornecedorViewModel CriarFornecedorViewModel(
+        public async Task<FornecedorViewModel> CriarFornecedorViewModel(
             Fornecedor fornecedor, 
             List<TipoTelefoneResponse> tipoTelRepositorio, 
             List<TipoEnderecoResponse> tipoEndRepositorio)
@@ -98,6 +99,31 @@ namespace Comercio.Mapper
                 Ativo = 1,
                 Data_criacao = DateTime.Now,
                 Data_alteracao = DateTime.Now
+            };
+        }
+
+        public Endereco MontarUpdateEndereco(
+            int id,
+            string logradouro,
+            string numero,
+            string complemento,
+            string cep,
+            string bairro,
+            string cidade,
+            string estado,
+            string uf)
+        {
+            return new Endereco()
+            {
+                Id = id,
+                Logradouro = logradouro.ToUpper(),
+                Numero = numero,
+                Complemento = complemento.ToUpper(),
+                Cep = cep,
+                Bairro = bairro.ToUpper(),
+                Cidade = cidade.ToUpper(),
+                Estado = estado.ToUpper(),
+                UF = uf.ToUpper()
             };
         }
 
