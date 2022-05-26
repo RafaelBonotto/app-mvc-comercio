@@ -83,25 +83,14 @@ namespace Comercio.Controllers
             }
         }
 
-        [Route("[controller]/atualizar-telefone/{id}")]
-        public async Task<IActionResult> AtualizarTelefone(int telefone_id)
+        [Route("[controller]/atualizar-telefone/")]
+        public async Task<IActionResult> AtualizarTelefone(int fornecedor_id, int telefone_id)
         {
             try
             {
-                //var telefone = await _service.ObterTelefoneFornecedor(telefone_id);
-                ////RETORNA VIEWMODEL
-                //if (telefone is null)
-                //    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG
-                //// ISSO SAI
-                //var produtoViewModel = _mapper.MontaViewModel(produto);
-                //var setores = new SelectList(await _produtoService.ListarSetores());
-                //if (setores is null)
-                //    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
-
-                //produtoViewModel.SetoresBanco = setores;
-                //// ATÉ AQUI
-                //return View("Editar", produtoViewModel);
-                return Ok();
+                var telefoneViewModel = await _service.RetornarTelefoneFornecedorViewModel(telefone_id, fornecedor_id);
+                // VALIDAÇÃO NO RETORNO ?
+                return View("TelefoneFornecedorViewModel", telefoneViewModel);
             }
             catch (System.Exception)
             {
@@ -213,7 +202,7 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    var update = await _service.AtualizarEndereco(
+                    var update = await _service.EditarEndereco(
                         endereco_id, logradouro, numero, complemento, cep, bairro, cidade, estado, uf, tipoEndereco);
 
                     if (!update)
