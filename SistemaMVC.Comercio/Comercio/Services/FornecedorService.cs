@@ -6,6 +6,7 @@ using Comercio.Interfaces.EnderecoInterfaces;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.TelefoneInterfaces;
 using Comercio.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,7 +98,7 @@ namespace Comercio.Services
             return await _repositoryEndereco.InserirEnderecoFornecedor(fornecedor_id, endereco);
         }
 
-        public async Task<bool> AtualizarEndereco(
+        public async Task<bool> EditarEndereco(
             int endereco_id,
             string logradouro,
             string numero,
@@ -130,6 +131,15 @@ namespace Comercio.Services
             var tipoEnderecoBanco = await this.ObterTipoEndereco();
             return await _mapper.CriarFornecedorViewModel(
                 fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
+        }
+
+        public async Task<TelefoneFornecedorViewModel> RetornarTelefoneFornecedorViewModel(int fornecedor_id, int telefone_id)
+        {
+            var telefoneBanco = await _repositoryTelefone.GetById(telefone_id);
+            var telefoneViewModel = _mapper.MontaTelefoneFornecedorViewModel(telefoneBanco, fornecedor_id);
+            var tiposTelefone = new SelectList(await _repositoryTelefone.ListarDescricaoTipoTelefone());
+            telefoneViewModel.TiposTelefoneBanco = tiposTelefone;
+            return telefoneViewModel;
         }
 
         public async Task<bool> ExcluirEndereco(int fornecedor_id, int endereco_id)
