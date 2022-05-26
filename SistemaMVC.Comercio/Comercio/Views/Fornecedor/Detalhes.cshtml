@@ -229,7 +229,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form asp-controller="Fornecedor" asp-action="editar-telefone" asp-route-fornecedor_id=@Model.Id asp-route-telefone_id="@item.Id">
+                                        <form asp-controller="Fornecedor" asp-action="editar-telefone" asp-route-fornecedor_id=@Model.Id>
                                             <h6>DDD: <input type="text" name="ddd" /></h6>
                                             <h6>NOVO NÚMERO: <input type="text" name="numero" /></h6>
                                             <h6>TIPO DE TELEFONE: <select name="tipoTelefone" asp-items="@Model.TipoTelefone" class="align-items-md-center"></select></h6>
