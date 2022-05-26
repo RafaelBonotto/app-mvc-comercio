@@ -109,5 +109,14 @@ namespace Comercio.Data.Repositories.Telefones
             return connection.QueryFirstOrDefault<int>(
             TelefoneQuerys.SELECT_ID_TIPO_TELEFONE, new { tipoTelefone });
         }
+
+        public async Task<Telefone> GetById(int telefone_id)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            var telefoneBanco = connection.Get<Telefone>(telefone_id);
+            if (telefoneBanco is null)
+                return null;
+            return telefoneBanco;
+        }
     }
 }
