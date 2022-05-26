@@ -162,5 +162,17 @@ namespace Comercio.Mapper
                 Tipo_telefone_id = tipoTelefone_id
             };
         }
+
+        public TelefoneFornecedorViewModel MontaTelefoneFornecedorViewModel(Telefone telefone, int fornecedor_id)
+        {
+            return new TelefoneFornecedorViewModel
+            {
+                Telefone_id = telefone.Id,
+                Fornecedor_id = fornecedor_id,
+                Ddd = telefone.Ddd,
+                Numero = telefone.Numero,
+                Tipo_telefone_id = telefone.Tipo_telefone_id
+            };
+        }
     }
 }
