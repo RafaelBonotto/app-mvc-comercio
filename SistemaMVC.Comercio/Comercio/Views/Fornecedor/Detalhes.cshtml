@@ -214,34 +214,9 @@
                         @Html.DisplayFor(modelItem => item.Tipo_telefone)
                     </td>
                     <td>
-                        <!-- Botão para modal editarTelefone-->
-                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEditarTelefone">
-                            EDITAR
-                        </button>
-                        <!-- Modal editar telefone -->
-                        <div class="modal fade" id="modalEditarTelefone" tabindex="-1" role="dialog" aria-labelledby="modalEditarTelefoneLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modalEditarTelefoneLabel">DESEJA ALTERAR O TELEFONE DESSE FORNECEDOR ?</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="CANCELAR">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form asp-controller="Fornecedor" asp-action="editar-telefone" asp-route-fornecedor_id=@Model.Id>
-                                            <h6>DDD: <input type="text" name="ddd" /></h6>
-                                            <h6>NOVO NÚMERO: <input type="text" name="numero" /></h6>
-                                            <h6>TIPO DE TELEFONE: <select name="tipoTelefone" asp-items="@Model.TipoTelefone" class="align-items-md-center"></select></h6>
-                                            <input type="submit" value="SALVAR" class="btn-danger btn-sm" />
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">CANCELAR</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <a asp-controller="Fornecedor" asp-action="atualizar-telefone" asp-route-fornecedor_id=@Model.Id asp-route-telefone_id=@item.Id class="btn btn-success btn-sm">EDITAR</a>
+
+
 
                         <!-- Botão para modal ExcluirTelefone-->
                         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalExcluirTelefone">
@@ -273,33 +248,33 @@
         </tbody>
     </table>
 </div>
-    <div>
-        <!-- Modal InseriTelefone-->
-        <div class="modal fade" id="modalInserirTelefone" tabindex="-1" role="dialog" aria-labelledby="modalInserirTelefoneLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalInserirTelefoneLabel">ADICIONE AQUI UM NOVO TELEFONE PARA ESSE FORNECEDOR:</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="CANCELAR">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form asp-controller="Fornecedor" asp-action="adicionar-telefone" asp-route-fornecedor_id="@Model.Id">
-                            <h6>DDD: <input type="text" name="ddd" /></h6>
-                            <h6>NÚMERO: <input type="text" name="numero" /></h6>
-                            <h6>TIPO DE TELEFONE: <select name="tipoTelefone" asp-items="@Model.TipoTelefone" class="align-items-md-center"></select></h6>                            <input type="submit" value="ADICIONAR" class="btn-danger" />
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">CANCELAR</button>
-                    </div>
+<div>
+    <!-- Modal InseriTelefone-->
+    <div class="modal fade" id="modalInserirTelefone" tabindex="-1" role="dialog" aria-labelledby="modalInserirTelefoneLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalInserirTelefoneLabel">ADICIONE AQUI UM NOVO TELEFONE PARA ESSE FORNECEDOR:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="CANCELAR">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form asp-controller="Fornecedor" asp-action="adicionar-telefone" asp-route-fornecedor_id="@Model.Id">
+                        <h6>DDD: <input type="text" name="ddd" /></h6>
+                        <h6>NÚMERO: <input type="text" name="numero" /></h6>
+                        <h6>TIPO DE TELEFONE: <select name="tipoTelefone" asp-items="@Model.TipoTelefone" class="align-items-md-center"></select></h6>                            <input type="submit" value="ADICIONAR" class="btn-danger" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">CANCELAR</button>
                 </div>
             </div>
         </div>
     </div>
-    <hr />
- <div>
+</div>
+<hr />
+<div>
     <h4>VENDEDORES</h4>
     <!-- Exibir lista de vendedores-->
     <table class="table">
@@ -340,73 +315,100 @@
     </table>
 </div>
 
-        <div>
-            <!-- Modal Adicionar novo vendedor ao fornecedor-->
-            <div class="modal fade" id="modalInserirVendedor" tabindex="-1" role="dialog" aria-labelledby="modalInserirVendedorLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalInserirVendedorLabel">ADICIONE AQUI UM NOVO VENDEDOR PARA ESSE FORNECEDOR:</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="CANCELAR">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form asp-controller="Fornecedor" asp-action="adicionar-vendedor" asp-route-fornecedorId="@Model.Id">
-                                <h6>NOME: <input type="text" name="ddd" /></h6>
-                                TELEFONE
-                                <h6>DDD: <input type="text" name="TelefoneDdd" /></h6>
-                                <h6>NUMERO: <input type="text" name="telefoneNumero" /></h6>
-                                TELEFONE ADICIONAL
-                                <h6>DDD: <input type="text" name="TelefoneDdd" /></h6>
-                                <h6>NUMERO: <input type="text" name="telefoneNumero" /></h6>
-                                <input type="submit" value="ADICIONAR" class="btn-danger" />
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">CANCELAR</button>
-                        </div>
-                    </div>
+<div>
+    <!-- Modal Adicionar novo vendedor ao fornecedor-->
+    <div class="modal fade" id="modalInserirVendedor" tabindex="-1" role="dialog" aria-labelledby="modalInserirVendedorLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalInserirVendedorLabel">ADICIONE AQUI UM NOVO VENDEDOR PARA ESSE FORNECEDOR:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="CANCELAR">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form asp-controller="Fornecedor" asp-action="adicionar-vendedor" asp-route-fornecedorId="@Model.Id">
+                        <h6>NOME: <input type="text" name="ddd" /></h6>
+                        TELEFONE
+                        <h6>DDD: <input type="text" name="TelefoneDdd" /></h6>
+                        <h6>NUMERO: <input type="text" name="telefoneNumero" /></h6>
+                        TELEFONE ADICIONAL
+                        <h6>DDD: <input type="text" name="TelefoneDdd" /></h6>
+                        <h6>NUMERO: <input type="text" name="telefoneNumero" /></h6>
+                        <input type="submit" value="ADICIONAR" class="btn-danger" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">CANCELAR</button>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <hr />
+<hr />
 
-        <div>
-            <a asp-action="editar" asp-route-id="@Model.Id" class="btn btn-success">Editar</a>
-            <!-- Botão para acionar modal Excluir-->
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExcluirFornecedor">
-                Excluir
-            </button>
-        </div>
+<div>
+    <a asp-action="editar" asp-route-id="@Model.Id" class="btn btn-success">Editar</a>
+    <!-- Botão para acionar modal Excluir-->
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExcluirFornecedor">
+        Excluir
+    </button>
+</div>
 
-        <hr />
+<hr />
 
-        <!-- Modal Excluir-->
-        <div class="modal fade" id="modalExcluirFornecedor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">EXCLUIR FORNECEDOR</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        TEM CERTEZA QUE DESEJA EXCLUIR ESSE FORNECEDOR ?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCELAR</button>
-                        <a asp-controller="Fornecedor" asp-action="excluir" asp-route-id="@Model.Id" class="btn btn-danger">EXCLUIR</a>
-                    </div>
-                </div>
+<!-- Modal Excluir-->
+<div class="modal fade" id="modalExcluirFornecedor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">EXCLUIR FORNECEDOR</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                TEM CERTEZA QUE DESEJA EXCLUIR ESSE FORNECEDOR ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCELAR</button>
+                <a asp-controller="Fornecedor" asp-action="excluir" asp-route-id="@Model.Id" class="btn btn-danger">EXCLUIR</a>
             </div>
         </div>
+    </div>
+</div>
 
-        <div>
-            <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
+<div>
+    <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
+</div>
+<!--*******************************-->
+<!-- Botão para modal editarTelefone-->
+@*<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEditarTelefone">
+    EDITAR
+</button>*@
+
+<!-- Modal editar telefone -->
+<!--<div class="modal fade" id="modalEditarTelefone" tabindex="-1" role="dialog" aria-labelledby="modalEditarTelefoneLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarTelefoneLabel">DESEJA ALTERAR O TELEFONE DESSE FORNECEDOR ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="CANCELAR">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="Fornecedor" asp-action="editar-telefone" asp-route-fornecedor_id=@Model.Id>
+                    <h6>DDD: <input type="text" name="ddd" /></h6>
+                    <h6>NOVO NÚMERO: <input type="text" name="numero" /></h6>
+                    <h6>TIPO DE TELEFONE: <select name="tipoTelefone" asp-items="@Model.TipoTelefone" class="align-items-md-center"></select></h6>
+                    <input type="submit" value="SALVAR" class="btn-danger btn-sm" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">CANCELAR</button>
+            </div>
         </div>
-
-
-
+    </div>
+</div>-->
