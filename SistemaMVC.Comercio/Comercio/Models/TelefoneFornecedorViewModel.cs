@@ -7,6 +7,7 @@ namespace Comercio.Models
     {
         public int Fornecedor_id { get; set; }
         public int Telefone_id { get; set; }
+        public int Tipo_telefone_id { get; set; }
         public string Ddd { get; set; }
         public string Numero { get; set; }
         public string Tipo_telefone { get; set; }
