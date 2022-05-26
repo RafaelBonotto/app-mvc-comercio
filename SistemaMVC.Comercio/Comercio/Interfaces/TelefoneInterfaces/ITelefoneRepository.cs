@@ -13,5 +13,6 @@ namespace Comercio.Interfaces.TelefoneInterfaces
         Task<bool> InserirTelefoneFornecedor(int fornecedor_id, Telefone telefone);
         Task<bool> ExcluirTelefoneFornecedor(int fornecedor_id, int telefone_id);
         Task<List<Telefone>> ListarTelefoneFornecedor(int fornecedor_id);
+        Task<Telefone> GetById(int telefone_id);
     }
 }
