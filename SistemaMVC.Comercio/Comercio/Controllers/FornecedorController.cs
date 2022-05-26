@@ -83,6 +83,32 @@ namespace Comercio.Controllers
             }
         }
 
+        [Route("[controller]/atualizar-telefone/{id}")]
+        public async Task<IActionResult> AtualizarTelefone(int telefone_id)
+        {
+            try
+            {
+                //var telefone = await _service.ObterTelefoneFornecedor(telefone_id);
+                ////RETORNA VIEWMODEL
+                //if (telefone is null)
+                //    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG
+                //// ISSO SAI
+                //var produtoViewModel = _mapper.MontaViewModel(produto);
+                //var setores = new SelectList(await _produtoService.ListarSetores());
+                //if (setores is null)
+                //    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+
+                //produtoViewModel.SetoresBanco = setores;
+                //// ATÉ AQUI
+                //return View("Editar", produtoViewModel);
+                return Ok();
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
+
         [HttpPost]
         [Route("[controller]/editar-telefone/")]
         [ValidateAntiForgeryToken]
