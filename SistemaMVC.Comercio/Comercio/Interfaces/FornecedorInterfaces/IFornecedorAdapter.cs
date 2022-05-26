@@ -23,5 +23,6 @@ namespace Comercio.Interfaces.FornecedorInterfaces
             Fornecedor fornecedor,
             List<TipoTelefoneResponse> tipoTelRepositorio,
             List<TipoEnderecoResponse> tipoEndRepositorio);
+        TelefoneFornecedorViewModel MontaTelefoneFornecedorViewModel(Telefone telefone, int fornecedor_id);
     }
 }
