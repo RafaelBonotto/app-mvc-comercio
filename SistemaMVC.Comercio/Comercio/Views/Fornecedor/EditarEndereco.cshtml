@@ -1,0 +1,71 @@
+﻿@model Comercio.Models.EnderecoFornecedorViewModel
+
+@{
+    ViewData["Title"] = "fornecedor/editar-endereco";
+}
+
+<h4 class="display-4">ALTERAR ENDEREÇO DO FORNECEDOR</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        @*AQUI MUDAR TUDO PARA ENDEREÇO ....*@
+        <!--<form asp-action="editar-telefone" asp-route-fornecedor_id="Model.Fornecedor_id" asp-route-telefone_id="Model.Telefone_id">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" />
+        <div class="form-group">
+            <label><strong>DDD</strong></label>
+            <input asp-for="Ddd" class="form-control" />
+            <span><strong asp-validation-for="Ddd" class="text-danger"></strong></span>
+        </div>
+        <div class="form-group">
+            <label><strong>NÚMERO</strong></label>
+            <input asp-for="Numero" class="form-control" />
+            <span asp-validation-for="Numero" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label><strong>TIPO</strong></label>
+            <select asp-for="Tipo_telefone" asp-items="Model.TiposTelefoneBanco" class="form-control">
+            </select>
+            <span asp-validation-for="Tipo_telefone" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="SALVAR" class="btn btn-success " />-->
+        <!-- Botão para modal ExcluirEndereco-->
+        @*<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalExcluirEndereco">
+            EXCLUIR
+        </button>*@
+        @*</form>-->*@
+    </div>
+</div>
+<hr />
+
+<div>
+    <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
+</div>
+
+<!-- Modal ExcluirEndereco-->
+<div class="modal fade" id="modalExcluirEndereco" tabindex="-1" role="dialog" aria-labelledby="modalExcluirEnderecoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalExcluirEnderecoLabel">EXCLUIR ENDEREÇO</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                TEM CERTEZA QUE DESEJA EXCLUIR ESSE ENDEREÇO ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">CANCELAR</button>
+                @*<a asp-controller="Fornecedor" asp-action="excluir-endereco" asp-route-fornecedor_id=@Model.Id asp-route-endereco_id=@Model.Id class="btn btn-danger btn-sm">EXCLUIR</a>
+            </div>*@
+        </div>
+    </div>
+</div>
+@*@section Scripts {
+        @{await Html.RenderPartialAsynContial");}
+    }*@
+
+
