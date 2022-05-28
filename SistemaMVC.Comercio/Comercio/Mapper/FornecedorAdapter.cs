@@ -90,7 +90,7 @@ namespace Comercio.Mapper
             {
                 Logradouro = logradouro.ToUpper(),
                 Numero = numero,
-                Complemento = complemento.ToUpper(),
+                Complemento = string.IsNullOrEmpty(complemento) ? string.Empty : complemento.ToUpper(),
                 Cep = cep,
                 Bairro = bairro.ToUpper(),
                 Cidade = cidade.ToUpper(),
@@ -184,6 +184,7 @@ namespace Comercio.Mapper
                 Logradouro = endereco.Logradouro,
                 Numero = endereco.Numero,
                 Complemento = endereco.Complemento,
+                Cep = endereco.Cep,
                 Bairro = endereco.Bairro,
                 Cidade = endereco.Cidade,
                 Estado = endereco.Estado,
