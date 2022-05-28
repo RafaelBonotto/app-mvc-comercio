@@ -142,6 +142,15 @@ namespace Comercio.Services
             return telefoneViewModel;
         }
 
+        public async Task<EnderecoFornecedorViewModel> RetornarEnderecoFornecedorViewModel(int fornecedor_id, int endreco_id)
+        {
+            var enderecoBanco = await _repositoryEndereco.GetById(endreco_id);
+            var enderecoViewModel = _mapper.MontaEnderecoFornecedorViewModel(enderecoBanco, fornecedor_id);
+            var tiposEndereco = new SelectList(await _repositoryEndereco.ObterDescricaoTipoEndereco());
+            enderecoViewModel.TiposEnderecoBanco = tiposEndereco;
+            return enderecoViewModel;
+        }
+
         public async Task<bool> ExcluirEndereco(int fornecedor_id, int endereco_id)
            => await _repositoryEndereco.ExcluirEnderecoFornecedor(fornecedor_id, endereco_id);
 
