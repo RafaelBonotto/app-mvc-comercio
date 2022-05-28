@@ -10,7 +10,7 @@ namespace Comercio.Entities
         public int Tipo_endereco_id { get; set; }
         public string Logradouro { get; set; }
         public string Numero { get; set; }
-        public string Complemento { get; set; }
+        public string Complemento { get; set; } = string.Empty;
         public string Cep { get; set; }
         public string Bairro { get; set; }
         public string Cidade { get; set; }
