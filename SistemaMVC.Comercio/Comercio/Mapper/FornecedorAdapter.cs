@@ -174,5 +174,22 @@ namespace Comercio.Mapper
                 Tipo_telefone_id = telefone.Tipo_telefone_id
             };
         }
+
+        public EnderecoFornecedorViewModel MontaEnderecoFornecedorViewModel(Endereco endereco, int fornecedor_id)
+        {
+            return new EnderecoFornecedorViewModel
+            {
+                Endereco_id = endereco.Id,
+                Fornecedor_id = fornecedor_id,
+                Logradouro = endereco.Logradouro,
+                Numero = endereco.Numero,
+                Complemento = endereco.Complemento,
+                Bairro = endereco.Bairro,
+                Cidade = endereco.Cidade,
+                Estado = endereco.Estado,
+                UF = endereco.UF,
+                Tipo_endereco_id = endereco.Tipo_endereco_id
+            };
+        }
     }
 }
