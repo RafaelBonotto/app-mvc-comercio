@@ -4,12 +4,12 @@
     ViewData["Title"] = "fornecedor/editar-endereco";
 }
 
-<h4 class="display-4">ALTERAR ENDEREÇO DO FORNECEDOR</h4>
+<h5 class="display-4">ALTERAR ENDEREÇO DO FORNECEDOR</h5>
 <hr />
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="editar-endereco" asp-route-fornecedor_id="@Model.Fornecedor_id" asp-route-telefone_id="@Model.Endereco_id">
+        <form asp-action="editar-endereco" asp-route-fornecedor_id="@Model.Fornecedor_id" asp-route-endereco_id="@Model.Endereco_id">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" />
             <div class="form-group">
@@ -61,9 +61,9 @@
             <div class="form-group">
                 <input type="submit" value="SALVAR" class="btn btn-success" />
                 @*Botão para modal ExcluirEndereco*@
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalExcluirEndereco">EXCLUIR</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExcluirEndereco">EXCLUIR</button>
             </div>
-        </form>-->
+        </form>
     </div>
 </div>
 <hr />
