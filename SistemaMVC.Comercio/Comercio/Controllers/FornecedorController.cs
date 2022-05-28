@@ -83,7 +83,6 @@ namespace Comercio.Controllers
             }
         }
 
-        [HttpPost]
         [Route("[controller]/atualizar-telefone/")]
         public async Task<IActionResult> MontaViewModelAtualizarTelefone(int fornecedor_id, int telefone_id)
         {
@@ -183,7 +182,6 @@ namespace Comercio.Controllers
             }
         }
 
-        [HttpPost]
         [Route("[controller]/atualizar-endereco/")]
         public async Task<IActionResult> MontaViewModelAtualizarEndereco(int fornecedor_id, int endereco_id)
         {
