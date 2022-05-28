@@ -100,6 +100,15 @@ namespace Comercio.Data.Repositories.Enderecos
             
         }
 
+        public async Task<Endereco> GetById(int id)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            var enderecoBanco = connection.Get<Endereco>(id);
+            if (enderecoBanco is null)
+                return null;
+            return enderecoBanco;
+        }
+
         public async Task<bool> AtualizarEndereco(Endereco endereco)
         {
             using var connection = await _connection.GetConnectionAsync();
