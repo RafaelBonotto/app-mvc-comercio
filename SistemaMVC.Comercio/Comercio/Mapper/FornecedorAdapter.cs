@@ -91,11 +91,11 @@ namespace Comercio.Mapper
                 Logradouro = logradouro.ToUpper(),
                 Numero = numero,
                 Complemento = string.IsNullOrEmpty(complemento) ? string.Empty : complemento.ToUpper(),
-                Cep = cep,
-                Bairro = bairro.ToUpper(),
-                Cidade = cidade.ToUpper(),
-                Estado = estado.ToUpper(),
-                UF = uf.ToUpper(),
+                Cep = string.IsNullOrEmpty(complemento) ? string.Empty : cep,
+                Bairro = string.IsNullOrEmpty(bairro) ? string.Empty : bairro.ToUpper(),
+                Cidade = string.IsNullOrEmpty(cidade) ? string.Empty : cidade.ToUpper(),
+                Estado = string.IsNullOrEmpty(estado) ? string.Empty : estado.ToUpper(),
+                UF = string.IsNullOrEmpty(uf) ? string.Empty : uf.ToUpper(),
                 Ativo = 1,
                 Data_criacao = DateTime.Now,
                 Data_alteracao = DateTime.Now
@@ -118,12 +118,12 @@ namespace Comercio.Mapper
                 Id = id,
                 Logradouro = logradouro.ToUpper(),
                 Numero = numero,
-                Complemento = complemento.ToUpper(),
-                Cep = cep,
-                Bairro = bairro.ToUpper(),
-                Cidade = cidade.ToUpper(),
-                Estado = estado.ToUpper(),
-                UF = uf.ToUpper()
+                Complemento = string.IsNullOrEmpty(complemento) ? string.Empty : complemento.ToUpper(),
+                Cep = string.IsNullOrEmpty(complemento) ? string.Empty : cep,
+                Bairro = string.IsNullOrEmpty(bairro) ? string.Empty : bairro.ToUpper(),
+                Cidade = string.IsNullOrEmpty(cidade) ? string.Empty : cidade.ToUpper(),
+                Estado = string.IsNullOrEmpty(estado) ? string.Empty : estado.ToUpper(),
+                UF = string.IsNullOrEmpty(uf) ? string.Empty : uf.ToUpper()
             };
         }
 
