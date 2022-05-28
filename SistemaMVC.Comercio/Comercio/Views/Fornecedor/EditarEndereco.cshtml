@@ -9,33 +9,61 @@
 
 <div class="row">
     <div class="col-md-4">
-        @*AQUI MUDAR TUDO PARA ENDEREÇO ....*@
-        <!--<form asp-action="editar-telefone" asp-route-fornecedor_id="Model.Fornecedor_id" asp-route-telefone_id="Model.Telefone_id">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" />
-        <div class="form-group">
-            <label><strong>DDD</strong></label>
-            <input asp-for="Ddd" class="form-control" />
-            <span><strong asp-validation-for="Ddd" class="text-danger"></strong></span>
-        </div>
-        <div class="form-group">
-            <label><strong>NÚMERO</strong></label>
-            <input asp-for="Numero" class="form-control" />
-            <span asp-validation-for="Numero" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label><strong>TIPO</strong></label>
-            <select asp-for="Tipo_telefone" asp-items="Model.TiposTelefoneBanco" class="form-control">
-            </select>
-            <span asp-validation-for="Tipo_telefone" class="text-danger" />
-        </div>
-        <div class="form-group">
-            <input type="submit" value="SALVAR" class="btn btn-success " />-->
-        <!-- Botão para modal ExcluirEndereco-->
-        @*<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalExcluirEndereco">
-            EXCLUIR
-        </button>*@
-        @*</form>-->*@
+        <form asp-action="editar-endereco" asp-route-fornecedor_id="@Model.Fornecedor_id" asp-route-telefone_id="@Model.Endereco_id">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" />
+            <div class="form-group">
+                <label><strong>LOGRADOURO</strong></label>
+                <input asp-for="Logradouro" class="form-control" />
+                <span><strong asp-validation-for="Logradouro" class="text-danger"></strong></span>
+            </div>
+            <div class="form-group">
+                <label><strong>NÚMERO</strong></label>
+                <input asp-for="Numero" class="form-control" />
+                <span asp-validation-for="Numero" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label><strong>COMPLEMENTO</strong></label>
+                <input asp-for="Complemento" class="form-control" />
+                <span asp-validation-for="Complemento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label><strong>CEP</strong></label>
+                <input asp-for="Cep" class="form-control" />
+                <span asp-validation-for="Cep" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label><strong>BAIRRO</strong></label>
+                <input asp-for="Bairro" class="form-control" />
+                <span asp-validation-for="Bairro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label><strong>CIDADE</strong></label>
+                <input asp-for="Cidade" class="form-control" />
+                <span asp-validation-for="Cidade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label><strong>ESTADO</strong></label>
+                <input asp-for="Estado" class="form-control" />
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label><strong>UF</strong></label>
+                <input asp-for="UF" class="form-control" />
+                <span asp-validation-for="UF" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label><strong>TIPO</strong></label>
+                <select asp-for="Tipo_endereco" asp-items="@Model.TiposEnderecoBanco" class="form-control">
+                </select>
+                <span asp-validation-for="Tipo_endereco" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="SALVAR" class="btn btn-success" />
+                @*Botão para modal ExcluirEndereco*@
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalExcluirEndereco">EXCLUIR</button>
+            </div>
+        </form>-->
     </div>
 </div>
 <hr />
@@ -59,13 +87,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">CANCELAR</button>
-                @*<a asp-controller="Fornecedor" asp-action="excluir-endereco" asp-route-fornecedor_id=@Model.Id asp-route-endereco_id=@Model.Id class="btn btn-danger btn-sm">EXCLUIR</a>
-            </div>*@
+                <a asp-controller="Fornecedor" asp-action="excluir-endereco" asp-route-fornecedor_id=@Model.Fornecedor_id asp-route-endereco_id=@Model.Endereco_id class="btn btn-danger btn-sm">EXCLUIR</a>
+            </div>
+            </div>
         </div>
     </div>
-</div>
-@*@section Scripts {
-        @{await Html.RenderPartialAsynContial");}
-    }*@
+    @*@section Scripts {
+            @{await Html.RenderPartialAsynContial");}
+        }*@
 
 
