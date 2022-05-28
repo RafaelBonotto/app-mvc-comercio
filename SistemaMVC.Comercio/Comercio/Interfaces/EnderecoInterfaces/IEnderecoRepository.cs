@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace Comercio.Interfaces.EnderecoInterfaces
 {
-    public interface IEnderecoRepository
+    public interface IEnderecoRepository 
     {
         Task<bool> AtualizarEndereco(Endereco endereco);
+        Task<Endereco> GetById(int id);
         Task<bool> InserirEnderecoFornecedor(int fornecedor_id, Endereco endereco);
         Task<bool> ExcluirEnderecoFornecedor(int fornecedor_id, int endereco_id);
         Task<int> ObterIdTipoEndereco(string tipoEndereco);
