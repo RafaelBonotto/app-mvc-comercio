@@ -83,14 +83,15 @@ namespace Comercio.Controllers
             }
         }
 
+        [HttpPost]
         [Route("[controller]/atualizar-telefone/")]
-        public async Task<IActionResult> AtualizarTelefone(int fornecedor_id, int telefone_id)
+        public async Task<IActionResult> MontaViewModelAtualizarTelefone(int fornecedor_id, int telefone_id)
         {
             try
             {
-                var telefoneViewModel = await _service.RetornarTelefoneFornecedorViewModel(telefone_id, fornecedor_id);
+                var telefoneViewModel = await _service.RetornarTelefoneFornecedorViewModel(fornecedor_id, telefone_id);
                 // VALIDAÇÃO NO RETORNO ?
-                return View("TelefoneFornecedorViewModel", telefoneViewModel);
+                return View("EditarTelefone", telefoneViewModel);
             }
             catch (System.Exception)
             {
@@ -101,13 +102,13 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/editar-telefone/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditarTelefone(int fornecedor_id, int telefone_id, string ddd, string numero, string tipoTelefone)
+        public async Task<IActionResult> EditarTelefone(int fornecedor_id, int telefone_id, string ddd, string numero, string tipo_telefone)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var update = await _service.EditarTelefone(telefone_id, ddd, numero, tipoTelefone);
+                    var update = await _service.EditarTelefone(telefone_id, ddd, numero, tipo_telefone);
                     if (!update)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // Erro ao tentar atualizar o telefone...
 
@@ -179,6 +180,22 @@ namespace Comercio.Controllers
             else
             {
                 return View("Error", new ErrorViewModel().ErroDeValidacao());
+            }
+        }
+
+        [HttpPost]
+        [Route("[controller]/atualizar-endereco/")]
+        public async Task<IActionResult> MontaViewModelAtualizarEndereco(int fornecedor_id, int endereco_id)
+        {
+            try
+            {
+                var EnderecoViewModel = await _service.RetornarEnderecoFornecedorViewModel(fornecedor_id, endereco_id);
+                // VALIDAÇÃO NO RETORNO ?
+                return View("EditarEndereco", EnderecoViewModel);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
             }
         }
 
