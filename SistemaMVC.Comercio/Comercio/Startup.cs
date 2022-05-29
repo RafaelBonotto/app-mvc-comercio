@@ -1,18 +1,18 @@
 using Comercio.Data.ConnectionManager;
 using Comercio.Data.Repositories.Enderecos;
 using Comercio.Data.Repositories.Fornecedores;
-using Comercio.Data.Repositories.Pessoas;
 using Comercio.Data.Repositories.Produtos;
 using Comercio.Data.Repositories.Setores;
 using Comercio.Data.Repositories.Telefones;
+using Comercio.Data.Repositories.Vendedores;
 using Comercio.Entities;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.EnderecoInterfaces;
 using Comercio.Interfaces.FornecedorInterfaces;
-using Comercio.Interfaces.PessoaInterfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Interfaces.SetorInterfaces;
 using Comercio.Interfaces.TelefoneInterfaces;
+using Comercio.Interfaces.VendedorInterfaces;
 using Comercio.Mapper;
 using Comercio.Services;
 using Microsoft.AspNetCore.Builder;
@@ -49,7 +49,7 @@ namespace Comercio
             services.AddScoped(typeof(IFornecedorAdapter), typeof(FornecedorAdapter));
             services.AddScoped(typeof(ITelefoneAdapter), typeof(TelefoneAdapter));
             services.AddScoped(typeof(IEnderecoAdapter), typeof(EnderecoAdapter));
-            services.AddScoped(typeof(IPessoaAdapter), typeof(PessoaAdapter));
+            services.AddScoped(typeof(IVendedorAdapter), typeof(VendedorAdapter));
             // Services
             services.AddScoped(typeof(IProdutoService), typeof(ProdutoService));
             services.AddScoped(typeof(ISetorService), typeof(SetorService));
@@ -58,12 +58,13 @@ namespace Comercio
             services.AddScoped(typeof(IRepositoryBase<Produto>), typeof(ProdutoRepository));
             services.AddScoped(typeof(IRepositoryBase<Setor>), typeof(SetorRepository));
             services.AddScoped(typeof(IRepositoryBase<Fornecedor>), typeof(FornecedorRepository));
-            services.AddScoped(typeof(IRepositoryBase<Pessoa>), typeof(PessoaRepository));
+
             // Repositorys
             services.AddScoped(typeof(IProdutoRepository), typeof(ProdutoRepository));
             services.AddScoped(typeof(IFornecedorRepository), typeof(FornecedorRepository));
             services.AddScoped(typeof(ITelefoneRepository), typeof(TelefoneRepository));
             services.AddScoped(typeof(IEnderecoRepository), typeof(EnderecoRepository));
+            services.AddScoped(typeof(IVendedorRepository), typeof(VendedorRepository));
 
             #endregion
         }
