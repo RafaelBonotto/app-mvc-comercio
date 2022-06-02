@@ -74,22 +74,38 @@ namespace Comercio.Data.Repositories.Fornecedores
             return (connection.Query<Fornecedor>(FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
         }
 
-        public async Task InserirVendedor(int fornecedor_id, Vendedor vendedor)
+        public async Task<bool> InserirVendedor(int fornecedor_id, PessoaContato vendedor, List<Telefone> telefones)
         {
-            //foreach (var vendedor in vendedores)
-            //    {
-            //        var pessoa_id = await connection.InsertAsync<Pessoa>(vendedor);
-            //        if (pessoa_id <= 0)
-            //            throw new Exception("Erro ao tentar inserir o vendedor");
+            using var connection = await _connection.GetConnectionAsync();
+            using var transaction = connection.BeginTransaction();
+            try
+            {
+                foreach (var telefone in telefones)
+                {
+                    var telefone_id = await connection.InsertAsync<Telefone>(telefone, transaction);
+                    if (telefone_id <= 0)
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
+                }
+               
 
-                //        var row = await connection.InsertAsync<FornecedorVendedor>(new FornecedorVendedor()
-                //        {
-                //            Fornecedor_id = fornecedor_id,
-                //            Pessoa_id = pessoa_id
-                //        });
-                //        if (row <= 0)
-                //            throw new Exception("Erro ao tentar inserir o vendedor");
-                //    }
+                var row = await connection.InsertAsync<Fornecedor>(
+                    entityToInsert: _mapperTelefone.MontaTelefoneFornecedor(fornecedor_id, telefone_id), transaction);
+                if (row <= 0)
+                {
+                    transaction.Rollback();
+                    return false;
+                }
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
 
         public Task<Fornecedor> UpdateAsync(Fornecedor entity)
