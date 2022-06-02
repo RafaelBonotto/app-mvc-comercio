@@ -216,5 +216,17 @@ namespace Comercio.Mapper
                 Data_alteracao = DateTime.Now
             };
         }
+
+        public PessoaContato MontaPessoaContato(string nome, string email)
+        {
+            return new PessoaContato
+            {
+                Nome = nome,
+                Email = email,
+                Ativo = 1,
+                Data_criacao = DateTime.Now,
+                Data_alteracao = DateTime.Now
+            };
+        }
     }
 }
