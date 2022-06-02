@@ -192,5 +192,29 @@ namespace Comercio.Mapper
                 Tipo_endereco_id = endereco.Tipo_endereco_id
             };
         }
+
+        public PessoaContatoFornecedor MontaInsertVendedorFornecedor(int fornecedorId, int vendedorId)
+        {
+            return new PessoaContatoFornecedor
+            {
+                Fornecedor_id = fornecedorId,
+                PessoaContato_id = vendedorId,
+                Ativo = 1,
+                Data_criacao = DateTime.Now,
+                Data_alteracao = DateTime.Now
+            };
+        }
+
+        public PessoaContatoTelefone MontaInsertVendedorTelefone(int vendedorId, int telefoneId)
+        {
+            return new PessoaContatoTelefone
+            {
+                Pessoa_contato_id = vendedorId,
+                Telefone_id = telefoneId,
+                Ativo = 1,
+                Data_criacao = DateTime.Now,
+                Data_alteracao = DateTime.Now
+            };
+        }
     }
 }
