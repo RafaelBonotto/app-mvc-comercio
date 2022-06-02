@@ -80,13 +80,12 @@ namespace Comercio.Data.Repositories.Fornecedores
             using var transaction = connection.BeginTransaction();
             try
             {
-                var vendedor_id = await connection.InsertAsync<PessoaContato>(
-                    entityToInsert: _mapper.MontaVendedor(vendedor), transaction);
+                var vendedor_id = await connection.InsertAsync<PessoaContato>(vendedor, transaction);
                 if (vendedor_id <= 0)
                     return false;
 
                 var vendedorFornecedorId = await connection.InsertAsync<PessoaContatoFornecedor>(
-                    entityToInsert: _mapper.MontaVendedorFornecedor(fornecedor_id, vendedor_id), transaction);
+                    entityToInsert: _mapper.MontaInsertVendedorFornecedor(fornecedor_id, vendedor_id), transaction);
                 if (vendedor_id <= 0)
                 {
                     transaction.Rollback();
@@ -103,7 +102,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                     }
 
                     var vendedorTelefoneId = await connection.InsertAsync<PessoaContatoTelefone>(
-                        entityToInsert: _mapper.MontaVendedorTelefone(vendedor_id, telefone_id), transaction);
+                        entityToInsert: _mapper.MontaInsertVendedorTelefone(vendedor_id, telefone_id), transaction);
                     if (vendedorTelefoneId <= 0)
                     {
                         transaction.Rollback();
