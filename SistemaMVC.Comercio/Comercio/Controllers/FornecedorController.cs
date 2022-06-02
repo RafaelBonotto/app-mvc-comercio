@@ -255,6 +255,114 @@ namespace Comercio.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("[controller]/adicionar-vendedor/")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AdicionarVendedor(
+            int fornecedor_id, 
+            string nome, 
+            string ddd, 
+            string numero, 
+            string tipoTelefone,
+            string dddAdicional,
+            string numeroAdicional,
+            string tipoTelefoneAdicional)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var insert = await _service.InserirVendedor(
+                        fornecedor_id, ddd, numero, tipoTelefone, dddAdicional, numeroAdicional, tipoTelefoneAdicional);
+
+                    if (!insert)
+                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR ADICIONAR
+
+                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
+                    return View("Detalhes", fornecedorViewModel);
+                }
+                catch (System.Exception)
+                {
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+                }
+            }
+            else
+            {
+                return View("Error", new ErrorViewModel().ErroDeValidacao());
+            }
+        }
+
+        //[Route("[controller]/atualizar-vendedor/")]
+        //public async Task<IActionResult> MontaViewModelAtualizarVendedor(int fornecedor_id, int vendedor_id)
+        //{
+        //    try
+        //    {
+        //        var vendedorViewModel = await _service.RetornarVendedorFornecedorViewModel(fornecedor_id, vendedor_id);
+        //        // VALIDAÇÃO NO RETORNO ?
+        //        return View("EditarVendedor", vendedorViewModel);
+        //    }
+        //    catch (System.Exception)
+        //    {
+        //        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+        //    }
+        //}
+
+        //[HttpPost]
+        //[Route("[controller]/editar-vendedor/")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> EditarVendedor(
+        //    int fornecedor_id, 
+        //    int vendedor_id,
+        //    string nome,
+        //    string ddd,
+        //    string numero,
+        //    string tipoTelefone,
+        //    string dddAdicional,
+        //    string numeroAdicional,
+        //    string tipoTelefoneAdicional)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            var update = await _service.EditarVendedor(
+        //                fornecedor_id, vendedor_id, ddd, numero, tipoTelefone, dddAdicional, numeroAdicional, tipoTelefoneAdicional);
+
+        //            if (!update)
+        //                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // Erro ao tentar atualizar o telefone...
+
+        //            var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
+        //            return View("Detalhes", fornecedorViewModel);
+        //        }
+        //        catch (System.Exception)
+        //        {
+        //            return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return View("Error", new ErrorViewModel().ErroDeValidacao());
+        //    }
+        //}
+
+        //[HttpGet("[controller]/excluir-vendedor")]
+        //public async Task<IActionResult> ExcluirVendedor(int fornecedor_id, int vendedor_id)
+        //{
+        //    try
+        //    {
+        //        var delete = await _service.ExcluirVendedor(fornecedor_id, vendedor_id);
+        //        if (!delete)
+        //            return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR EXCLUIR
+
+        //        var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
+        //        return View("Detalhes", fornecedorViewModel);
+        //    }
+        //    catch (System.Exception)
+        //    {
+        //        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+        //    }
+        //}
+
         [HttpGet("[controller]/listar")]
         public async Task<IActionResult> ListarFornecedores()
         {
