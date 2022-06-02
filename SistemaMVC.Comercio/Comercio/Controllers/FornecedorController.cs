@@ -261,6 +261,7 @@ namespace Comercio.Controllers
         public async Task<IActionResult> AdicionarVendedor(
             int fornecedor_id, 
             string nome, 
+            string email,
             string ddd, 
             string numero, 
             string tipoTelefone,
@@ -273,7 +274,7 @@ namespace Comercio.Controllers
                 try
                 {
                     var insert = await _service.InserirVendedor(
-                        fornecedor_id, ddd, numero, tipoTelefone, dddAdicional, numeroAdicional, tipoTelefoneAdicional);
+                        fornecedor_id, nome, email, ddd, numero, tipoTelefone, dddAdicional, numeroAdicional, tipoTelefoneAdicional);
 
                     if (!insert)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR ADICIONAR
