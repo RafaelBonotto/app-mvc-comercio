@@ -59,6 +59,23 @@ namespace Comercio.Services
             return fornecedorResponse;
         }
 
+        public async Task<bool> InserirVendedor(
+            int fornecedor_id, string ddd, string numero, string tipoTelefone, 
+            string dddAdicional, string numeroAdicional, string tipoTelefoneAdicional)
+        {
+            var tipoTelefoneId = await _repositoryTelefone.ObterIdTipoTelefone(tipoTelefone);
+            List<Telefone> telefones = new();
+            Telefone telefone = _mapper.MontaInsertTelefone(ddd, numero, tipoTelefoneId);
+            telefones.Add(telefone);
+            if (string.IsNullOrEmpty(tipoTelefoneAdicional))
+            {
+                var tipoTelefoneAdicionalId = await _repositoryTelefone.ObterIdTipoTelefone(tipoTelefoneAdicional);
+                var telefoneAdiconal = _mapper.MontaInsertTelefone(dddAdicional, numeroAdicional, tipoTelefoneAdicionalId);
+                telefones.Add(telefoneAdiconal);
+            }
+            return await _repositoryFornecedor.InserirVendedor(fornecedor_id, telefones);
+        }
+
         public async Task<bool> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
         {
             var tipoTelefoneId = await _repositoryTelefone.ObterIdTipoTelefone(tipoTelefone);
