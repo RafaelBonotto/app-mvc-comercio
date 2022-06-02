@@ -60,7 +60,7 @@ namespace Comercio.Services
         }
 
         public async Task<bool> InserirVendedor(
-            int fornecedor_id, string ddd, string numero, string tipoTelefone, 
+            int fornecedor_id, string email, string nome, string ddd, string numero, string tipoTelefone, 
             string dddAdicional, string numeroAdicional, string tipoTelefoneAdicional)
         {
             var tipoTelefoneId = await _repositoryTelefone.ObterIdTipoTelefone(tipoTelefone);
@@ -73,7 +73,8 @@ namespace Comercio.Services
                 var telefoneAdiconal = _mapper.MontaInsertTelefone(dddAdicional, numeroAdicional, tipoTelefoneAdicionalId);
                 telefones.Add(telefoneAdiconal);
             }
-            return await _repositoryFornecedor.InserirVendedor(fornecedor_id, telefones);
+            var vendedor = _mapper.MontaPessoaContato(nome, email);
+            return await _repositoryFornecedor.InserirVendedor(fornecedor_id, vendedor, telefones);
         }
 
         public async Task<bool> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
