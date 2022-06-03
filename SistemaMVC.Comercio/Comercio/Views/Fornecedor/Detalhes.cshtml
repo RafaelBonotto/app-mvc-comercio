@@ -106,9 +106,6 @@
                     TELEFONE
                 </th>
                 <th>
-                    TIPO TELEFONE
-                </th>
-                <th>
                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalInserirVendedor" data-whatever="mdo">NOVO</button>
                 </th>
             </tr>
@@ -222,14 +219,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-controller="Fornecedor" asp-action="adicionar-vendedor" asp-route-fornecedorId="@Model.Id">
-                    <h6>NOME: <input type="text" name="ddd" /></h6>
+                <form asp-controller="Fornecedor" asp-action="adicionar-vendedor" asp-route-fornecedor_id="@Model.Id">
+                    <h6>NOME: <input type="text" name="nome" /></h6>
+                    <h6>E-MAIL: <input type="text" name="email" /></h6>
                     TELEFONE
-                    <h6>DDD: <input type="text" name="TelefoneDdd" /></h6>
-                    <h6>NUMERO: <input type="text" name="telefoneNumero" /></h6>
+                    <h6>DDD: <input type="text" name="ddd" /></h6>
+                    <h6>NUMERO: <input type="text" name="numero" /></h6>
                     TELEFONE ADICIONAL
-                    <h6>DDD: <input type="text" name="TelefoneDdd" /></h6>
-                    <h6>NUMERO: <input type="text" name="telefoneNumero" /></h6>
+                    <h6>DDD: <input type="text" name="dddAdicional" /></h6>
+                    <h6>NUMERO: <input type="text" name="numeroAdicional" /></h6>
                     <input type="submit" value="ADICIONAR" class="btn-danger" />
                 </form>
             </div>
