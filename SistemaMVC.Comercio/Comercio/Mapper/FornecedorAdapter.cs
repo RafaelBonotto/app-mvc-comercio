@@ -139,13 +139,12 @@ namespace Comercio.Mapper
             };
         }
 
-        public Telefone MontaInsertTelefone(string ddd, string numero, int tipoTelefone_id)
+        public Telefone MontaInsertTelefone(string ddd, string numero)
         {
             return new Telefone
             {
                 Ddd = ddd,
                 Numero = numero,
-                Tipo_telefone_id = tipoTelefone_id,
                 Ativo = 1,
                 Data_criacao = DateTime.Now,
                 Data_alteracao = DateTime.Now
