@@ -60,27 +60,31 @@ namespace Comercio.Services
         }
 
         public async Task<bool> InserirVendedor(
-            int fornecedor_id, string email, string nome, string ddd, string numero, string tipoTelefone, 
-            string dddAdicional, string numeroAdicional, string tipoTelefoneAdicional)
+            int fornecedor_id, 
+            string email, 
+            string nome, 
+            string ddd, 
+            string numero,
+            string dddAdicional, 
+            string numeroAdicional)
         {
-            var tipoTelefoneId = await _repositoryTelefone.ObterIdTipoTelefone(tipoTelefone);
+            var vendedor = _mapper.MontaPessoaContato(nome, email);
+
             List<Telefone> telefones = new();
-            Telefone telefone = _mapper.MontaInsertTelefone(ddd, numero, tipoTelefoneId);
+            Telefone telefone = _mapper.MontaInsertTelefone(ddd, numero);
             telefones.Add(telefone);
-            if (string.IsNullOrEmpty(tipoTelefoneAdicional))
+
+            if (string.IsNullOrEmpty(numeroAdicional))
             {
-                var tipoTelefoneAdicionalId = await _repositoryTelefone.ObterIdTipoTelefone(tipoTelefoneAdicional);
-                var telefoneAdiconal = _mapper.MontaInsertTelefone(dddAdicional, numeroAdicional, tipoTelefoneAdicionalId);
+                var telefoneAdiconal = _mapper.MontaInsertTelefone(dddAdicional, numeroAdicional);
                 telefones.Add(telefoneAdiconal);
             }
-            var vendedor = _mapper.MontaPessoaContato(nome, email);
             return await _repositoryFornecedor.InserirVendedor(fornecedor_id, vendedor, telefones);
         }
 
         public async Task<bool> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
         {
-            var tipoTelefoneId = await _repositoryTelefone.ObterIdTipoTelefone(tipoTelefone);
-            var telefone = _mapper.MontaInsertTelefone(ddd, numero, tipoTelefoneId);
+            var telefone = _mapper.MontaInsertTelefone(ddd, numero);
             return await _repositoryTelefone.InserirTelefoneFornecedor(fornecedor_id, telefone);
         }
 
