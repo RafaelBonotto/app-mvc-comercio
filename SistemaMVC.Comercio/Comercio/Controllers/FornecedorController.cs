@@ -264,17 +264,15 @@ namespace Comercio.Controllers
             string email,
             string ddd, 
             string numero, 
-            string tipoTelefone,
             string dddAdicional,
-            string numeroAdicional,
-            string tipoTelefoneAdicional)
+            string numeroAdicional)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     var insert = await _service.InserirVendedor(
-                        fornecedor_id, nome, email, ddd, numero, tipoTelefone, dddAdicional, numeroAdicional, tipoTelefoneAdicional);
+                        fornecedor_id, nome, email, ddd, numero, dddAdicional, numeroAdicional);
 
                     if (!insert)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR ADICIONAR
