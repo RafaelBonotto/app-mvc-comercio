@@ -1,6 +1,7 @@
 ﻿using Comercio.Exceptions.Fornecedor;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
+using Comercio.Requests.Fornecedor;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -258,26 +259,19 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/adicionar-vendedor/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdicionarVendedor(
-            int fornecedor_id, 
-            string nome, 
-            string email,
-            string ddd, 
-            string numero, 
-            string dddAdicional,
-            string numeroAdicional)
+        public async Task<IActionResult> AdicionarVendedor(AdicionarVendedorRequest request)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     var insert = await _service.InserirVendedor(
-                        fornecedor_id, nome, email, ddd, numero, dddAdicional, numeroAdicional);
+                        request.Fornecedor_id, request.Nome, request.Email, request.Ddd, request.Numero, request.DddAdicional, request.NumeroAdicional);
 
                     if (!insert)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR ADICIONAR
 
-                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
+                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(request.Fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
