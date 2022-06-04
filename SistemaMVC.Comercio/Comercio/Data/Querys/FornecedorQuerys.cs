@@ -6,12 +6,19 @@
                                                 FROM tb_fornecedor 
                                                 WHERE tb_fornecedor.cnpj = @cnpj";
 
-        public const string SELECT_ID_VENDEDOR_FORNECEDOR = @"SELECT pessoa_id
-                                                                FROM tb_fornecedor_pessoa fornecPes
+        public const string SELECT_ID_VENDEDOR_FORNECEDOR = @"SELECT pessoa_contato_id
+                                                                FROM tb_pessoa_contato_fornecedor fornecPes
                                                                 WHERE 
                                                                 fornecPes.fornecedor_id = @fornecedor_id
                                                                 AND
                                                                 fornecPes.ativo = 1";
+
+        public const string SELECT_ID_TELEFONE_VENDEDOR = @"SELECT telefone_id
+                                                                FROM tb_pessoa_contato_telefone tb
+                                                                WHERE
+                                                                tb.pessoa_contato_id = @vendedor_id
+                                                                AND
+                                                                tb.ativo = 1";
 
     }
 }
