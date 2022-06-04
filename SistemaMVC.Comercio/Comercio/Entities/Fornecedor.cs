@@ -25,7 +25,7 @@ namespace Comercio.Entities
         public virtual List<Telefone> Telefone { get; set; }
 
         [Write(false)]
-        public virtual List<Vendedor> Vendedor { get; set; }
+        public virtual List<PessoaContato> Vendedor { get; set; }
 
         [Write(false)]
         public virtual List<TipoTelefoneResponse> DescricaoTipoTelefone { get; set; }
