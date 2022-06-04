@@ -22,7 +22,7 @@ namespace Comercio.Models
         public List<Telefone> Telefone { get; set; } = new();
 
         [Display(Name = "Vendedor")]
-        public List<Vendedor> Vendedor { get; set; } = new();
+        public List<PessoaContato> Vendedor { get; set; } = new();
 
         public IEnumerable<SelectListItem> TipoEndereco { get; set; }
 
