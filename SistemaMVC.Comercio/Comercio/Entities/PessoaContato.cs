@@ -15,6 +15,6 @@ namespace Comercio.Entities
         public DateTime Data_alteracao { get; set; }
 
         [Write(false)]
-        public virtual List<Telefone> Telefones { get; set; }
+        public List<Telefone> Telefones { get; set; } = new();
     }
 }
