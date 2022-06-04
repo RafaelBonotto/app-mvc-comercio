@@ -7,7 +7,7 @@ namespace Comercio.Entities
     public class PessoaContatoFornecedor
     {
         public int Fornecedor_id { get; set; }
-        public int PessoaContato_id { get; set; }
+        public int Pessoa_Contato_id { get; set; }
         public sbyte Ativo { get; set; }
         public DateTime Data_criacao { get; set; }
         public DateTime Data_alteracao { get; set; }
