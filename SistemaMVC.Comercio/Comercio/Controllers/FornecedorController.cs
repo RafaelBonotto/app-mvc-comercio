@@ -265,7 +265,7 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    var insert = await _service.InserirVendedor(
+                    var insert = await _service.InserirVendedor(// _mapper...
                         request.Fornecedor_id, request.Nome, request.Email, request.Ddd, request.Numero, request.DddAdicional, request.NumeroAdicional);
 
                     if (!insert)
