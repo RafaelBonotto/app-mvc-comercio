@@ -50,7 +50,8 @@ namespace Comercio.Mapper
                 Cnpj = fornecedor.Cnpj,
                 Nome_empresa = fornecedor.Nome_empresa.ToUpper(),
                 Telefone = fornecedor.Telefone,
-                Endereco = fornecedor.Endereco
+                Endereco = fornecedor.Endereco,
+                Vendedor = fornecedor.Vendedor
             };
             ret.TipoTelefone = new SelectList(tipoTelRepositorio);
             ret.TipoEndereco = new SelectList(tipoEndRepositorio);
