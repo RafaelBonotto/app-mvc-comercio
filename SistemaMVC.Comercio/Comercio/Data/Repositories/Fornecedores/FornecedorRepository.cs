@@ -112,7 +112,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 transaction.Commit();
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 transaction.Rollback();
                 throw;
