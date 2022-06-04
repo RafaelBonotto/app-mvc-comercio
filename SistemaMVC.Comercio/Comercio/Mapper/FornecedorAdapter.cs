@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
+using Comercio.Enums;
 
 namespace Comercio.Mapper
 {
@@ -139,12 +140,13 @@ namespace Comercio.Mapper
             };
         }
 
-        public Telefone MontaInsertTelefone(string ddd, string numero)
+        public Telefone MontaInsertTelefoneVendedor(string ddd, string numero)
         {
             return new Telefone
             {
                 Ddd = ddd,
                 Numero = numero,
+                Tipo_telefone_id = TipoTelefone.COMERCIAL.GetHashCode(),
                 Ativo = 1,
                 Data_criacao = DateTime.Now,
                 Data_alteracao = DateTime.Now
@@ -197,7 +199,7 @@ namespace Comercio.Mapper
             return new PessoaContatoFornecedor
             {
                 Fornecedor_id = fornecedorId,
-                PessoaContato_id = vendedorId,
+                Pessoa_Contato_id = vendedorId,
                 Ativo = 1,
                 Data_criacao = DateTime.Now,
                 Data_alteracao = DateTime.Now
