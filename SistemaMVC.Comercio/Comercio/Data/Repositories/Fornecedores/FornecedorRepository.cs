@@ -64,7 +64,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             var fornecedor = connection.Get<Fornecedor>(id);
             fornecedor.Telefone = await _telefoneRepository.ListarTelefoneFornecedor(id);
             fornecedor.Endereco = await _enderecoRepository.ObterEnderecoFornecedor(fornecedor.Id);
-            //fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
+            fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
             return fornecedor;
         }
 
@@ -112,7 +112,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 transaction.Commit();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 transaction.Rollback();
                 throw;
@@ -128,15 +128,28 @@ namespace Comercio.Data.Repositories.Fornecedores
 
         #region Métodos privados
         
-        static async Task<List<Vendedor>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
+        static async Task<List<PessoaContato>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
-            List<Vendedor> ret = new();
+            List<PessoaContato> ret = new();
             var vendedorIds = await connection.QueryAsync<int>(
                     sql: FornecedorQuerys.SELECT_ID_VENDEDOR_FORNECEDOR,
                     param: new { fornecedor_id });
-            if(vendedorIds.Any())
-                foreach (var item in vendedorIds)
-                    ret.Add((Vendedor)connection.Get<Pessoa>(item));
+
+            if (vendedorIds.Any())
+            {
+                foreach (var id in vendedorIds)
+                {
+                    var vendedor = connection.Get<PessoaContato>(id);
+                    var telefoneIds = await connection.QueryAsync<int>(
+                        sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
+                        param: new { vendedor_id = id });
+
+                    if (telefoneIds.Any())
+                        foreach (var telefoneId in telefoneIds)
+                            vendedor.Telefones.Add(connection.Get<Telefone>(telefoneId));
+                    ret.Add(vendedor);
+                }
+            }
             return ret;
         }
         
