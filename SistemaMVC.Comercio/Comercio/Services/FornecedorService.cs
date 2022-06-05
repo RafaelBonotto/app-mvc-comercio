@@ -6,6 +6,7 @@ using Comercio.Interfaces.EnderecoInterfaces;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.TelefoneInterfaces;
 using Comercio.Models;
+using Comercio.Requests.Fornecedor;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -59,27 +60,27 @@ namespace Comercio.Services
             return fornecedorResponse;
         }
 
-        public async Task<bool> InserirVendedor(
-            int fornecedor_id, 
-            string email, 
-            string nome, 
-            string ddd, 
-            string numero,
-            string dddAdicional, 
-            string numeroAdicional)
+        public async Task<bool> InserirVendedor(AdicionarVendedorRequest req)
+            //int fornecedor_id, 
+            //string email, 
+            //string nome, 
+            //string ddd, 
+            //string numero,
+            //string dddAdicional, 
+            //string numeroAdicional)
         {
-            var vendedor = _mapper.MontaPessoaContato(nome, email);
+            var vendedor = _mapper.MontaPessoaContato(req.Nome, req.Email);
 
             List<Telefone> telefones = new();
-            Telefone telefone = _mapper.MontaInsertTelefoneVendedor(ddd, numero);
+            Telefone telefone = _mapper.MontaInsertTelefoneVendedor(req.Ddd, req.Numero);
             telefones.Add(telefone);
 
-            if (!string.IsNullOrEmpty(numeroAdicional))
+            if (!string.IsNullOrEmpty(req.NumeroAdicional))
             {
-                var telefoneAdiconal = _mapper.MontaInsertTelefoneVendedor(dddAdicional, numeroAdicional);
+                var telefoneAdiconal = _mapper.MontaInsertTelefoneVendedor(req.DddAdicional, req.NumeroAdicional);
                 telefones.Add(telefoneAdiconal);
             }
-            return await _repositoryFornecedor.InserirVendedor(fornecedor_id, vendedor, telefones);
+            return await _repositoryFornecedor.InserirVendedor(req.Fornecedor_id, vendedor, telefones);
         }
 
         public async Task<bool> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
