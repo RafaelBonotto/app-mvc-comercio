@@ -41,6 +41,9 @@
                 <th>
                     ENDEREÇO:
                 </th>
+                <th>
+                     
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -74,6 +77,9 @@
                 <th>
                     NÚMERO
                 </th>
+                <th>
+                     
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -92,19 +98,9 @@
         </tbody>
     </table>
 </div>
+
 <hr />
-@{ <!-- Função concatena 2 telefones do vendedor (Obs=> O vendedor só pode ser cadastrado com no maximo 2 telefones)-->
-    string telefoneVendedor = string.Empty;
-    foreach (var item in Model.Vendedor)
-    {
-        foreach (var telefone in item.Telefones)
-        {
-            telefoneVendedor += $"{telefone.Ddd}-{telefone.Numero}-";
-        }
-    }
-    var aux = telefoneVendedor.Split("-");
-    telefoneVendedor = $"{aux[0]} {aux[1]}  -  {aux[2]} {aux[3]}";
-}
+
 <div>
     <h4>VENDEDORES</h4>
     <!-- Botão para modal InserirVendedor-->
@@ -120,27 +116,35 @@
                     EMAIL
                 </th>
                 <th>
-                    TELEFONE
+                    TELEFONE 1 
+                </th>
+                <th>
+                    TELEFONE 2
                 </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Vendedor)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @telefoneVendedor
-                    </td>
-                    <td>
-                        <a asp-controller="Fornecedor" asp-action="atualizar-vendedor" asp-route-fornecedor_id="@Model.Id" asp-route-vendedor_id="@item.Id" class="btn btn-success btn-sm">EDITAR</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefones.First().Ddd)
+                    @Html.DisplayFor(modelItem => item.Telefones.First().Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefones.Last().Ddd)
+                    @Html.DisplayFor(modelItem => item.Telefones.Last().Numero)
+                </td>
+                <td>
+                    <a asp-controller="Fornecedor" asp-action="atualizar-vendedor" asp-route-fornecedor_id="@Model.Id" asp-route-vendedor_id="@item.Id" class="btn btn-success btn-sm">EDITAR</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
