@@ -10,7 +10,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
     public interface IFornecedorService
     {
         Task<Fornecedor> InserirFornecedor(FornecedorViewModel fornecedor);
-        Task<bool> InserirVendedor(AdicionarVendedorRequest request);// int fornecedor_id, string nome, string email, string ddd, string numero, string dddAdicional, string numeroAdicional);
+        Task<bool> InserirVendedor(AdicionarVendedorRequest request);
         Task<bool> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone);
         Task<bool> EditarTelefone(int telefone_id, string ddd, string numero, string tipoTelefone);
         Task<bool> ExcluirTelefone(int fornecedor_id, int telefone_id);
@@ -27,5 +27,6 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<FornecedorViewModel> RetornarForncedorViewModel(int fornecedor_id);
         Task<TelefoneFornecedorViewModel> RetornarTelefoneFornecedorViewModel(int fornecedor_id, int telefone_id);
         Task<EnderecoFornecedorViewModel> RetornarEnderecoFornecedorViewModel(int fornecedor_id, int endreco_id);
+        Task<VendedorFornecedorViewModel> RetornarVendedorFornecedorViewModel(int fornecedor_id, int vendedor_id);
     }
 }
