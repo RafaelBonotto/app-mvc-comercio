@@ -124,10 +124,27 @@ namespace Comercio.Data.Repositories.Fornecedores
             throw new NotImplementedException();
         }
 
-        
+        public async Task<PessoaContato> GetVendedor(int id)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            return connection.Get<PessoaContato>(id);
+        }
+
+        public async Task<List<Telefone>> GetTelefoneVendedor(int vendedor_id)
+        {
+            List<Telefone> ret = new();
+            using var connection = await _connection.GetConnectionAsync();
+            var telefoneIds = await connection.QueryAsync<int>(
+                    sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
+                    param: new { vendedor_id });
+            if (telefoneIds.Any())
+                foreach (var id in telefoneIds)
+                    ret.Add(connection.Get<Telefone>(id));
+            return ret;
+        }
 
         #region Métodos privados
-        
+
         static async Task<List<PessoaContato>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
             List<PessoaContato> ret = new();
@@ -152,7 +169,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
             return ret;
         }
-        
+
         #endregion
     }
 }
