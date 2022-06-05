@@ -1,6 +1,7 @@
 ﻿using Comercio.Data.Repositories.Response;
 using Comercio.Entities;
 using Comercio.Models;
+using Comercio.Requests.Fornecedor;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
     public interface IFornecedorService
     {
         Task<Fornecedor> InserirFornecedor(FornecedorViewModel fornecedor);
-        Task<bool> InserirVendedor(int fornecedor_id, string nome, string email, string ddd, string numero, string dddAdicional, string numeroAdicional);
+        Task<bool> InserirVendedor(AdicionarVendedorRequest request);// int fornecedor_id, string nome, string email, string ddd, string numero, string dddAdicional, string numeroAdicional);
         Task<bool> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone);
         Task<bool> EditarTelefone(int telefone_id, string ddd, string numero, string tipoTelefone);
         Task<bool> ExcluirTelefone(int fornecedor_id, int telefone_id);
