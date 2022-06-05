@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
 using Comercio.Enums;
+using System.Text;
 
 namespace Comercio.Mapper
 {
