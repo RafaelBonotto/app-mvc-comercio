@@ -283,20 +283,20 @@ namespace Comercio.Controllers
             }
         }
 
-        //[Route("[controller]/atualizar-vendedor/")]
-        //public async Task<IActionResult> MontaViewModelAtualizarVendedor(int fornecedor_id, int vendedor_id)
-        //{
-        //    try
-        //    {
-        //        var vendedorViewModel = await _service.RetornarVendedorFornecedorViewModel(fornecedor_id, vendedor_id);
-        //        // VALIDAÇÃO NO RETORNO ?
-        //        return View("EditarVendedor", vendedorViewModel);
-        //    }
-        //    catch (System.Exception)
-        //    {
-        //        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
-        //    }
-        //}
+        [Route("[controller]/atualizar-vendedor/")]
+        public async Task<IActionResult> MontaViewModelAtualizarVendedor(int fornecedor_id, int vendedor_id)
+        {
+            try
+            {
+                var vendedorViewModel = await _service.RetornarVendedorFornecedorViewModel(fornecedor_id, vendedor_id);
+                // VALIDAÇÃO NO RETORNO ?
+                return View("EditarVendedor", vendedorViewModel);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
 
         //[HttpPost]
         //[Route("[controller]/editar-vendedor/")]
