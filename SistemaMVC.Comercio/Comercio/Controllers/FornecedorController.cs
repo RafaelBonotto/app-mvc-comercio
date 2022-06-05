@@ -265,9 +265,7 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    var insert = await _service.InserirVendedor(// _mapper...
-                        request.Fornecedor_id, request.Nome, request.Email, request.Ddd, request.Numero, request.DddAdicional, request.NumeroAdicional);
-
+                    var insert = await _service.InserirVendedor(request);
                     if (!insert)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR ADICIONAR
 
