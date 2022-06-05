@@ -1,14 +1,13 @@
 ﻿using Comercio.Data.Repositories.Response;
 using Comercio.Entities;
+using Comercio.Enums;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Comercio.Enums;
-using System.Text;
 
 namespace Comercio.Mapper
 {
@@ -193,6 +192,21 @@ namespace Comercio.Mapper
                 Estado = endereco.Estado,
                 UF = endereco.UF,
                 Tipo_endereco_id = endereco.Tipo_endereco_id
+            };
+        }
+
+        public VendedorFornecedorViewModel MontaVendedorFornecedorViewModel(PessoaContato vendedor, List<Telefone> telefone, int fornecedor_id)
+        {
+            return new VendedorFornecedorViewModel
+            {
+                Fornecedor_id = fornecedor_id,
+                Vendedor_id = vendedor.Id,
+                Nome = vendedor.Nome,
+                Email = vendedor.Email,
+                Ddd = telefone.First().Ddd,
+                Numero = telefone.First().Numero,
+                DddAdicional = telefone.Last().Ddd,
+                NumeroAdicional = telefone.Last().Numero,
             };
         }
 
