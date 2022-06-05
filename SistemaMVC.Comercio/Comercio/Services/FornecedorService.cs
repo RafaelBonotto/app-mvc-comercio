@@ -61,13 +61,6 @@ namespace Comercio.Services
         }
 
         public async Task<bool> InserirVendedor(AdicionarVendedorRequest req)
-            //int fornecedor_id, 
-            //string email, 
-            //string nome, 
-            //string ddd, 
-            //string numero,
-            //string dddAdicional, 
-            //string numeroAdicional)
         {
             var vendedor = _mapper.MontaPessoaContato(req.Nome, req.Email);
 
@@ -172,6 +165,14 @@ namespace Comercio.Services
             var tiposEndereco = new SelectList(await _repositoryEndereco.ObterDescricaoTipoEndereco());
             enderecoViewModel.TiposEnderecoBanco = tiposEndereco;
             return enderecoViewModel;
+        }
+
+        public async Task<VendedorFornecedorViewModel> RetornarVendedorFornecedorViewModel(int fornecedor_id, int vendedor_id)
+        {
+            var vendedorBanco = await _repositoryFornecedor.GetVendedor(vendedor_id);
+            var telefonesVendedor = await _repositoryFornecedor.GetTelefoneVendedor(vendedor_id);
+            var VendedorViewModel = _mapper.MontaVendedorFornecedorViewModel(vendedorBanco, telefonesVendedor, fornecedor_id);
+            return VendedorViewModel;
         }
 
         public async Task<bool> ExcluirEndereco(int fornecedor_id, int endereco_id)
