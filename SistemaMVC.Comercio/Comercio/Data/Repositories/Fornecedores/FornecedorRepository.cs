@@ -1,10 +1,12 @@
 ﻿using Comercio.Data.ConnectionManager;
 using Comercio.Data.Querys;
 using Comercio.Entities;
+using Comercio.Enums;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.EnderecoInterfaces;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.TelefoneInterfaces;
+using Comercio.Requests.Fornecedor;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using MySqlConnector;
@@ -119,6 +121,54 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
+        public async Task<bool> AtualizarVendedor(VendedorRequest vendedor)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            using var transaction = connection.BeginTransaction();
+            try
+            {
+                var vendedorBanco = await connection.GetAsync<PessoaContato>(vendedor.Vendedor_id, transaction);
+                vendedorBanco.Nome = vendedor.Nome.ToUpper();
+                vendedorBanco.Email = vendedor.Email;
+                vendedorBanco.Ativo = 1;
+                vendedorBanco.Data_alteracao = DateTime.Now;
+                var update = await connection.UpdateAsync<PessoaContato>(vendedorBanco);
+                if (!update)
+                    return false;
+
+                var telefones = await this.GetTelefoneVendedor(vendedorBanco.Id, connection);
+                foreach (var telefone in telefones)
+                {
+                    if (telefone.Tipo_telefone.Equals(TipoTelefone.ADICIONAL.ToString()))
+                    {
+                        telefone.Ddd = vendedor.DddAdicional;
+                        telefone.Numero = vendedor.NumeroAdicional;
+                    }
+                    else
+                    {
+                        telefone.Ddd = vendedor.Ddd;
+                        telefone.Numero = vendedor.Numero;
+                    }
+                    telefone.Ativo = 1;
+                    telefone.Data_alteracao = DateTime.Now;
+                    var updateTelefone = await connection.UpdateAsync<Telefone>(telefone);
+                    if (!updateTelefone)
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
+                }
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
+
+
         public Task<Fornecedor> UpdateAsync(Fornecedor entity)
         {
             throw new NotImplementedException();
@@ -130,16 +180,28 @@ namespace Comercio.Data.Repositories.Fornecedores
             return connection.Get<PessoaContato>(id);
         }
 
-        public async Task<List<Telefone>> GetTelefoneVendedor(int vendedor_id)
+        public async Task<List<Telefone>> GetTelefoneVendedor(int vendedor_id, MySqlConnection connection = null)
         {
             List<Telefone> ret = new();
-            using var connection = await _connection.GetConnectionAsync();
-            var telefoneIds = await connection.QueryAsync<int>(
-                    sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
-                    param: new { vendedor_id });
-            if (telefoneIds.Any())
-                foreach (var id in telefoneIds)
-                    ret.Add(connection.Get<Telefone>(id));
+            if (connection is null)
+            {
+                using var conn = await _connection.GetConnectionAsync();
+                var telefoneIds = await conn.QueryAsync<int>(
+                        sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
+                        param: new { vendedor_id });
+                if (telefoneIds.Any())
+                    foreach (var id in telefoneIds)
+                        ret.Add(conn.Get<Telefone>(id));
+            }
+            else
+            {
+                var telefoneIds = await connection.QueryAsync<int>(
+                        sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
+                        param: new { vendedor_id });
+                if (telefoneIds.Any())
+                    foreach (var id in telefoneIds)
+                        ret.Add(connection.Get<Telefone>(id));
+            }
             return ret;
         }
 
