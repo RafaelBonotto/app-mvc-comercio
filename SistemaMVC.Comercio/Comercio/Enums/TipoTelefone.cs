@@ -5,6 +5,7 @@
         CELULAR = 1,
         RESIDENCIAL = 2,
         COMERCIAL = 3,
-        RECADO = 4
+        ADICIONAL = 4,
+        RECADO = 5
     }
 }
