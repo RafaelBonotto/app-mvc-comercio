@@ -1,5 +1,6 @@
 ﻿using Comercio.Data.Repositories.Response;
 using Comercio.Entities;
+using Comercio.Enums;
 using Comercio.Exceptions.Fornecedor;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.EnderecoInterfaces;
@@ -60,7 +61,7 @@ namespace Comercio.Services
             return fornecedorResponse;
         }
 
-        public async Task<bool> InserirVendedor(AdicionarVendedorRequest req)
+        public async Task<bool> InserirVendedor(VendedorRequest req)
         {
             var vendedor = _mapper.MontaPessoaContato(req.Nome, req.Email);
 
@@ -71,6 +72,7 @@ namespace Comercio.Services
             if (!string.IsNullOrEmpty(req.NumeroAdicional))
             {
                 var telefoneAdiconal = _mapper.MontaInsertTelefoneVendedor(req.DddAdicional, req.NumeroAdicional);
+                telefoneAdiconal.Tipo_telefone_id = TipoTelefone.ADICIONAL.GetHashCode();
                 telefones.Add(telefoneAdiconal);
             }
             return await _repositoryFornecedor.InserirVendedor(req.Fornecedor_id, vendedor, telefones);
@@ -80,13 +82,6 @@ namespace Comercio.Services
         {
             var telefone = _mapper.MontaInsertTelefoneVendedor(ddd, numero);
             return await _repositoryTelefone.InserirTelefoneFornecedor(fornecedor_id, telefone);
-        }
-
-        public async Task<bool> EditarTelefone(int telefone_id, string ddd, string numero, string tipoTelefone)
-        {
-            var tipoTelefoneId = await _repositoryTelefone.ObterIdTipoTelefone(tipoTelefone);
-            Telefone telefone = _mapper.MontaUpdateTelefone(telefone_id, ddd, numero, tipoTelefoneId);
-            return await _repositoryTelefone.AtualizarTelefone(telefone);
         }
 
         public async Task<bool> InserirEndereco(
@@ -112,6 +107,18 @@ namespace Comercio.Services
                     uf: uf);
             endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(tipoEndereco);
             return await _repositoryEndereco.InserirEnderecoFornecedor(fornecedor_id, endereco);
+        }
+
+        public async Task<bool> EditarTelefone(int telefone_id, string ddd, string numero, string tipoTelefone)
+        {
+            var tipoTelefoneId = await _repositoryTelefone.ObterIdTipoTelefone(tipoTelefone);
+            Telefone telefone = _mapper.MontaUpdateTelefone(telefone_id, ddd, numero, tipoTelefoneId);
+            return await _repositoryTelefone.AtualizarTelefone(telefone);
+        }
+
+        public async Task<bool> EditarVendedor(VendedorRequest req)
+        {
+            return await _repositoryFornecedor.AtualizarVendedor(req);
         }
 
         public async Task<bool> EditarEndereco(
