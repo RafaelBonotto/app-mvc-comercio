@@ -205,8 +205,8 @@ namespace Comercio.Mapper
                 Email = vendedor.Email,
                 Ddd = telefone.First().Ddd,
                 Numero = telefone.First().Numero,
-                DddAdicional = telefone.Last().Ddd,
-                NumeroAdicional = telefone.Last().Numero,
+                DddAdicional = telefone.Count > 1 ? telefone.Last().Ddd : string.Empty,
+                NumeroAdicional = telefone.Count > 1 ? telefone.Last().Numero : string.Empty
             };
         }
 
