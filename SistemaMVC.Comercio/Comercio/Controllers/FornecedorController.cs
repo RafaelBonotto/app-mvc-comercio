@@ -325,23 +325,23 @@ namespace Comercio.Controllers
             }
         }
 
-        //[HttpGet("[controller]/excluir-vendedor")]
-        //public async Task<IActionResult> ExcluirVendedor(int fornecedor_id, int vendedor_id)
-        //{
-        //    try
-        //    {
-        //        var delete = await _service.ExcluirVendedor(fornecedor_id, vendedor_id);
-        //        if (!delete)
-        //            return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR EXCLUIR
+        [HttpGet("[controller]/excluir-vendedor")]
+        public async Task<IActionResult> ExcluirVendedor(int fornecedor_id, int vendedor_id)
+        {
+            try
+            {
+                var delete = await _service.ExcluirVendedor(fornecedor_id, vendedor_id);
+                if (!delete)
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR EXCLUIR
 
-        //        var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
-        //        return View("Detalhes", fornecedorViewModel);
-        //    }
-        //    catch (System.Exception)
-        //    {
-        //        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
-        //    }
-        //}
+                var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
+                return View("Detalhes", fornecedorViewModel);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
 
         [HttpGet("[controller]/listar")]
         public async Task<IActionResult> ListarFornecedores()
