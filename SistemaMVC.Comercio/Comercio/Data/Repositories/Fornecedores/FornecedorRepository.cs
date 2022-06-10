@@ -202,7 +202,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                         transaction: transaction);
                 if (telefoneIds.Any())
                     foreach (var id in telefoneIds)
-                        ret.Add(connection.Get<Telefone>(id));
+                        ret.Add(connection.Get<Telefone>(id, transaction: transaction));
             }
             return ret;
         }
