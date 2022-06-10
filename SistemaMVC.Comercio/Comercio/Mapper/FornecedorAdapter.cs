@@ -141,13 +141,13 @@ namespace Comercio.Mapper
             };
         }
 
-        public Telefone MontaInsertTelefoneVendedor(string ddd, string numero)
+        public Telefone MontaInsertTelefoneVendedor(string ddd, string numero, TipoTelefone tipoTelefone)
         {
             return new Telefone
             {
                 Ddd = ddd,
                 Numero = numero,
-                Tipo_telefone_id = TipoTelefone.COMERCIAL.GetHashCode(),
+                Tipo_telefone_id = tipoTelefone.GetHashCode(),
                 Ativo = 1,
                 Data_criacao = DateTime.Now,
                 Data_alteracao = DateTime.Now
