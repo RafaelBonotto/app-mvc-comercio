@@ -66,12 +66,12 @@ namespace Comercio.Services
             var vendedor = _mapper.MontaPessoaContato(req.Nome, req.Email);
 
             List<Telefone> telefones = new();
-            Telefone telefone = _mapper.MontaInsertTelefoneVendedor(req.Ddd, req.Numero);
+            Telefone telefone = _mapper.MontaInsertTelefoneVendedor(req.Ddd, req.Numero, TipoTelefone.COMERCIAL);
             telefones.Add(telefone);
 
             if (!string.IsNullOrEmpty(req.NumeroAdicional))
             {
-                var telefoneAdiconal = _mapper.MontaInsertTelefoneVendedor(req.DddAdicional, req.NumeroAdicional);
+                var telefoneAdiconal = _mapper.MontaInsertTelefoneVendedor(req.DddAdicional, req.NumeroAdicional, TipoTelefone.ADICIONAL);
                 telefoneAdiconal.Tipo_telefone_id = TipoTelefone.ADICIONAL.GetHashCode();
                 telefones.Add(telefoneAdiconal);
             }
@@ -80,7 +80,7 @@ namespace Comercio.Services
 
         public async Task<bool> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
         {
-            var telefone = _mapper.MontaInsertTelefoneVendedor(ddd, numero);
+            var telefone = _mapper.MontaInsertTelefoneVendedor(ddd, numero, TipoTelefone.COMERCIAL);
             return await _repositoryTelefone.InserirTelefoneFornecedor(fornecedor_id, telefone);
         }
 
