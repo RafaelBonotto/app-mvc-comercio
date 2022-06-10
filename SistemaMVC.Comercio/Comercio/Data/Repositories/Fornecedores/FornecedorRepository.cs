@@ -139,7 +139,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 var telefones = await this.GetTelefoneVendedor(vendedorBanco.Id, connection, transaction);
                 foreach (var telefone in telefones)
                 {
-                    if (telefone.Tipo_telefone.Equals(TipoTelefone.ADICIONAL.ToString()))
+                    if (telefone.Tipo_telefone.GetHashCode() == TipoTelefone.ADICIONAL.GetHashCode())
                     {
                         telefone.Ddd = vendedor.DddAdicional;
                         telefone.Numero = vendedor.NumeroAdicional;
