@@ -132,7 +132,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 vendedorBanco.Email = vendedor.Email;
                 vendedorBanco.Ativo = 1;
                 vendedorBanco.Data_alteracao = DateTime.Now;
-                var update = await connection.UpdateAsync<PessoaContato>(vendedorBanco);
+                var update = await connection.UpdateAsync<PessoaContato>(vendedorBanco, transaction);
                 if (!update)
                     return false;
 
