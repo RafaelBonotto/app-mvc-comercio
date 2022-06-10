@@ -136,7 +136,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 if (!update)
                     return false;
 
-                var telefones = await this.GetTelefoneVendedor(vendedorBanco.Id, connection);
+                var telefones = await this.GetTelefoneVendedor(vendedorBanco.Id, connection, transaction);
                 foreach (var telefone in telefones)
                 {
                     if (telefone.Tipo_telefone.Equals(TipoTelefone.ADICIONAL.ToString()))
@@ -180,7 +180,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             return connection.Get<PessoaContato>(id);
         }
 
-        public async Task<List<Telefone>> GetTelefoneVendedor(int vendedor_id, MySqlConnection connection = null)
+        public async Task<List<Telefone>> GetTelefoneVendedor(int vendedor_id, MySqlConnection connection = null, MySqlTransaction transaction = null)
         {
             List<Telefone> ret = new();
             if (connection is null)
@@ -188,7 +188,8 @@ namespace Comercio.Data.Repositories.Fornecedores
                 using var conn = await _connection.GetConnectionAsync();
                 var telefoneIds = await conn.QueryAsync<int>(
                         sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
-                        param: new { vendedor_id });
+                        param: new { vendedor_id },
+                        transaction: transaction);
                 if (telefoneIds.Any())
                     foreach (var id in telefoneIds)
                         ret.Add(conn.Get<Telefone>(id));
@@ -197,7 +198,8 @@ namespace Comercio.Data.Repositories.Fornecedores
             {
                 var telefoneIds = await connection.QueryAsync<int>(
                         sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
-                        param: new { vendedor_id });
+                        param: new { vendedor_id },
+                        transaction: transaction);
                 if (telefoneIds.Any())
                     foreach (var id in telefoneIds)
                         ret.Add(connection.Get<Telefone>(id));
