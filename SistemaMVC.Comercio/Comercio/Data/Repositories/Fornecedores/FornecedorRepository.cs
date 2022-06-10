@@ -151,7 +151,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                     }
                     telefone.Ativo = 1;
                     telefone.Data_alteracao = DateTime.Now;
-                    var updateTelefone = await connection.UpdateAsync<Telefone>(telefone);
+                    var updateTelefone = await connection.UpdateAsync<Telefone>(telefone, transaction);
                     if (!updateTelefone)
                     {
                         transaction.Rollback();
