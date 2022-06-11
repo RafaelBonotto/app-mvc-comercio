@@ -19,6 +19,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<bool> EditarEndereco(int endereco_id, string logradouro, string numero,
             string complemento, string cep, string bairro, string cidade, string estado, string uf, string tipoEndereco);
         Task<bool> EditarVendedor(VendedorRequest request);
+        Task<bool> ExcluirVendedor(int fornecedor_id, int vendedor_id);
         Task<bool> ExcluirEndereco(int fornecedor_id, int endereco_id);
         Task<List<Fornecedor>> ListarFornecedores();
         Task<List<Fornecedor>> FiltrarPorSetor(string setor);
