@@ -147,29 +147,17 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/adicionar-endereco/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdicionarEndereco(
-            int fornecedor_id,
-            string logradouro,
-            string numero,
-            string complemento,
-            string cep,
-            string bairro,
-            string cidade,
-            string estado,
-            string uf,
-            string tipoEndereco)
+        public async Task<IActionResult> AdicionarEndereco(EnderecoRequest request)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var insert = await _service.InserirEndereco(
-                        fornecedor_id, logradouro, numero, complemento, cep, bairro, cidade, estado, uf, tipoEndereco);
-
+                    var insert = await _service.InserirEndereco(request);
                     if (!insert)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO
 
-                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
+                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(request.Fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -309,7 +297,7 @@ namespace Comercio.Controllers
                 {
                     var update = await _service.EditarVendedor(req);
                     if (!update)
-                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // Erro ao tentar atualizar o telefone...
+                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // Erro ao tentar atualizar 
 
                     var fornecedorViewModel = await _service.RetornarForncedorViewModel(req.Fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
