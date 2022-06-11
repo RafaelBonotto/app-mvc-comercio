@@ -83,29 +83,11 @@ namespace Comercio.Services
             return await _repositoryTelefone.InserirTelefoneFornecedor(fornecedor_id, telefone);
         }
 
-        public async Task<bool> InserirEndereco(
-            int fornecedor_id,
-            string logradouro,
-            string numero,
-            string complemento,
-            string cep,
-            string bairro,
-            string cidade,
-            string estado,
-            string uf,
-            string tipoEndereco)
+        public async Task<bool> InserirEndereco(EnderecoRequest req)
         {
-            var endereco = _mapper.MontarInsertEndereco(
-                    logradouro: logradouro,
-                    numero: numero,
-                    complemento: complemento,
-                    cep: cep,
-                    bairro: bairro,
-                    cidade: cidade,
-                    estado: estado,
-                    uf: uf);
-            endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(tipoEndereco);
-            return await _repositoryEndereco.InserirEnderecoFornecedor(fornecedor_id, endereco);
+            var endereco = _mapper.MontarInsertEndereco(req);
+            endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(req.TipoEndereco);
+            return await _repositoryEndereco.InserirEnderecoFornecedor(req.Fornecedor_id, endereco);
         }
 
         public async Task<bool> EditarTelefone(int telefone_id, string ddd, string numero, string tipoTelefone)
