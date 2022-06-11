@@ -181,8 +181,14 @@ namespace Comercio.Services
             return VendedorViewModel;
         }
 
+        public Task<bool> ExcluirVendedor(int fornecedor_id, int vendedor_id)
+            => _repositoryFornecedor.ExcluirVendedor(fornecedor_id, vendedor_id);
+
         public async Task<bool> ExcluirEndereco(int fornecedor_id, int endereco_id)
            => await _repositoryEndereco.ExcluirEnderecoFornecedor(fornecedor_id, endereco_id);
+
+        public async Task<bool> ExcluirTelefone(int fornecedor_id, int telefone_id)
+           => await _repositoryTelefone.ExcluirTelefoneFornecedor(fornecedor_id, telefone_id);
 
         public async Task<List<Fornecedor>> ListarFornecedores()
             => await _repositoryBase.GetAllAsync();
@@ -195,8 +201,5 @@ namespace Comercio.Services
 
         public async Task<List<TipoTelefoneResponse>> ObterTipoTelefone()
             => await _repositoryTelefone.ListarDescricaoTipoTelefone();
-
-        public async Task<bool> ExcluirTelefone(int fornecedor_id, int telefone_id)
-            => await _repositoryTelefone.ExcluirTelefoneFornecedor(fornecedor_id, telefone_id);
     }
 }
