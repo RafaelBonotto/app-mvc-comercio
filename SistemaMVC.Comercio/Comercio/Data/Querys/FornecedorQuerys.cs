@@ -20,5 +20,10 @@
                                                                 AND
                                                                 tb.ativo = 1";
 
+        public const string SELECT_VENDEDOR = @"SELECT *
+                                                    FROM tb_pessoa_contato_fornecedor tb
+                                                    WHERE tb.fornecedor_id = @fornecedor_id
+                                                    AND tb.pessoa_contato_id = @vendedor_id";
+
     }
 }
