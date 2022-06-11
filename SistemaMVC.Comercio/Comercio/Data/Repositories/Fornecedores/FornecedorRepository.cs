@@ -168,6 +168,24 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
+        public async Task<bool> ExcluirVendedor(int fornecedor_id, int vendedor_id)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            var vendedor = await connection.QueryFirstOrDefaultAsync<PessoaContatoFornecedor>(
+                sql: FornecedorQuerys.SELECT_VENDEDOR,
+                param: new { fornecedor_id, vendedor_id });
+
+            if(vendedor is not null)
+            {
+                vendedor.Ativo = 0;
+                vendedor.Data_alteracao = DateTime.Now;
+                var update = await connection.UpdateAsync<PessoaContatoFornecedor>(vendedor);
+                if (update)
+                    return true;
+            }
+            return false;
+        }
+
 
         public Task<Fornecedor> UpdateAsync(Fornecedor entity)
         {
