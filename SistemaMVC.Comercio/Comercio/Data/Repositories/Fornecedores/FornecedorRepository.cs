@@ -48,6 +48,11 @@ namespace Comercio.Data.Repositories.Fornecedores
             return await this.GetByIdAsync(fornecdorId);
         }
 
+        public Task<Fornecedor> UpdateAsync(Fornecedor entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<Fornecedor> DeleteAsync(int id)
         {
             throw new NotImplementedException();
@@ -184,12 +189,6 @@ namespace Comercio.Data.Repositories.Fornecedores
                     return true;
             }
             return false;
-        }
-
-
-        public Task<Fornecedor> UpdateAsync(Fornecedor entity)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<PessoaContato> GetVendedor(int id)
