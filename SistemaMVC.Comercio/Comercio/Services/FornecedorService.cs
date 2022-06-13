@@ -102,29 +102,10 @@ namespace Comercio.Services
             return await _repositoryFornecedor.AtualizarVendedor(req);
         }
 
-        public async Task<bool> EditarEndereco(
-            int endereco_id,
-            string logradouro,
-            string numero,
-            string complemento,
-            string cep,
-            string bairro,
-            string cidade,
-            string estado,
-            string uf,
-            string tipoEndereco)
+        public async Task<bool> EditarEndereco(EnderecoRequest req)
         {
-            var endereco = _mapper.MontarUpdateEndereco(
-                    id: endereco_id,
-                    logradouro: logradouro,
-                    numero: numero,
-                    complemento: complemento,
-                    cep: cep,
-                    bairro: bairro,
-                    cidade: cidade,
-                    estado: estado,
-                    uf: uf);
-            endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(tipoEndereco);
+            var endereco = _mapper.MontarUpdateEndereco(req);
+            endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(req.TipoEndereco);
             return await _repositoryEndereco.AtualizarEndereco(endereco);
         }
 
