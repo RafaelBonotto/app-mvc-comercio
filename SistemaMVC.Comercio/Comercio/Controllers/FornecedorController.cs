@@ -189,25 +189,13 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/editar-endereco/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditarEndereco(
-            int fornecedor_id,
-            int endereco_id,
-            string logradouro,
-            string numero,
-            string complemento,
-            string cep,
-            string bairro,
-            string cidade,
-            string estado,
-            string uf,
-            string tipoEndereco)
+        public async Task<IActionResult> EditarEndereco(int fornecedor_id, EnderecoRequest request)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var update = await _service.EditarEndereco(
-                        endereco_id, logradouro, numero, complemento, cep, bairro, cidade, estado, uf, tipoEndereco);
+                    var update = await _service.EditarEndereco(request);
 
                     if (!update)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO 
