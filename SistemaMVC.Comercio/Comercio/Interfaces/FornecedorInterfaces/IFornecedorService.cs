@@ -14,10 +14,8 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<bool> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone);
         Task<bool> EditarTelefone(int telefone_id, string ddd, string numero, string tipoTelefone);
         Task<bool> ExcluirTelefone(int fornecedor_id, int telefone_id);
-        Task<bool> InserirEndereco(int fornecedor_id, string logradouro, string numero,
-            string complemento, string cep, string bairro, string cidade, string estado, string uf, string tipoEndereco);
-        Task<bool> EditarEndereco(int endereco_id, string logradouro, string numero,
-            string complemento, string cep, string bairro, string cidade, string estado, string uf, string tipoEndereco);
+        Task<bool> InserirEndereco(EnderecoRequest request);
+        Task<bool> EditarEndereco(EnderecoRequest endereco);
         Task<bool> EditarVendedor(VendedorRequest request);
         Task<bool> ExcluirVendedor(int fornecedor_id, int vendedor_id);
         Task<bool> ExcluirEndereco(int fornecedor_id, int endereco_id);
