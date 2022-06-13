@@ -2,6 +2,7 @@
 using Comercio.Entities;
 using Comercio.Enums;
 using Comercio.Models;
+using Comercio.Requests.Fornecedor;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,12 +13,8 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Fornecedor MontaFornecedorInsertRepositorio(FornecedorViewModel fornecedor);
         Telefone MontaUpdateTelefone(int telefone_id, string ddd, string numero, int tipoTelefone_id);
         Telefone MontaInsertTelefoneVendedor(string ddd, string numero, TipoTelefone tipoTelefone);
-        Endereco MontarInsertEndereco(
-            string logradouro, string numero, string complemento, string cep, 
-            string bairro, string cidade, string estado, string uf);
-        Endereco MontarUpdateEndereco(int id,
-            string logradouro, string numero, string complemento, string cep, 
-            string bairro, string cidade, string estado, string uf);
+        Endereco MontarInsertEndereco(EnderecoRequest req);
+        Endereco MontarUpdateEndereco(EnderecoRequest req);
         EnderecoFornecedor MontaEnderecoFornecedor(int fornecedorId, int enderecoId);
         PessoaContato MontaPessoaContato(string nome, string email);
         PessoaContatoFornecedor MontaInsertVendedorFornecedor(int fornecedorId, int vendedorId);
