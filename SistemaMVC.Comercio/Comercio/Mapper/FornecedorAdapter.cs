@@ -3,6 +3,7 @@ using Comercio.Entities;
 using Comercio.Enums;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
+using Comercio.Requests.Fornecedor;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -78,54 +79,37 @@ namespace Comercio.Mapper
             };
         }
 
-        public Endereco MontarInsertEndereco(
-            string logradouro,
-            string numero,
-            string complemento,
-            string cep,
-            string bairro,
-            string cidade,
-            string estado,
-            string uf)
+        public Endereco MontarInsertEndereco(EnderecoRequest req)
         {
             return new Endereco()
             {
-                Logradouro = logradouro.ToUpper(),
-                Numero = numero,
-                Complemento = string.IsNullOrEmpty(complemento) ? string.Empty : complemento.ToUpper(),
-                Cep = string.IsNullOrEmpty(complemento) ? string.Empty : cep,
-                Bairro = string.IsNullOrEmpty(bairro) ? string.Empty : bairro.ToUpper(),
-                Cidade = string.IsNullOrEmpty(cidade) ? string.Empty : cidade.ToUpper(),
-                Estado = string.IsNullOrEmpty(estado) ? string.Empty : estado.ToUpper(),
-                UF = string.IsNullOrEmpty(uf) ? string.Empty : uf.ToUpper(),
+                Logradouro = req.Logradouro.ToUpper(),
+                Numero = req.Numero,
+                Complemento = string.IsNullOrEmpty(req.Complemento) ? string.Empty : req.Complemento.ToUpper(),
+                Cep = string.IsNullOrEmpty(req.Complemento) ? string.Empty : req.Cep,
+                Bairro = string.IsNullOrEmpty(req.Bairro) ? string.Empty : req.Bairro.ToUpper(),
+                Cidade = string.IsNullOrEmpty(req.Cidade) ? string.Empty : req.Cidade.ToUpper(),
+                Estado = string.IsNullOrEmpty(req.Estado) ? string.Empty : req.Estado.ToUpper(),
+                UF = string.IsNullOrEmpty(req.Uf) ? string.Empty : req.Uf.ToUpper(),
                 Ativo = 1,
                 Data_criacao = DateTime.Now,
                 Data_alteracao = DateTime.Now
             };
         }
 
-        public Endereco MontarUpdateEndereco(
-            int id,
-            string logradouro,
-            string numero,
-            string complemento,
-            string cep,
-            string bairro,
-            string cidade,
-            string estado,
-            string uf)
+        public Endereco MontarUpdateEndereco(EnderecoRequest req)
         {
             return new Endereco()
             {
-                Id = id,
-                Logradouro = logradouro.ToUpper(),
-                Numero = numero,
-                Complemento = string.IsNullOrEmpty(complemento) ? string.Empty : complemento.ToUpper(),
-                Cep = string.IsNullOrEmpty(complemento) ? string.Empty : cep,
-                Bairro = string.IsNullOrEmpty(bairro) ? string.Empty : bairro.ToUpper(),
-                Cidade = string.IsNullOrEmpty(cidade) ? string.Empty : cidade.ToUpper(),
-                Estado = string.IsNullOrEmpty(estado) ? string.Empty : estado.ToUpper(),
-                UF = string.IsNullOrEmpty(uf) ? string.Empty : uf.ToUpper()
+                Id = req.Endereco_id,
+                Logradouro = req.Logradouro.ToUpper(),
+                Numero = req.Numero,
+                Complemento = string.IsNullOrEmpty(req.Complemento) ? string.Empty : req.Complemento.ToUpper(),
+                Cep = string.IsNullOrEmpty(req.Cep) ? string.Empty : req.Cep,
+                Bairro = string.IsNullOrEmpty(req.Bairro) ? string.Empty : req.Bairro.ToUpper(),
+                Cidade = string.IsNullOrEmpty(req.Cidade) ? string.Empty : req.Cidade.ToUpper(),
+                Estado = string.IsNullOrEmpty(req.Estado) ? string.Empty : req.Estado.ToUpper(),
+                UF = string.IsNullOrEmpty(req.Uf) ? string.Empty : req.Uf.ToUpper()
             };
         }
 
