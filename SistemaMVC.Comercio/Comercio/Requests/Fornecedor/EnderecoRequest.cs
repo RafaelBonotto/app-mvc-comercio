@@ -2,6 +2,7 @@
 {
     public class EnderecoRequest 
     {
+        public int Endereco_id { get; set; } 
         public int Fornecedor_id { get; set; }
         public string Logradouro { get; set; }
         public string Numero { get; set; }
