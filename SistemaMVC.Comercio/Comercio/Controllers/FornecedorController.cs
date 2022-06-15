@@ -358,7 +358,7 @@ namespace Comercio.Controllers
             }
         }
 
-        [HttpGet("[controller]/exibir-fornecedor")]
+        [HttpGet("[controller]/exibirFornecedor")]
         public async Task<IActionResult> ExibirFornecedor(int id) 
         {
             try
