@@ -11,6 +11,7 @@ namespace Comercio.Entities
         public int Id { get; set; }
         public string Cnpj { get; set; }
         public string Nome_empresa { get; set; }
+        public string Email { get; set; } 
         public sbyte Ativo { get; set; }
         public DateTime Data_criacao { get; set; }
         public DateTime Data_alteracao { get; set; }
