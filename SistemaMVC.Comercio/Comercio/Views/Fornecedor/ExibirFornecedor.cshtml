@@ -131,8 +131,7 @@
     </table>
 </div>
 <div>
-    <a asp-controller="Fornecedor" asp-action="editar-fornecedor" asp-route-fornecedor_id=@Model.Id class="btn btn-success btn-sm">ATUALIZAR DADOS DO FORNECEDOR</a>
-    @*AQUI CHAMA A VIEW DETALHES E QUEM CHAMA A VIEW DETALHES PASSA A CHAMAR ESSA*@
+    <a asp-controller="Fornecedor" asp-action="detalhes" asp-route-fornecedor_id=@Model.Id class="btn btn-success btn-sm">ATUALIZAR DADOS DO FORNECEDOR</a>
 </div>
 <div>
     <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
