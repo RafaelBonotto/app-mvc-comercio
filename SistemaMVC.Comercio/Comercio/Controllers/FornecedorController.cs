@@ -358,8 +358,8 @@ namespace Comercio.Controllers
             }
         }
 
-        [HttpGet("[controller]/get")]
-        public async Task<IActionResult> GetFornecedor(int id)
+        [HttpGet("[controller]/exibir-fornecedor")]
+        public async Task<IActionResult> ExibirFornecedor(int id) 
         {
             try
             {
