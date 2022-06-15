@@ -5,7 +5,7 @@
 
 <h1>@Model.Nome_empresa </h1>
 <!-- Botão para modal AtualizarNome-->
-<button type="button" class="btn btn-success btn-sm data-toggle="modal" data-target="#modalAtualizarNomeFornecedor" data-whatever="mdo">EDITAR NOME / EMAIL</button>
+<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAtualizarNomeFornecedor" data-whatever="mdo">EDITAR NOME / EMAIL</button>
 
 <hr />
 <div>
@@ -269,7 +269,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-controller="Fornecedor" asp-action="atualizar-nome" asp-route-fornecedor_id="@Model.Id">
+                <form asp-controller="Fornecedor" asp-action="atualizar-nome-email" asp-route-fornecedor_id="@Model.Id">
                     <h6>NOME: <input type="text" name="Nome" /></h6>
                     <h6>E-MAIL: <input type="text" name="Email" /></h6>
                     <input type="submit" value="SALVAR" class="btn-danger" />
