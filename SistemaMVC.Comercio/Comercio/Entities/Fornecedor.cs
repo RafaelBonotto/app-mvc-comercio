@@ -17,21 +17,21 @@ namespace Comercio.Entities
         public DateTime Data_alteracao { get; set; }
 
         [Write(false)]
-        public virtual List<Produto> Produtos { get; set; }
+        public List<Produto> Produtos { get; set; } = new();
 
         [Write(false)]
-        public virtual List<Endereco> Endereco { get; set; }
+        public List<Endereco> Endereco { get; set; } = new();
 
         [Write(false)]
-        public virtual List<Telefone> Telefone { get; set; }
+        public List<Telefone> Telefone { get; set; } = new();
 
         [Write(false)]
-        public virtual List<PessoaContato> Vendedor { get; set; }
+        public List<PessoaContato> Vendedor { get; set; } = new();
 
         [Write(false)]
-        public virtual List<TipoTelefoneResponse> DescricaoTipoTelefone { get; set; }
+        public List<TipoTelefoneResponse> DescricaoTipoTelefone { get; set; } = new();
 
         [Write(false)]
-        public virtual List<TipoEnderecoResponse> DescricaoTipoEndereco { get; set; }
+        public List<TipoEnderecoResponse> DescricaoTipoEndereco { get; set; } = new();
     }
 }
