@@ -5,7 +5,7 @@
 
 <h1>@Model.Nome_empresa </h1>
 <!-- Botão para modal AtualizarNome-->
-<button type="button" class="btn btn-success btn-sm data-toggle="modal" data-target="#modalAtualizarNomeFornecedor" data-whatever="mdo">EDITAR NOME</button>
+<button type="button" class="btn btn-success btn-sm data-toggle="modal" data-target="#modalAtualizarNomeFornecedor" data-whatever="mdo">EDITAR NOME / EMAIL</button>
 
 <hr />
 <div>
@@ -21,6 +21,12 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Nome_empresa)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
         </dd>
     </dl>
 </div>
@@ -266,13 +272,7 @@
                 <form asp-controller="Fornecedor" asp-action="atualizar-nome" asp-route-fornecedor_id="@Model.Id">
                     <h6>NOME: <input type="text" name="Nome" /></h6>
                     <h6>E-MAIL: <input type="text" name="Email" /></h6>
-                    TELEFONE
-                    <h6>DDD: <input type="text" name="Ddd" /></h6>
-                    <h6>NUMERO: <input type="text" name="Numero" /></h6>
-                    TELEFONE ADICIONAL
-                    <h6>DDD: <input type="text" name="DddAdicional" /></h6>
-                    <h6>NUMERO: <input type="text" name="NumeroAdicional" /></h6>
-                    <input type="submit" value="ADICIONAR" class="btn-danger" />
+                    <input type="submit" value="SALVAR" class="btn-danger" />
                 </form>
             </div>
             <div class="modal-footer">
