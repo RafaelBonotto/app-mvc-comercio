@@ -1,0 +1,140 @@
+﻿@model Comercio.Models.FornecedorViewModel
+@{
+    ViewData["Title"] = "fornecedor/detalhes";
+}
+
+<h1>@Model.Nome_empresa </h1>
+<hr />
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cnpj)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cnpj)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nome_empresa)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nome_empresa)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+    </dl>
+</div>
+
+<hr />
+<div>
+    <h4>ENDEREÇOS</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    ENDEREÇO:
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Endereco)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Logradouro) ,
+                        @Html.DisplayFor(modelItem => item.Numero) -
+                        @Html.DisplayFor(modelItem => item.Cep) -
+                        @Html.DisplayFor(modelItem => item.Cidade) -
+                        @Html.DisplayFor(modelItem => item.UF)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<hr />
+<div>
+    <h4>TELEFONES</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    NÚMERO
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Telefone)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ddd)
+                        @Html.DisplayFor(modelItem => item.Numero)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<hr />
+
+<div>
+    <h4>VENDEDORES</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    NOME
+                </th>
+                <th>
+                    EMAIL
+                </th>
+                <th>
+                    TELEFONE 1
+                </th>
+                <th>
+                    TELEFONE 2
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Vendedor)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefones.First().Ddd)
+                        @Html.DisplayFor(modelItem => item.Telefones.First().Numero)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefones.Last().Ddd)
+                        @Html.DisplayFor(modelItem => item.Telefones.Last().Numero)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-controller="Fornecedor" asp-action="editar-fornecedor" asp-route-fornecedor_id=@Model.Id class="btn btn-success btn-sm">ATUALIZAR DADOS DO FORNECEDOR</a>
+    @*AQUI CHAMA A VIEW DETALHES E QUEM CHAMA A VIEW DETALHES PASSA A CHAMAR ESSA*@
+</div>
+<div>
+    <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
+</div>
+
