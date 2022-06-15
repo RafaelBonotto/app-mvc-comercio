@@ -15,6 +15,9 @@ namespace Comercio.Models
         [Display(Name = "Fornecedor")]
         public string Nome_empresa { get; set; }
 
+        [Display(Name = "E-mail")]
+        public string Email { get; set; }
+
         [Display(Name = "Endereço")]
         public List<Endereco> Endereco { get; set; } = new();
 
