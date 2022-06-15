@@ -4,6 +4,9 @@
 }
 
 <h1>@Model.Nome_empresa </h1>
+<!-- Botão para modal AtualizarNome-->
+<button type="button" class="btn btn-success btn-sm data-toggle="modal" data-target="#modalAtualizarNomeFornecedor" data-whatever="mdo">EDITAR NOME</button>
+@*<a asp-controller="Fornecedor" asp-action="atualizar-fornecedor" asp-route-fornecedor_id=@Model.Id class="btn btn-success btn-sm">EDITAR NOME</a>*@
 
 <hr />
 <div>
@@ -22,13 +25,6 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="editar" asp-route-id="@Model.Id" class="btn btn-success">Editar</a>
-    <!-- Botão para acionar modal Excluir-->
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExcluirFornecedor">
-        Excluir
-    </button>
-</div>
 
 <hr />
 <div>
@@ -42,7 +38,7 @@
                     ENDEREÇO:
                 </th>
                 <th>
-                     
+
                 </th>
             </tr>
         </thead>
@@ -58,7 +54,7 @@
                         @Html.DisplayFor(modelItem => item.UF)
                     </td>
                     <td>
-                        <a asp-controller="Fornecedor" asp-action="atualizar-endereco" asp-route-fornecedor_id=@Model.Id asp-route-endereco_id=@item.Id class="btn btn-success btn-sm">EDITAR</a>
+                        <a asp-controller="Fornecedor" asp-action="atualizar-endereco" asp-route-fornecedor_id=@Model.Id asp-route-endereco_id=@item.Id class="btn btn-success btn-sm">EDITAR ENDEREÇO</a>
                     </td>
                 </tr>
             }
@@ -78,7 +74,7 @@
                     NÚMERO
                 </th>
                 <th>
-                     
+
                 </th>
             </tr>
         </thead>
@@ -91,7 +87,7 @@
                         @Html.DisplayFor(modelItem => item.Numero)
                     </td>
                     <td>
-                        <a asp-controller="Fornecedor" asp-action="atualizar-telefone" asp-route-fornecedor_id=@Model.Id asp-route-telefone_id=@item.Id class="btn btn-success btn-sm">EDITAR</a>
+                        <a asp-controller="Fornecedor" asp-action="atualizar-telefone" asp-route-fornecedor_id=@Model.Id asp-route-telefone_id=@item.Id class="btn btn-success btn-sm">EDITAR TELEFONE</a>
                     </td>
                 </tr>
             }
@@ -116,7 +112,7 @@
                     EMAIL
                 </th>
                 <th>
-                    TELEFONE 1 
+                    TELEFONE 1
                 </th>
                 <th>
                     TELEFONE 2
@@ -126,25 +122,25 @@
         <tbody>
             @foreach (var item in Model.Vendedor)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telefones.First().Ddd)
-                    @Html.DisplayFor(modelItem => item.Telefones.First().Numero)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telefones.Last().Ddd)
-                    @Html.DisplayFor(modelItem => item.Telefones.Last().Numero)
-                </td>
-                <td>
-                    <a asp-controller="Fornecedor" asp-action="atualizar-vendedor" asp-route-fornecedor_id="@Model.Id" asp-route-vendedor_id="@item.Id" class="btn btn-success btn-sm">EDITAR</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefones.First().Ddd)
+                        @Html.DisplayFor(modelItem => item.Telefones.First().Numero)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefones.Last().Ddd)
+                        @Html.DisplayFor(modelItem => item.Telefones.Last().Numero)
+                    </td>
+                    <td>
+                        <a asp-controller="Fornecedor" asp-action="atualizar-vendedor" asp-route-fornecedor_id="@Model.Id" asp-route-vendedor_id="@item.Id" class="btn btn-success btn-sm">EDITAR VENDEDOR</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
