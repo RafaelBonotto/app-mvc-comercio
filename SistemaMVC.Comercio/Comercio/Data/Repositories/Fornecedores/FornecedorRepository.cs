@@ -1,5 +1,6 @@
 ﻿using Comercio.Data.ConnectionManager;
 using Comercio.Data.Querys;
+using Comercio.Data.Repositories.Base.Intrerfaces;
 using Comercio.Entities;
 using Comercio.Enums;
 using Comercio.Interfaces.Base;
@@ -17,7 +18,9 @@ using System.Threading.Tasks;
 
 namespace Comercio.Data.Repositories.Fornecedores
 {
-    public class FornecedorRepository : IRepositoryBase<Fornecedor>, IFornecedorRepository
+    public class FornecedorRepository : IRepositoryBase<Fornecedor>/*EXCLUIR INTERFACE E MÉTODOS*/, 
+        IBaseRepository<Fornecedor>, 
+        IFornecedorRepository
     {
         private readonly IMySqlConnectionManager _connection;
         private readonly IFornecedorAdapter _mapper;
@@ -56,7 +59,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 if (!update)
                     return null;
             }
-            return await this.GetByIdAsync(fornecedor.Id);
+            return fornecedor;
         }
 
         public Task<Fornecedor> DeleteAsync(int id)
@@ -235,36 +238,40 @@ namespace Comercio.Data.Repositories.Fornecedores
         static async Task<List<PessoaContato>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
             List<PessoaContato> ret = new();
-            try
-            {
-                var vendedorIds = await connection.QueryAsync<int>(
+            var vendedorIds = await connection.QueryAsync<int>(
                   sql: FornecedorQuerys.SELECT_ID_VENDEDOR_FORNECEDOR,
                   param: new { fornecedor_id });
-                if (vendedorIds.Any())
-                {
-                    foreach (var id in vendedorIds)
-                    {
-                        var vendedor = connection.Get<PessoaContato>(id);
-                        var telefoneIds = await connection.QueryAsync<int>(
-                            sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
-                            param: new { vendedor_id = id });
-
-                        if (telefoneIds.Any())
-                            foreach (var telefoneId in telefoneIds)
-                                vendedor.Telefones.Add(connection.Get<Telefone>(telefoneId));
-                        ret.Add(vendedor);
-                    }
-                }
-                return ret;
-            }
-            catch (Exception ex)
+            if (vendedorIds.Any())
             {
+                foreach (var id in vendedorIds)
+                {
+                    var vendedor = connection.Get<PessoaContato>(id);
+                    var telefoneIds = await connection.QueryAsync<int>(
+                        sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
+                        param: new { vendedor_id = id });
 
-                throw;
+                    if (telefoneIds.Any())
+                        foreach (var telefoneId in telefoneIds)
+                            vendedor.Telefones.Add(connection.Get<Telefone>(telefoneId));
+                    ret.Add(vendedor);
+                }
             }
-          
+            return ret;
+        }
 
-           
+        Task<bool> IBaseRepository<Fornecedor>.AddAsync(Fornecedor entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IBaseRepository<Fornecedor>.UpdateAsync(Fornecedor entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IBaseRepository<Fornecedor>.DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
