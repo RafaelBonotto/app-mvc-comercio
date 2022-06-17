@@ -69,8 +69,8 @@ namespace Comercio.Controllers
                     var update = await _service.EditarNomeEmail(fornecedor_id, nome, email);
                     if (!update)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // CRIAR ERRO PARA O FORNECEDOR
-                    var fornecedor = await _service.BuscarFornecedor(fornecedor_id);
-                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
+
+                    var fornecedorViewModel = _service.RetornarForncedorViewModel(fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (CnpjInvalidoException)
