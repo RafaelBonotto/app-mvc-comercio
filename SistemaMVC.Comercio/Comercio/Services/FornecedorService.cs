@@ -112,8 +112,8 @@ namespace Comercio.Services
         public async Task<bool> EditarNomeEmail(int fornecedor_id, string nome, string email)
         {
             var fornecedor = await _repositoryBase.GetByIdAsync(fornecedor_id);
-            fornecedor.Nome_empresa = !string.IsNullOrEmpty(nome) ? nome : fornecedor.Nome_empresa;
-            fornecedor.Email = !string.IsNullOrEmpty(email) ? email: fornecedor.Email;
+            fornecedor.Nome_empresa = !string.IsNullOrEmpty(nome) ? nome.ToUpper() : fornecedor.Nome_empresa;
+            fornecedor.Email = !string.IsNullOrEmpty(email) ? email.ToLower() : fornecedor.Email;
             fornecedor.Data_alteracao = System.DateTime.Now;
             if (await _repositoryBase.UpdateAsync(fornecedor) is null)
                 return false;
