@@ -20,6 +20,7 @@ namespace Comercio.Mapper
             {
                 Id = fornecedor.Id,
                 Cnpj = fornecedor.Cnpj,
+                Email = fornecedor.Email,
                 Nome_empresa = fornecedor.Nome_empresa.ToUpper(),
                 Telefone = fornecedor.Telefone,
                 Endereco = fornecedor.Endereco
@@ -49,6 +50,7 @@ namespace Comercio.Mapper
             {
                 Id = fornecedor.Id,
                 Cnpj = fornecedor.Cnpj,
+                Email = fornecedor.Email,
                 Nome_empresa = fornecedor.Nome_empresa.ToUpper(),
                 Telefone = fornecedor.Telefone,
                 Endereco = fornecedor.Endereco,
