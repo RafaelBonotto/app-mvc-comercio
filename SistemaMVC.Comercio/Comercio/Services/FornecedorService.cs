@@ -109,6 +109,18 @@ namespace Comercio.Services
             return await _repositoryEndereco.AtualizarEndereco(endereco);
         }
 
+        public async Task<bool> EditarNomeEmail(int fornecedor_id, string nome, string email)
+        {
+            var fornecedor = await _repositoryBase.GetByIdAsync(fornecedor_id);
+            fornecedor.Nome_empresa = !string.IsNullOrEmpty(nome) ? nome : fornecedor.Nome_empresa;
+            fornecedor.Email = !string.IsNullOrEmpty(email) ? email: fornecedor.Email;
+            fornecedor.Data_alteracao = System.DateTime.Now;
+            if (await _repositoryBase.UpdateAsync(fornecedor) is null)
+                return false;
+            return true;
+        }
+
+
         public async Task<FornecedorViewModel> RetornarForncedorViewModel(int fornecedor_id)
         {
             var fornecedorResponse = await this.BuscarFornecedor(fornecedor_id);
