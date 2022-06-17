@@ -58,7 +58,7 @@ namespace Comercio.Controllers
         }
 
         [HttpPost]
-        [Route("[controller]/adicionar/")]
+        [Route("[controller]/editarNomeEmail/")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditarNomeEmail([Bind("Nome, Email")] int fornecedor_id, string nome, string email)
         {
