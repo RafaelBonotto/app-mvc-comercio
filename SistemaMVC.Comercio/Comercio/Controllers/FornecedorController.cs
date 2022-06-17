@@ -60,17 +60,17 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/adicionar/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditarNomeEmail([Bind("Nome, Email")] string nome, string email)
+        public async Task<IActionResult> EditarNomeEmail([Bind("Nome, Email")] int fornecedor_id, string nome, string email)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var fornecedorResponse = await _service.EditarNomeEmail(nome, email);
-                    if (fornecedorResponse is null)
+                    var update = await _service.EditarNomeEmail(fornecedor_id, nome, email);
+                    if (!update)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // CRIAR ERRO PARA O FORNECEDOR
-
-                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
+                    var fornecedor = await _service.BuscarFornecedor(fornecedor_id);
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (CnpjInvalidoException)
