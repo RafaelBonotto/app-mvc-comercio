@@ -58,6 +58,37 @@ namespace Comercio.Controllers
         }
 
         [HttpPost]
+        [Route("[controller]/adicionar/")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditarNomeEmail([Bind("Nome, Email")] string nome, string email)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var fornecedorResponse = await _service.EditarNomeEmail(nome, email);
+                    if (fornecedorResponse is null)
+                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // CRIAR ERRO PARA O FORNECEDOR
+
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
+                    return View("Detalhes", fornecedorViewModel);
+                }
+                catch (CnpjInvalidoException)
+                {
+                    return View("Error", new ErrorViewModel().FornecedorErroInserirCnpjInvalido());
+                }
+                catch (System.Exception)
+                {
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+                }
+            }
+            else
+            {
+                return View("Error", new ErrorViewModel().ErroDeValidacao());
+            }
+        }
+
+        [HttpPost]
         [Route("[controller]/adicionar-telefone/")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AdicionarTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
@@ -375,27 +406,5 @@ namespace Comercio.Controllers
                 return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
             }
         }
-
-        [Route("[controller]/filtrar-por-setor")]
-        public async Task<IActionResult> FiltrarPorSetor(string setor)
-        {
-            try
-            {
-                var fornecedores = await _service.FiltrarPorSetor(setor);
-                if (fornecedores.Count == 0)
-                    return View("Error", new ErrorViewModel().ErroFiltroNaoEncontrado());
-
-                var listaViewModel = new List<FornecedorViewModel>();
-                foreach (var fornecedor in fornecedores)
-                    listaViewModel.Add(_mapper.CriarFornecedorViewModel(fornecedor));
-
-                return View("Fornecedores", listaViewModel);
-            }
-            catch (System.Exception)
-            {
-                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
-            }
-        }
-
     }
 }
