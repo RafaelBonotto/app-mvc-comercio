@@ -235,26 +235,36 @@ namespace Comercio.Data.Repositories.Fornecedores
         static async Task<List<PessoaContato>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
         {
             List<PessoaContato> ret = new();
-            var vendedorIds = await connection.QueryAsync<int>(
-                    sql: FornecedorQuerys.SELECT_ID_VENDEDOR_FORNECEDOR,
-                    param: new { fornecedor_id });
-
-            if (vendedorIds.Any())
+            try
             {
-                foreach (var id in vendedorIds)
+                var vendedorIds = await connection.QueryAsync<int>(
+                  sql: FornecedorQuerys.SELECT_ID_VENDEDOR_FORNECEDOR,
+                  param: new { fornecedor_id });
+                if (vendedorIds.Any())
                 {
-                    var vendedor = connection.Get<PessoaContato>(id);
-                    var telefoneIds = await connection.QueryAsync<int>(
-                        sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
-                        param: new { vendedor_id = id });
+                    foreach (var id in vendedorIds)
+                    {
+                        var vendedor = connection.Get<PessoaContato>(id);
+                        var telefoneIds = await connection.QueryAsync<int>(
+                            sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
+                            param: new { vendedor_id = id });
 
-                    if (telefoneIds.Any())
-                        foreach (var telefoneId in telefoneIds)
-                            vendedor.Telefones.Add(connection.Get<Telefone>(telefoneId));
-                    ret.Add(vendedor);
+                        if (telefoneIds.Any())
+                            foreach (var telefoneId in telefoneIds)
+                                vendedor.Telefones.Add(connection.Get<Telefone>(telefoneId));
+                        ret.Add(vendedor);
+                    }
                 }
+                return ret;
             }
-            return ret;
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+          
+
+           
         }
 
         #endregion
