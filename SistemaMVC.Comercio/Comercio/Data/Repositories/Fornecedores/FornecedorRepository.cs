@@ -48,9 +48,15 @@ namespace Comercio.Data.Repositories.Fornecedores
             return await this.GetByIdAsync(fornecdorId);
         }
 
-        public Task<Fornecedor> UpdateAsync(Fornecedor entity)
+        public async Task<Fornecedor> UpdateAsync(Fornecedor fornecedor)
         {
-            throw new NotImplementedException();
+            using (var connection = await _connection.GetConnectionAsync())
+            {
+                var update = await connection.UpdateAsync<Fornecedor>(fornecedor);
+                if (!update)
+                    return null;
+            }
+            return await this.GetByIdAsync(fornecedor.Id);
         }
 
         public Task<Fornecedor> DeleteAsync(int id)
