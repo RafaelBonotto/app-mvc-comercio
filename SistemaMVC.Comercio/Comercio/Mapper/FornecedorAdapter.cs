@@ -1,5 +1,4 @@
-﻿using Comercio.Data.Repositories.Response;
-using Comercio.Entities;
+﻿using Comercio.Entities;
 using Comercio.Enums;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Comercio.Mapper
 {
@@ -16,37 +14,7 @@ namespace Comercio.Mapper
     {
         public FornecedorViewModel CriarFornecedorViewModel(Fornecedor fornecedor)
         {
-            return new FornecedorViewModel
-            {
-                Id = fornecedor.Id,
-                Cnpj = fornecedor.Cnpj,
-                Email = fornecedor.Email,
-                Nome_empresa = fornecedor.Nome_empresa.ToUpper(),
-                Telefone = fornecedor.Telefone,
-                Endereco = fornecedor.Endereco
-            };
-        }
-
-        public async Task<FornecedorViewModel> CriarFornecedorViewModel(
-            Fornecedor fornecedor, 
-            List<TipoTelefoneResponse> tipoTelRepositorio, 
-            List<TipoEnderecoResponse> tipoEndRepositorio)
-        {
-            foreach (var telefone in fornecedor.Telefone)
-            {
-                telefone.Tipo_telefone = tipoTelRepositorio
-                    .Where(x => x.Id == telefone.Tipo_telefone_id)
-                    .Select(x => x.Descricao)
-                    .FirstOrDefault();
-            }
-            foreach (var endereco in fornecedor.Endereco)
-            {
-                endereco.Tipo_endereco = tipoEndRepositorio
-                    .Where(x => x.Id == endereco.Tipo_endereco_id)
-                    .Select(x => x.Descricao)
-                    .FirstOrDefault();
-            }
-            var ret = new FornecedorViewModel()
+            var ret = new FornecedorViewModel
             {
                 Id = fornecedor.Id,
                 Cnpj = fornecedor.Cnpj,
@@ -56,8 +24,8 @@ namespace Comercio.Mapper
                 Endereco = fornecedor.Endereco,
                 Vendedor = fornecedor.Vendedor
             };
-            ret.TipoTelefone = new SelectList(tipoTelRepositorio);
-            ret.TipoEndereco = new SelectList(tipoEndRepositorio);
+            ret.TipoTelefone = new SelectList(fornecedor.DescricaoTipoTelefone);
+            ret.TipoEndereco = new SelectList(fornecedor.DescricaoTipoEndereco);
             return ret;
         }
 
