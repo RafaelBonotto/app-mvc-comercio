@@ -27,9 +27,7 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/adicionar/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Adicionar(
-            [Bind("Cnpj, Nome_empresa")]
-            FornecedorViewModel fornecedor)
+        public async Task<IActionResult> Adicionar(FornecedorViewModel fornecedor)
         {
             if (ModelState.IsValid)
             {
@@ -37,7 +35,7 @@ namespace Comercio.Controllers
                 {
                     var fornecedorResponse = await _service.InserirFornecedor(fornecedor);
                     if (fornecedorResponse is null)
-                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // CRIAR ERRO PARA O FORNECEDOR
+                        return View("Error", new ErrorViewModel().FornecedorErroAoTentarInserir()); 
 
                     var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedorResponse);
                     return View("Detalhes", fornecedorViewModel);
