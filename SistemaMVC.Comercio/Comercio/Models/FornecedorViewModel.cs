@@ -16,6 +16,7 @@ namespace Comercio.Models
         public string Nome_empresa { get; set; }
 
         [Display(Name = "E-mail")]
+        [EmailAddress(ErrorMessage = "E-mail inaválido")]
         public string Email { get; set; }
 
         [Display(Name = "Endereço")]
