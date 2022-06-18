@@ -1,4 +1,5 @@
-﻿using Comercio.Data.Repositories.Response;
+﻿using Comercio.Data.Repositories.Base.Intrerfaces;
+using Comercio.Data.Repositories.Response;
 using Comercio.Entities;
 using Comercio.Enums;
 using Comercio.Exceptions.Fornecedor;
@@ -18,6 +19,7 @@ namespace Comercio.Services
     public class FornecedorService : IFornecedorService
     {
         private readonly IRepositoryBase<Fornecedor> _repositoryBase;
+        private readonly IBaseRepository<Fornecedor> _baseRepository;
         private readonly IFornecedorRepository _repositoryFornecedor;
         private readonly ITelefoneRepository _repositoryTelefone;
         private readonly IEnderecoRepository _repositoryEndereco;
@@ -109,25 +111,19 @@ namespace Comercio.Services
             return await _repositoryEndereco.AtualizarEndereco(endereco);
         }
 
-        public async Task<bool> EditarNomeEmail(int fornecedor_id, string nome, string email)
+        public async Task<Fornecedor> EditarNomeEmail(int fornecedor_id, string nome, string email)
         {
-            var fornecedor = await _repositoryBase.GetByIdAsync(fornecedor_id);
-            fornecedor.Nome_empresa = !string.IsNullOrEmpty(nome) ? nome.ToUpper() : fornecedor.Nome_empresa;
-            fornecedor.Email = !string.IsNullOrEmpty(email) ? email.ToLower() : fornecedor.Email;
-            fornecedor.Data_alteracao = System.DateTime.Now;
-            if (await _repositoryBase.UpdateAsync(fornecedor) is null)
-                return false;
-            return true;
+            Fornecedor fornecedor = new();
+            fornecedor.Id = fornecedor_id;
+            fornecedor.Nome_empresa = !string.IsNullOrEmpty(nome) ? nome.ToUpper() : string.Empty;
+            fornecedor.Email = !string.IsNullOrEmpty(email) ? email.ToLower() : string.Empty;
+            return await _repositoryBase.UpdateAsync(fornecedor);
         }
 
 
-        public async Task<FornecedorViewModel> RetornarForncedorViewModel(int fornecedor_id)
+        public async Task<FornecedorViewModel> RetornarForncedorViewModel(int fornecedor_id)// EXCLUIR ESSE MÉTODO
         {
-            var fornecedorResponse = await this.BuscarFornecedor(fornecedor_id);
-            var tipoTelefoneBanco = await this.ObterTipoTelefone();
-            var tipoEnderecoBanco = await this.ObterTipoEndereco();
-            return await _mapper.CriarFornecedorViewModel(
-                fornecedorResponse, tipoTelefoneBanco, tipoEnderecoBanco);
+            return new FornecedorViewModel();
         }
 
         public async Task<TelefoneFornecedorViewModel> RetornarTelefoneFornecedorViewModel(int fornecedor_id, int telefone_id)
@@ -170,11 +166,5 @@ namespace Comercio.Services
 
         public async Task<Fornecedor> BuscarFornecedor(int id)
             => await _repositoryBase.GetByIdAsync(id);
-
-        public async Task<List<TipoEnderecoResponse>> ObterTipoEndereco()
-            => await _repositoryEndereco.ObterDescricaoTipoEndereco();
-
-        public async Task<List<TipoTelefoneResponse>> ObterTipoTelefone()
-            => await _repositoryTelefone.ListarDescricaoTipoTelefone();
     }
 }
