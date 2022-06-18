@@ -53,8 +53,11 @@ namespace Comercio.Services
                     throw new CnpjInvalidoException();
                 if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 0)
                 {
-                    fornecedor.Id = checkFornecedor.First().Id;
-                    //return await this.AtualizarFornecedor(fornecedor);
+                    var fornecedorBanco = checkFornecedor.First();
+                    fornecedorBanco.Ativo = 1;
+                    fornecedorBanco.Nome_empresa = !string.IsNullOrEmpty(fornecedor.Nome_empresa) ? fornecedor.Nome_empresa.ToUpper() : fornecedorBanco.Nome_empresa;
+                    fornecedorBanco.Email = !string.IsNullOrEmpty(fornecedor.Email) ? fornecedor.Email.ToLower() : fornecedorBanco.Email;
+                    return await _repositoryBase.UpdateAsync(fornecedorBanco);
                 }
             }
             var fornecedorRepository = _mapper.MontaFornecedorInsertRepositorio(fornecedor);
