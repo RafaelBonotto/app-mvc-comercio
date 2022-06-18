@@ -20,10 +20,6 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         PessoaContatoFornecedor MontaInsertVendedorFornecedor(int fornecedorId, int vendedorId);
         PessoaContatoTelefone MontaInsertVendedorTelefone(int vendedorId, int telefoneId);
         FornecedorViewModel CriarFornecedorViewModel(Fornecedor fornecedor);
-        Task<FornecedorViewModel> CriarFornecedorViewModel(
-            Fornecedor fornecedor,
-            List<TipoTelefoneResponse> tipoTelRepositorio,
-            List<TipoEnderecoResponse> tipoEndRepositorio);
         TelefoneFornecedorViewModel MontaTelefoneFornecedorViewModel(Telefone telefone, int fornecedor_id);
         EnderecoFornecedorViewModel MontaEnderecoFornecedorViewModel(Endereco endereco, int fornecedor_id);
         VendedorFornecedorViewModel MontaVendedorFornecedorViewModel(PessoaContato vendedor, List<Telefone> telefone, int fornecedor_id);
