@@ -287,20 +287,6 @@ namespace Comercio.Data.Repositories.Fornecedores
             fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
             fornecedor.DescricaoTipoEndereco = await _enderecoRepository.ObterDescricaoTipoEndereco(connection);
             fornecedor.DescricaoTipoTelefone = await _telefoneRepository.ListarDescricaoTipoTelefone(connection);
-            foreach (var telefone in fornecedor.Telefone)
-            {
-                telefone.Tipo_telefone = fornecedor.DescricaoTipoTelefone
-                    .Where(x => x.Id == telefone.Tipo_telefone_id)
-                    .Select(x => x.Descricao)
-                    .FirstOrDefault();
-            }
-            foreach (var endereco in fornecedor.Endereco)
-            {
-                endereco.Tipo_endereco = fornecedor.DescricaoTipoEndereco
-                    .Where(x => x.Id == endereco.Tipo_endereco_id)
-                    .Select(x => x.Descricao)
-                    .FirstOrDefault();
-            }
             return fornecedor;
         }
         #endregion
