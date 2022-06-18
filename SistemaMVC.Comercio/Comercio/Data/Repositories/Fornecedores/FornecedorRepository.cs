@@ -18,8 +18,7 @@ using System.Threading.Tasks;
 
 namespace Comercio.Data.Repositories.Fornecedores
 {
-    public class FornecedorRepository : IRepositoryBase<Fornecedor>/*EXCLUIR INTERFACE E MÉTODOS*/, 
-        IBaseRepository<Fornecedor>, 
+    public class FornecedorRepository : IRepositoryBase<Fornecedor>,/*EXCLUIR INTERFACE E MÉTODOS=>IBaseRepository<Fornecedor>, */
         IFornecedorRepository
     {
         private readonly IMySqlConnectionManager _connection;
@@ -41,25 +40,28 @@ namespace Comercio.Data.Repositories.Fornecedores
 
         public async Task<Fornecedor> AddAsync(Fornecedor fornecedor)
         {
-            int fornecdorId;
             using (var connection = await _connection.GetConnectionAsync())
             {
-                fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
+                var fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
                 if (fornecdorId <= 0)
-                    throw new Exception("Erro ao tentar inserir o fornecedor");
+                    return null;
+                return await this.GetByIdPrivateAsync(fornecedor.Id, connection);
             }
-            return await this.GetByIdAsync(fornecdorId);
         }
 
         public async Task<Fornecedor> UpdateAsync(Fornecedor fornecedor)
         {
             using (var connection = await _connection.GetConnectionAsync())
             {
-                var update = await connection.UpdateAsync<Fornecedor>(fornecedor);
+                var fornecedorBanco = await connection.GetAsync<Fornecedor>(fornecedor.Id);
+                fornecedorBanco.Nome_empresa = !string.IsNullOrEmpty(fornecedor.Nome_empresa) ? fornecedor.Nome_empresa.ToUpper() : fornecedorBanco.Nome_empresa;
+                fornecedorBanco.Email = !string.IsNullOrEmpty(fornecedor.Email) ? fornecedor.Email.ToLower() : fornecedorBanco.Email;
+                fornecedorBanco.Data_alteracao = System.DateTime.Now;
+                var update = await connection.UpdateAsync<Fornecedor>(fornecedorBanco);
                 if (!update)
                     return null;
+                return await this.GetByIdPrivateAsync(fornecedor.Id, connection);
             }
-            return fornecedor;
         }
 
         public Task<Fornecedor> DeleteAsync(int id)
@@ -78,9 +80,25 @@ namespace Comercio.Data.Repositories.Fornecedores
         {
             using var connection = await _connection.GetConnectionAsync();
             var fornecedor = connection.Get<Fornecedor>(id);
-            fornecedor.Telefone = await _telefoneRepository.ListarTelefoneFornecedor(id);
-            fornecedor.Endereco = await _enderecoRepository.ObterEnderecoFornecedor(fornecedor.Id);
+            fornecedor.Telefone = await _telefoneRepository.ListarTelefoneFornecedor(id, connection);
+            fornecedor.Endereco = await _enderecoRepository.ObterEnderecoFornecedor(fornecedor.Id, connection);
             fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
+            fornecedor.DescricaoTipoEndereco = await _enderecoRepository.ObterDescricaoTipoEndereco(connection);
+            fornecedor.DescricaoTipoTelefone = await _telefoneRepository.ListarDescricaoTipoTelefone(connection);
+            //foreach (var telefone in fornecedor.Telefone)
+            //{
+            //    telefone.Tipo_telefone = fornecedor.DescricaoTipoTelefone
+            //        .Where(x => x.Id == telefone.Tipo_telefone_id)
+            //        .Select(x => x.Descricao)
+            //        .FirstOrDefault();
+            //}
+            //foreach (var endereco in fornecedor.Endereco)
+            //{
+            //    endereco.Tipo_endereco = fornecedor.DescricaoTipoEndereco
+            //        .Where(x => x.Id == endereco.Tipo_endereco_id)
+            //        .Select(x => x.Descricao)
+            //        .FirstOrDefault();
+            //}
             return fornecedor;
         }
 
@@ -101,7 +119,9 @@ namespace Comercio.Data.Repositories.Fornecedores
                     return false;
 
                 var vendedorFornecedorId = await connection.InsertAsync<PessoaContatoFornecedor>(
-                    entityToInsert: _mapper.MontaInsertVendedorFornecedor(fornecedor_id, vendedor_id), transaction);
+                    entityToInsert: _mapper.MontaInsertVendedorFornecedor(fornecedor_id, vendedor_id), 
+                    transaction: transaction);
+
                 if (vendedor_id <= 0)
                 {
                     transaction.Rollback();
@@ -259,21 +279,30 @@ namespace Comercio.Data.Repositories.Fornecedores
             return ret;
         }
 
-        Task<bool> IBaseRepository<Fornecedor>.AddAsync(Fornecedor entity)
+        private async Task<Fornecedor> GetByIdPrivateAsync(int id, MySqlConnection connection)
         {
-            throw new NotImplementedException();
+            var fornecedor = connection.Get<Fornecedor>(id);
+            fornecedor.Telefone = await _telefoneRepository.ListarTelefoneFornecedor(id, connection);
+            fornecedor.Endereco = await _enderecoRepository.ObterEnderecoFornecedor(fornecedor.Id, connection);
+            fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
+            fornecedor.DescricaoTipoEndereco = await _enderecoRepository.ObterDescricaoTipoEndereco(connection);
+            fornecedor.DescricaoTipoTelefone = await _telefoneRepository.ListarDescricaoTipoTelefone(connection);
+            foreach (var telefone in fornecedor.Telefone)
+            {
+                telefone.Tipo_telefone = fornecedor.DescricaoTipoTelefone
+                    .Where(x => x.Id == telefone.Tipo_telefone_id)
+                    .Select(x => x.Descricao)
+                    .FirstOrDefault();
+            }
+            foreach (var endereco in fornecedor.Endereco)
+            {
+                endereco.Tipo_endereco = fornecedor.DescricaoTipoEndereco
+                    .Where(x => x.Id == endereco.Tipo_endereco_id)
+                    .Select(x => x.Descricao)
+                    .FirstOrDefault();
+            }
+            return fornecedor;
         }
-
-        Task<bool> IBaseRepository<Fornecedor>.UpdateAsync(Fornecedor entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> IBaseRepository<Fornecedor>.DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
     }
 }
