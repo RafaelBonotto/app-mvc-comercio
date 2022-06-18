@@ -5,6 +5,7 @@ using Comercio.Entities;
 using Comercio.Interfaces.TelefoneInterfaces;
 using Dapper;
 using Dapper.Contrib.Extensions;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,29 +76,55 @@ namespace Comercio.Data.Repositories.Telefones
             }
         }
 
-        public async Task<List<TipoTelefoneResponse>> ListarDescricaoTipoTelefone()
+        public async Task<List<TipoTelefoneResponse>> ListarDescricaoTipoTelefone(MySqlConnection connection = null)
         {
-            using var connection = await _connection.GetConnectionAsync();
-            return (await connection.QueryAsync<TipoTelefoneResponse>(
+            if(connection is null)
+            {
+                using var conn = await _connection.GetConnectionAsync();
+                return (await conn.QueryAsync<TipoTelefoneResponse>(
                     TelefoneQuerys.SELECT_TIPO_TELEFONE)).ToList();
+            }
+            else
+            {
+                return (await connection.QueryAsync<TipoTelefoneResponse>(
+                   TelefoneQuerys.SELECT_TIPO_TELEFONE)).ToList();
+            }
         }
+            
 
-        public async Task<List<Telefone>> ListarTelefoneFornecedor(int fornecedor_id)
+        public async Task<List<Telefone>> ListarTelefoneFornecedor(int fornecedor_id, MySqlConnection conn = null)
         {
             List<Telefone> ret = new();
-            using var connection = await _connection.GetConnectionAsync();
-            var telefoneIds = await connection.QueryAsync<int>(
+            List<TipoTelefoneResponse> tiposTel = new();
+            if (conn is null)
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                var telefoneIds = await connection.QueryAsync<int>(
                     sql: TelefoneQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
                     param: new { fornecedor_id });
-            if (telefoneIds.Any())
-                foreach (var id in telefoneIds)
-                    ret.Add(connection.Get<Telefone>(id));
 
-            var tipoTelefoneDesc = (await connection.QueryAsync<TipoTelefoneResponse>(
-                    TelefoneQuerys.SELECT_TIPO_TELEFONE)).ToList();
+                if (telefoneIds.Any())
+                    foreach (var id in telefoneIds)
+                        ret.Add(connection.Get<Telefone>(id));
 
+                tiposTel = (await connection.QueryAsync<TipoTelefoneResponse>(
+                        TelefoneQuerys.SELECT_TIPO_TELEFONE)).ToList();
+            }
+            else
+            {
+                var telefoneIds = await conn.QueryAsync<int>(
+                    sql: TelefoneQuerys.SELECT_ID_TELEFONE_FORNECEDOR,
+                    param: new { fornecedor_id });
+
+                if (telefoneIds.Any())
+                    foreach (var id in telefoneIds)
+                        ret.Add(conn.Get<Telefone>(id));
+
+                tiposTel = (await conn.QueryAsync<TipoTelefoneResponse>(
+                        TelefoneQuerys.SELECT_TIPO_TELEFONE)).ToList();
+            }
             foreach (var telef in ret)
-                telef.Tipo_telefone = tipoTelefoneDesc
+                telef.Tipo_telefone = tiposTel
                         .Where(x => x.Id == telef.Tipo_telefone_id)
                         .Select(x => x.Descricao).FirstOrDefault();
             return ret;
