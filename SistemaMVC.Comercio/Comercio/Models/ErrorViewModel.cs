@@ -92,5 +92,11 @@ namespace Comercio.Models
             this.Mensagem = "Não foi possível inseir o fornecedor. Foi encontrado um fornecedor ativo com o mesmo CNPJ.";
             return this;
         }
+
+        public ErrorViewModel FornecedorErroAoTentarInserir()
+        {
+            this.Mensagem = "Erro ao tentar inserir o vendedor.";
+            return this;
+        }
     }
 }
