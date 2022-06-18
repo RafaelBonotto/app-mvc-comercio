@@ -5,6 +5,7 @@ using Comercio.Entities;
 using Comercio.Interfaces.EnderecoInterfaces;
 using Dapper;
 using Dapper.Contrib.Extensions;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,41 +64,57 @@ namespace Comercio.Data.Repositories.Enderecos
                 EnderecoQuerys.SELECT_ID_TIPO_ENDERECO, new { tipoEndereco });
         }
 
-        public async Task<List<TipoEnderecoResponse>> ObterDescricaoTipoEndereco()
+        public async Task<List<TipoEnderecoResponse>> ObterDescricaoTipoEndereco(MySqlConnection connection = null)
         {
-            using var connection = await _connection.GetConnectionAsync();
-            return (await connection.QueryAsync<TipoEnderecoResponse>(
-                EnderecoQuerys.SELECT_TIPO_ENDERECO)).ToList();
+            if (connection is null)
+            {
+                using var conn = await _connection.GetConnectionAsync();
+                return (await conn.QueryAsync<TipoEnderecoResponse>(
+                            EnderecoQuerys.SELECT_TIPO_ENDERECO)).ToList();
+            }
+            else
+            {
+                return (await connection.QueryAsync<TipoEnderecoResponse>(
+                            EnderecoQuerys.SELECT_TIPO_ENDERECO)).ToList();
+            }
         }
 
-        public async Task<List<Endereco>> ObterEnderecoFornecedor(int fornecedor_id)
+        public async Task<List<Endereco>> ObterEnderecoFornecedor(int fornecedor_id, MySqlConnection conn = null)
         {
-            try
+            List<Endereco> ret = new();
+            List<TipoEnderecoResponse> tiposEnd = new();
+            if (conn is null)
             {
-                List<Endereco> ret = new();
                 using var connection = await _connection.GetConnectionAsync();
                 var enderecosIds = await connection.QueryAsync<int>(
                         sql: EnderecoQuerys.SELECT_ID_ENDERECO_FORNECEDOR,
                         param: new { fornecedor_id });
+
                 if (enderecosIds.Any())
                     foreach (var item in enderecosIds)
                         ret.Add(connection.Get<Endereco>(item));
 
-                var tipoEnderecoDesc = (await connection.QueryAsync<TipoTelefoneResponse>(
+                tiposEnd = (await connection.QueryAsync<TipoEnderecoResponse>(
                         EnderecoQuerys.SELECT_TIPO_ENDERECO)).ToList();
-
-                foreach (var endereco in ret)
-                    endereco.Tipo_endereco = tipoEnderecoDesc
-                            .Where(x => x.Id == endereco.Tipo_endereco_id)
-                            .Select(x => x.Descricao).FirstOrDefault();
-                return ret;
             }
-            catch (Exception ex)
+            else
             {
+                var enderecosIds = await conn.QueryAsync<int>(
+                        sql: EnderecoQuerys.SELECT_ID_ENDERECO_FORNECEDOR,
+                        param: new { fornecedor_id });
 
-                throw;
+                if (enderecosIds.Any())
+                    foreach (var item in enderecosIds)
+                        ret.Add(conn.Get<Endereco>(item));
+
+                tiposEnd = (await conn.QueryAsync<TipoEnderecoResponse>(
+                        EnderecoQuerys.SELECT_TIPO_ENDERECO)).ToList();
             }
-            
+            foreach (var endereco in ret)
+                endereco.Tipo_endereco = tiposEnd
+                        .Where(x => x.Id == endereco.Tipo_endereco_id)
+                        .Select(x => x.Descricao).FirstOrDefault();
+            return ret;
         }
 
         public async Task<Endereco> GetById(int id)
