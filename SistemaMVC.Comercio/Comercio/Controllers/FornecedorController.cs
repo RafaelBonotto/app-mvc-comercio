@@ -66,10 +66,11 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    var update = await _service.EditarNomeEmail(fornecedor_id, nome, email);
-                    if (!update)
+                    var fornecedor = await _service.EditarNomeEmail(fornecedor_id, nome, email);
+                    if (fornecedor is null)
                         return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // CRIAR ERRO PARA O FORNECEDOR
-                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
+
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (CnpjInvalidoException)
@@ -379,7 +380,7 @@ namespace Comercio.Controllers
                 if (fornecedor is null)
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());// Alterar erro
 
-                var fornecedorViewModel = await _service.RetornarForncedorViewModel(id);
+                var fornecedorViewModel =_mapper.CriarFornecedorViewModel(fornecedor);
                 return View("Detalhes", fornecedorViewModel);
             }
             catch (System.Exception)
@@ -397,7 +398,7 @@ namespace Comercio.Controllers
                 if (fornecedor is null)
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());// Alterar erro
 
-                var fornecedorViewModel = await _service.RetornarForncedorViewModel(id);
+                var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                 return View("ExibirFornecedor", fornecedorViewModel);
             }
             catch (System.Exception)
