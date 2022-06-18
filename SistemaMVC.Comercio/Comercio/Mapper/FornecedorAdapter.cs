@@ -40,12 +40,10 @@ namespace Comercio.Mapper
             {
                 Nome_empresa = fornecedor.Nome_empresa.ToUpper(),
                 Cnpj = fornecedor.Cnpj,
+                Email = fornecedor.Email.ToLower(),
                 Ativo = 1,
                 Data_criacao = DateTime.Now,
-                Data_alteracao = DateTime.Now,
-                Endereco = fornecedor.Endereco,
-                Telefone = fornecedor.Telefone,
-                Vendedor = fornecedor.Vendedor
+                Data_alteracao = DateTime.Now
             };
         }
 
