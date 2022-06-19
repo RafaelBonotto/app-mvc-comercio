@@ -2,8 +2,10 @@
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
 using Comercio.Requests.Fornecedor;
+using Comercio.Validations.Base;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace Comercio.Controllers
@@ -58,7 +60,14 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/editarNomeEmail/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditarNomeEmail([Bind("Nome, Email")] int fornecedor_id, string nome, string email)
+        public async Task<IActionResult> EditarNomeEmail(int fornecedor_id,
+            [MaxLength(100)]
+            [Required(ErrorMessage = "Campo Nome obrigatório")]
+            string nome, 
+
+            [EmailAddress(ErrorMessage = "Email inválido")]
+            [EmailValidacaoCaracterEspecial]
+            string email)
         {
             if (ModelState.IsValid)
             {
@@ -66,14 +75,10 @@ namespace Comercio.Controllers
                 {
                     var fornecedor = await _service.EditarNomeEmail(fornecedor_id, nome, email);
                     if (fornecedor is null)
-                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // CRIAR ERRO PARA O FORNECEDOR
+                        return View("Error", new ErrorViewModel().FornecedorErroAoTentarAtualizarNomeEmail()); 
 
                     var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                     return View("Detalhes", fornecedorViewModel);
-                }
-                catch (CnpjInvalidoException)
-                {
-                    return View("Error", new ErrorViewModel().FornecedorErroInserirCnpjInvalido());
                 }
                 catch (System.Exception)
                 {
