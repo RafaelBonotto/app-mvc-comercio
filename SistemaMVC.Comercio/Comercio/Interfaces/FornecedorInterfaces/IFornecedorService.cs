@@ -11,7 +11,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
     {
         Task<Fornecedor> InserirFornecedor(FornecedorViewModel fornecedor);
         Task<bool> InserirVendedor(VendedorRequest request);
-        Task<bool> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone);
+        Task<Fornecedor> InserirTelefone(TelefoneRequest request);
         Task<bool> EditarTelefone(int telefone_id, string ddd, string numero, string tipoTelefone);
         Task<bool> ExcluirTelefone(int fornecedor_id, int telefone_id);
         Task<bool> InserirEndereco(EnderecoRequest request);
