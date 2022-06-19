@@ -93,7 +93,7 @@ namespace Comercio.Mapper
             };
         }
 
-        public Telefone MontaInsertTelefoneVendedor(string ddd, string numero, TipoTelefone tipoTelefone)
+        public Telefone MontaInsertTelefone(string ddd, string numero, TipoTelefone tipoTelefone)
         {
             return new Telefone
             {
