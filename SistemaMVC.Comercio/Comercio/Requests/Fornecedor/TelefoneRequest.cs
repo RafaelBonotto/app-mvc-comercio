@@ -12,7 +12,7 @@ namespace Comercio.Requests.Fornecedor
 
         [MaxLength(15)]
         [Required(ErrorMessage = "Campo Numero obrigatório")]
-        public string Nummero{ get; set; }
+        public string Numero{ get; set; }
 
         public string TipoTelefone { get; set; }
     }
