@@ -45,7 +45,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 var fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
                 if (fornecdorId <= 0)
                     return null;
-                return await this.GetByIdPrivateAsync(fornecedor.Id, connection);
+                return await this.GetFornecedorAsync(fornecedor.Id, connection);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 var update = await connection.UpdateAsync<Fornecedor>(fornecedorBanco);
                 if (!update)
                     return null;
-                return await this.GetByIdPrivateAsync(fornecedor.Id, connection);
+                return await this.GetFornecedorAsync(fornecedor.Id, connection);
             }
         }
 
@@ -85,27 +85,14 @@ namespace Comercio.Data.Repositories.Fornecedores
             fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
             fornecedor.DescricaoTipoEndereco = await _enderecoRepository.ObterDescricaoTipoEndereco(connection);
             fornecedor.DescricaoTipoTelefone = await _telefoneRepository.ListarDescricaoTipoTelefone(connection);
-            //foreach (var telefone in fornecedor.Telefone)
-            //{
-            //    telefone.Tipo_telefone = fornecedor.DescricaoTipoTelefone
-            //        .Where(x => x.Id == telefone.Tipo_telefone_id)
-            //        .Select(x => x.Descricao)
-            //        .FirstOrDefault();
-            //}
-            //foreach (var endereco in fornecedor.Endereco)
-            //{
-            //    endereco.Tipo_endereco = fornecedor.DescricaoTipoEndereco
-            //        .Where(x => x.Id == endereco.Tipo_endereco_id)
-            //        .Select(x => x.Descricao)
-            //        .FirstOrDefault();
-            //}
             return fornecedor;
         }
 
         public async Task<List<Fornecedor>> GetByKeyAsync(string cnpj)
         {
             using var connection = await _connection.GetConnectionAsync();
-            return (connection.Query<Fornecedor>(FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
+            return (connection.Query<Fornecedor>(
+                FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
         }
 
         public async Task<bool> InserirVendedor(int fornecedor_id, PessoaContato vendedor, List<Telefone> telefones)
@@ -279,7 +266,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             return ret;
         }
 
-        private async Task<Fornecedor> GetByIdPrivateAsync(int id, MySqlConnection connection)
+        private async Task<Fornecedor> GetFornecedorAsync(int id, MySqlConnection connection)
         {
             var fornecedor = connection.Get<Fornecedor>(id);
             fornecedor.Telefone = await _telefoneRepository.ListarTelefoneFornecedor(id, connection);
