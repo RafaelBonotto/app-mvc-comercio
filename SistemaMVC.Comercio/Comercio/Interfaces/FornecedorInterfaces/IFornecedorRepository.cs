@@ -14,5 +14,6 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<bool> ExcluirVendedor(int fornecedor_id, int vendedor_id);
         Task<PessoaContato> GetVendedor(int vendedor_id);
         Task<List<Telefone>> GetTelefoneVendedor(int vendedor_id, MySqlConnection connection = null, MySqlTransaction transaction = null);
+        Task<Fornecedor> InserirTelefone(int fornecedor_id, Telefone telefone, MySqlConnection connection = null);
     }
 }
