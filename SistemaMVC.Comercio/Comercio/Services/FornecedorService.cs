@@ -70,22 +70,22 @@ namespace Comercio.Services
             var vendedor = _mapper.MontaPessoaContato(req.Nome, req.Email);
 
             List<Telefone> telefones = new();
-            Telefone telefone = _mapper.MontaInsertTelefoneVendedor(req.Ddd, req.Numero, TipoTelefone.COMERCIAL);
+            Telefone telefone = _mapper.MontaInsertTelefone(req.Ddd, req.Numero, TipoTelefone.COMERCIAL);
             telefones.Add(telefone);
 
             if (!string.IsNullOrEmpty(req.NumeroAdicional))
             {
-                var telefoneAdiconal = _mapper.MontaInsertTelefoneVendedor(req.DddAdicional, req.NumeroAdicional, TipoTelefone.ADICIONAL);
+                var telefoneAdiconal = _mapper.MontaInsertTelefone(req.DddAdicional, req.NumeroAdicional, TipoTelefone.ADICIONAL);
                 telefoneAdiconal.Tipo_telefone_id = TipoTelefone.ADICIONAL.GetHashCode();
                 telefones.Add(telefoneAdiconal);
             }
             return await _repositoryFornecedor.InserirVendedor(req.Fornecedor_id, vendedor, telefones);
         }
 
-        public async Task<bool> InserirTelefone(int fornecedor_id, string ddd, string numero, string tipoTelefone)
+        public async Task<Fornecedor> InserirTelefone(TelefoneRequest req)
         {
-            var telefone = _mapper.MontaInsertTelefoneVendedor(ddd, numero, TipoTelefone.COMERCIAL);
-            return await _repositoryTelefone.InserirTelefoneFornecedor(fornecedor_id, telefone);
+            var telefone = _mapper.MontaInsertTelefone(req.Ddd, req.Numero, TipoTelefone.COMERCIAL);
+            return await _repositoryFornecedor.InserirTelefone(req.Fornecedor_id, telefone);
         }
 
         public async Task<bool> InserirEndereco(EnderecoRequest req)
