@@ -12,7 +12,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
     {
         Fornecedor MontaFornecedorInsertRepositorio(FornecedorViewModel fornecedor);
         Telefone MontaUpdateTelefone(int telefone_id, string ddd, string numero, int tipoTelefone_id);
-        Telefone MontaInsertTelefoneVendedor(string ddd, string numero, TipoTelefone tipoTelefone);
+        Telefone MontaInsertTelefone(string ddd, string numero, TipoTelefone tipoTelefone);
         Endereco MontarInsertEndereco(EnderecoRequest req);
         Endereco MontarUpdateEndereco(EnderecoRequest req);
         EnderecoFornecedor MontaEnderecoFornecedor(int fornecedorId, int enderecoId);
