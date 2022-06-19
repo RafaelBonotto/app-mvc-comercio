@@ -98,5 +98,11 @@ namespace Comercio.Models
             this.Mensagem = "Erro ao tentar inserir o vendedor.";
             return this;
         }
+
+        public ErrorViewModel FornecedorErroAoTentarAtualizarNomeEmail()
+        {
+            this.Mensagem = "Erro ao tentar atualizar o nome e o email do fornecedor.";
+            return this;
+        }
     }
 }
