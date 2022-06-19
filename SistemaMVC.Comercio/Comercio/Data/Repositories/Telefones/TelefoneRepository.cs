@@ -49,30 +49,62 @@ namespace Comercio.Data.Repositories.Telefones
             return true;
         }
 
-        public async Task<bool> InserirTelefoneFornecedor(int fornecedor_id, Telefone telefone)
+        public async Task<bool> InserirTelefoneFornecedor(int fornecedor_id, Telefone telefone, MySqlConnection conn = null)
         {
-            using var connection = await _connection.GetConnectionAsync();
-            using var transaction = connection.BeginTransaction();
-            try
+            if(conn is null)
             {
-                var telefone_id = await connection.InsertAsync<Telefone>(telefone, transaction);
-                if (telefone_id <= 0)
-                    return false;
+                using var connection = await _connection.GetConnectionAsync();
+                using var transaction = connection.BeginTransaction();
+                try
+                {
+                    var telefone_id = await connection.InsertAsync<Telefone>(telefone, transaction);
+                    if (telefone_id <= 0)
+                        return false;
 
-                var row = await connection.InsertAsync<TelefoneFornecedor>(
-                    entityToInsert: _mapperTelefone.MontaTelefoneFornecedor(fornecedor_id, telefone_id), transaction);
-                if (row <= 0)
+                    var row = await connection.InsertAsync<TelefoneFornecedor>(
+                        entityToInsert: _mapperTelefone.MontaTelefoneFornecedor(fornecedor_id, telefone_id),
+                        transaction: transaction);
+
+                    if (row <= 0)
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
+                    transaction.Commit();
+                    return true;
+                }
+                catch (Exception)
                 {
                     transaction.Rollback();
-                    return false;
+                    throw;
                 }
-                transaction.Commit();
-                return true;
             }
-            catch (Exception)
+            else
             {
-                transaction.Rollback();
-                throw;
+                using var transaction = conn.BeginTransaction();
+                try
+                {
+                    var telefone_id = await conn.InsertAsync<Telefone>(telefone, transaction);
+                    if (telefone_id <= 0)
+                        return false;
+
+                    var row = await conn.InsertAsync<TelefoneFornecedor>(
+                        entityToInsert: _mapperTelefone.MontaTelefoneFornecedor(fornecedor_id, telefone_id),
+                        transaction: transaction);
+
+                    if (row <= 0)
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
+                    transaction.Commit();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             }
         }
 
