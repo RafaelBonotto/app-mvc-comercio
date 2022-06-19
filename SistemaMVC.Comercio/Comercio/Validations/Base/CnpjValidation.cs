@@ -5,11 +5,16 @@ namespace Comercio.Validations.Base
     public class CnpjValidation : ValidationAttribute
     {
         public string Cnpj { get; set; }
+
+        private const string CNPJMASTER = "CNPJMASTER";
         public string GetErrorMessage() => $"CNPJ Inválido: {Cnpj}";
 
         protected override ValidationResult IsValid(object Value, ValidationContext validationContext)
         {
             var aux = (dynamic)validationContext.ObjectInstance;
+
+            if(aux.Cnpj == CNPJMASTER)
+                return ValidationResult.Success;
 
             if (!this.ValidarCnpj(aux.Cnpj))
                 return new ValidationResult(GetErrorMessage());
