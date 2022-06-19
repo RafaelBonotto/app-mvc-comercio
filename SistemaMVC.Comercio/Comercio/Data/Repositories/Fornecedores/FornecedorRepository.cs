@@ -240,6 +240,24 @@ namespace Comercio.Data.Repositories.Fornecedores
             return ret;
         }
 
+        public async Task<Fornecedor> InserirTelefone(int fornecedor_id, Telefone telefone, MySqlConnection connection = null)
+        {
+            if(connection is null)
+            {
+                using var conn = await _connection.GetConnectionAsync();
+                var insert = await _telefoneRepository.InserirTelefoneFornecedor(fornecedor_id, telefone, conn);
+                if (!insert)
+                    return null;
+                return await GetFornecedorAsync(fornecedor_id, conn);
+            }
+            else
+            {
+                var insert = await _telefoneRepository.InserirTelefoneFornecedor(fornecedor_id, telefone, connection);
+                if (!insert)
+                    return null;
+                return await GetFornecedorAsync(fornecedor_id, connection);
+            }
+        }
         #region Métodos privados
 
         static async Task<List<PessoaContato>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
