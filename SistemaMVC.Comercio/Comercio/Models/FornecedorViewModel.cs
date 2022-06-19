@@ -1,22 +1,29 @@
 ﻿using Comercio.Entities;
+using Comercio.Validations.Base;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Comercio.Models
 {
-    public class FornecedorViewModel 
+    public class FornecedorViewModel
     {
         public int Id { get; set; }
 
         [Display(Name = "Cnpj")]
+        [MaxLength(14)]
+        [Required(ErrorMessage = "Campo CNPJ obrigatório")]
+        [CnpjValidation]
         public string Cnpj { get; set; }
 
-        [Display(Name = "Fornecedor")]
+        [Display(Name = "Nome")]
+        [MaxLength(100)]
+        [Required(ErrorMessage = "Campo Nome obrigatório")]
         public string Nome_empresa { get; set; }
 
         [Display(Name = "E-mail")]
         [EmailAddress(ErrorMessage = "E-mail inaválido")]
+        [EmailValidacaoCaracterEspecial]
         public string Email { get; set; }
 
         [Display(Name = "Endereço")]
