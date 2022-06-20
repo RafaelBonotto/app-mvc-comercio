@@ -6,6 +6,7 @@ using Comercio.Validations.Base;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Comercio.Controllers
@@ -53,6 +54,16 @@ namespace Comercio.Controllers
             }
             else
             {
+                if (ModelState.ContainsKey("Cnpj"))
+                {
+                    var aux = ModelState.Root.Children.Where(x => x.ValidationState.Equals("Invalid"));
+                    return View("Error", new ErrorViewModel().ErroDeValidacao());
+                }
+                if (ModelState.ContainsKey("Email"))
+                {
+                    var aux = ModelState.Root.Children.Where(x => x.ValidationState.Equals("Valid"));
+                    return View("Error", new ErrorViewModel().ErroDeValidacao());
+                }
                 return View("Error", new ErrorViewModel().ErroDeValidacao());
             }
         }
