@@ -22,7 +22,7 @@ namespace Comercio.Models
         public string Nome_empresa { get; set; }
 
         [Display(Name = "E-mail")]
-        [EmailAddress(ErrorMessage = "E-mail inaválido")]
+        [EmailAddress(ErrorMessage = "E-mail inválido")]
         [EmailValidacaoCaracterEspecial]
         public string Email { get; set; }
 
