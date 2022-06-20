@@ -22,7 +22,7 @@ namespace Comercio.Validations.Base
 
         public bool CaracterEspecial(string email)
         {
-            var caracterInvalidos = "!@#$%¨&*()-+=/*,?|~áéíóúãõàèìòùâêîôû[{]}äëïöü\"'< >^";
+            var caracterInvalidos = "!#$%¨&*()-+=/*,?|~áéíóúãõàèìòùâêîôû[{]}äëïöü\"'< >^";
             foreach (var caracter in email)
                 foreach (var charr in caracterInvalidos)
                     if (charr.Equals(caracter))
