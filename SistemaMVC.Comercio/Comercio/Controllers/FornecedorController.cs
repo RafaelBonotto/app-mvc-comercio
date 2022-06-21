@@ -1,9 +1,11 @@
 ﻿using Comercio.Exceptions.Fornecedor;
+using Comercio.Extensions;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
 using Comercio.Requests.Fornecedor;
 using Comercio.Validations.Base;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -54,37 +56,21 @@ namespace Comercio.Controllers
             }
             else
             {
-                if (ModelState.ContainsKey("Cnpj"))
-                {
-                    var aux = ModelState.Root.Children.Where(x => x.ValidationState.Equals("Invalid"));
-                    return View("Error", new ErrorViewModel().ErroDeValidacao());
-                }
-                if (ModelState.ContainsKey("Email"))
-                {
-                    var aux = ModelState.Root.Children.Where(x => x.ValidationState.Equals("Valid"));
-                    return View("Error", new ErrorViewModel().ErroDeValidacao());
-                }
-                return View("Error", new ErrorViewModel().ErroDeValidacao());
+                return View("Error", new ErrorViewModel().ErroDeValidacao(ModelState.GetErros()));
             }
         }
 
         [HttpPost]
         [Route("[controller]/editarNomeEmail/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditarNomeEmail(int fornecedor_id,
-            [MaxLength(100)]
-            [Required(ErrorMessage = "Campo Nome obrigatório")]
-            string nome, 
-
-            [EmailAddress(ErrorMessage = "Email inválido")]
-            [EmailValidacaoCaracterEspecial]
-            string email)
+        public async Task<IActionResult> EditarNomeEmail(EditarNomeEmailRequest req)
+            
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var fornecedor = await _service.EditarNomeEmail(fornecedor_id, nome, email);
+                    var fornecedor = await _service.EditarNomeEmail(req.Fornecedor_id, req.Nome, req.Email);
                     if (fornecedor is null)
                         return View("Error", new ErrorViewModel().FornecedorErroAoTentarAtualizarNomeEmail()); 
 
@@ -98,7 +84,7 @@ namespace Comercio.Controllers
             }
             else
             {
-                return View("Error", new ErrorViewModel().ErroDeValidacao());
+                return View("Error", new ErrorViewModel().ErroDeValidacao(ModelState.GetErros()));
             }
         }
 
