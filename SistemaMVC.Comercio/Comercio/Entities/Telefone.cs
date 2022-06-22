@@ -1,6 +1,8 @@
-﻿using Comercio.Enums;
+﻿using Comercio.Data.Repositories.Response;
+using Comercio.Enums;
 using Dapper.Contrib.Extensions;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Comercio.Entities
@@ -22,6 +24,7 @@ namespace Comercio.Entities
         public string Numero { get; set; }
         public sbyte Ativo { get; set; }
         public DateTime Data_criacao { get; set; } 
-        public DateTime Data_alteracao { get; set; } 
+        public DateTime Data_alteracao { get; set; }
+        public List<TipoTelefoneResponse> TiposTelefone { get; set; }
     }
 }
