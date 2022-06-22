@@ -125,7 +125,8 @@ namespace Comercio.Mapper
                 Fornecedor_id = fornecedor_id,
                 Ddd = telefone.Ddd,
                 Numero = telefone.Numero,
-                Tipo_telefone_id = telefone.Tipo_telefone_id
+                Tipo_telefone_id = telefone.Tipo_telefone_id, 
+                TiposTelefoneBanco = new SelectList(telefone.TiposTelefone)
             };
         }
 
