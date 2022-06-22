@@ -5,7 +5,7 @@ namespace Comercio.Validations.Base
     public class EmailValidacaoCaracterEspecial : ValidationAttribute
     {
         public string Email { get; set; }
-        public string GetErrorMessage() => $"Email Inválido: {Email}";
+        public string GetErrorMessage() => $"Email Inválido";
 
         protected override ValidationResult IsValid(object Value, ValidationContext validationContext)
         {
