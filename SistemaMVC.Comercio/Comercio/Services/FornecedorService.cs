@@ -132,9 +132,9 @@ namespace Comercio.Services
         public async Task<TelefoneFornecedorViewModel> RetornarTelefoneFornecedorViewModel(int fornecedor_id, int telefone_id)
         {
             var telefoneBanco = await _repositoryTelefone.GetById(telefone_id);
+            if (telefoneBanco is null)
+                return null;
             var telefoneViewModel = _mapper.MontaTelefoneFornecedorViewModel(telefoneBanco, fornecedor_id);
-            var tiposTelefone = new SelectList(await _repositoryTelefone.ListarDescricaoTipoTelefone());
-            telefoneViewModel.TiposTelefoneBanco = tiposTelefone;
             return telefoneViewModel;
         }
 
