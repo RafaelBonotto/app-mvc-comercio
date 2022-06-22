@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Text;
+
 namespace Comercio.Models
 {
     public class ErrorViewModel
@@ -30,6 +33,19 @@ namespace Comercio.Models
         public ErrorViewModel ErroDeValidacao()
         {
             this.Mensagem = "Erro de validação, verifique se os valores dos campos de entrada são válidos.";
+            return this;
+        }
+
+        public ErrorViewModel ErroDeValidacao(List<string> erros)
+        {
+            StringBuilder msg = new();
+            foreach (var erro in erros)
+            {
+                msg.Append(erro);
+                if (erro != erros[erros.Count - 1])
+                    msg.Append(", ");
+            }
+            this.Mensagem = $"Erro de validação, campo(s) inválido(s): {msg}";
             return this;
         }
 
@@ -108,6 +124,12 @@ namespace Comercio.Models
         public ErrorViewModel FornecedorErroAoTentarInserirTelefone()
         {
             this.Mensagem = "Erro ao tentar inserir o telefone do fornecedor.";
+            return this;
+        }
+        
+        public ErrorViewModel FornecedorErroAoTentarCarregarTelefone()
+        {
+            this.Mensagem = "Erro ao tentar carregar o telefone do fornecedor.";
             return this;
         }
     }
