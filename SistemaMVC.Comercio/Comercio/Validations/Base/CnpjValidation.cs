@@ -7,7 +7,7 @@ namespace Comercio.Validations.Base
         public string Cnpj { get; set; }
 
         private const string CNPJMASTER = "CNPJMASTER";
-        private string GetErrorMessage() => $"CNPJ Inválido: {Cnpj}";
+        private string GetErrorMessage() => $"CNPJ Inválido";
 
         protected override ValidationResult IsValid(object Value, ValidationContext validationContext)
         {
