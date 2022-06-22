@@ -175,6 +175,7 @@ namespace Comercio.Data.Repositories.Telefones
             var telefoneBanco = connection.Get<Telefone>(telefone_id);
             if (telefoneBanco is null)
                 return null;
+            telefoneBanco.TiposTelefone = await this.ListarDescricaoTipoTelefone();
             return telefoneBanco;
         }
     }
