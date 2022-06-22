@@ -121,7 +121,9 @@ namespace Comercio.Controllers
             try
             {
                 var telefoneViewModel = await _service.RetornarTelefoneFornecedorViewModel(fornecedor_id, telefone_id);
-                // VALIDAÇÃO NO RETORNO ?
+                if (telefoneViewModel is null)
+                    return View("Error", new ErrorViewModel().FornecedorErroAoTentarCarregarTelefone());
+
                 return View("EditarTelefone", telefoneViewModel);
             }
             catch (System.Exception)
