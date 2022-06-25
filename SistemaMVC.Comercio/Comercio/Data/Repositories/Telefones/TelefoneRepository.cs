@@ -30,18 +30,32 @@ namespace Comercio.Data.Repositories.Telefones
         public async Task<bool> AtualizarTelefone(TelefoneRequest telefone, MySqlConnection connection = null)
         {
             if (connection is null)
-                using (connection = await _connection.GetConnectionAsync());
+            {
+                using var conn = await _connection.GetConnectionAsync();
+                var telefoneBanco = conn.Get<Telefone>(telefone.Telefone_id);
+                if (telefoneBanco is null)
+                    return false;
 
-            var telefoneBanco = connection.Get<Telefone>(telefone.Telefone_id);
-            if (telefoneBanco is null)
-                return false;
+                telefoneBanco.Ddd = telefone.Ddd;
+                telefoneBanco.Numero = telefone.Numero;
+                telefoneBanco.Tipo_telefone_id = telefone.Tipo_telefone_id;
+                telefoneBanco.Ativo = 1;
+                telefoneBanco.Data_alteracao = DateTime.Now;
+                return connection.Update<Telefone>(telefoneBanco);
+            }
+            else
+            {
+                var telefoneBanco = connection.Get<Telefone>(telefone.Telefone_id);
+                if (telefoneBanco is null)
+                    return false;
 
-            telefoneBanco.Ddd = telefone.Ddd;
-            telefoneBanco.Numero = telefone.Numero;
-            telefoneBanco.Tipo_telefone_id = telefone.Tipo_telefone_id;
-            telefoneBanco.Ativo = 1;
-            telefoneBanco.Data_alteracao = DateTime.Now;
-            return connection.Update<Telefone>(telefoneBanco);
+                telefoneBanco.Ddd = telefone.Ddd;
+                telefoneBanco.Numero = telefone.Numero;
+                telefoneBanco.Tipo_telefone_id = telefone.Tipo_telefone_id;
+                telefoneBanco.Ativo = 1;
+                telefoneBanco.Data_alteracao = DateTime.Now;
+                return connection.Update<Telefone>(telefoneBanco);
+            }
         }
 
         public async Task<bool> ExcluirTelefoneFornecedor(int fornecedor_id, int telefone_id)
@@ -169,8 +183,12 @@ namespace Comercio.Data.Repositories.Telefones
         public async Task<int> ObterIdTipoTelefone(string tipoTelefone, MySqlConnection connection = null)
         {
             if (connection is null)
-                using (connection = await _connection.GetConnectionAsync()) ;
-
+            {
+                using var conn = await _connection.GetConnectionAsync();
+                return conn.QueryFirstOrDefault<int>(
+                            sql: TelefoneQuerys.SELECT_ID_TIPO_TELEFONE,
+                            param: new { tipoTelefone });
+            }
             return connection.QueryFirstOrDefault<int>(
                         sql: TelefoneQuerys.SELECT_ID_TIPO_TELEFONE, 
                         param: new { tipoTelefone });
