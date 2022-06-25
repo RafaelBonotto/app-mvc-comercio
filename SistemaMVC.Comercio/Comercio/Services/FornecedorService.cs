@@ -95,11 +95,9 @@ namespace Comercio.Services
             return await _repositoryEndereco.InserirEnderecoFornecedor(req.Fornecedor_id, endereco);
         }
 
-        public async Task<bool> EditarTelefone(int telefone_id, string ddd, string numero, string tipoTelefone)
+        public async Task<Fornecedor> EditarTelefone(TelefoneRequest req)
         {
-            var tipoTelefoneId = await _repositoryTelefone.ObterIdTipoTelefone(tipoTelefone);
-            Telefone telefone = _mapper.MontaUpdateTelefone(telefone_id, ddd, numero, tipoTelefoneId);
-            return await _repositoryTelefone.AtualizarTelefone(telefone);
+            return await _repositoryFornecedor.EditarTelefone(req);
         }
 
         public async Task<bool> EditarVendedor(VendedorRequest req)
