@@ -141,11 +141,11 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    var update = await _service.EditarTelefone(req);
-                    if (!update)
-                        return View("Error", new ErrorViewModel().FornecedorErroAoTentarEditarTelefone()); 
+                    var fornecedor = await _service.EditarTelefone(req);
+                    if (fornecedor is null)
+                        return View("Error", new ErrorViewModel().FornecedorErroAoTentarEditarTelefone());
 
-                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(req.Fornecedor_id);
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
