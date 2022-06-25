@@ -16,8 +16,8 @@ namespace Comercio.Requests.Fornecedor
         [Required(ErrorMessage = "Campo Número obrigatório")]
         public string Numero{ get; set; }
 
-        public string TipoTelefone { get; set; }
+        public string Tipo_telefone { get; set; }
 
-        public int Tipo_telefone_id { get; set; } 
+        public int Tipo_telefone_id { get; set; }
     }
 }
