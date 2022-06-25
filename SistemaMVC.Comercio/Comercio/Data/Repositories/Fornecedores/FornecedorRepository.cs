@@ -262,8 +262,15 @@ namespace Comercio.Data.Repositories.Fornecedores
         public async Task<Fornecedor> EditarTelefone(TelefoneRequest telefone, MySqlConnection connection = null)
         {
             if (connection is null)
-                using (connection = await _connection.GetConnectionAsync());
+            {
+                using var conn = await _connection.GetConnectionAsync();
+                telefone.Tipo_telefone_id = await _telefoneRepository.ObterIdTipoTelefone(telefone.TipoTelefone, conn);
+                var updateTelefone = await _telefoneRepository.AtualizarTelefone(telefone, conn);
+                if (!updateTelefone)
+                    return null;
 
+                return await GetFornecedorAsync(telefone.Fornecedor_id, conn);
+            }
             telefone.Tipo_telefone_id = await _telefoneRepository.ObterIdTipoTelefone(telefone.TipoTelefone, connection);
             var update = await _telefoneRepository.AtualizarTelefone(telefone, connection);
             if (!update)
