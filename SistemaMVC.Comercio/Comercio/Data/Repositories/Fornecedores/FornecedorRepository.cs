@@ -258,6 +258,20 @@ namespace Comercio.Data.Repositories.Fornecedores
                 return await GetFornecedorAsync(fornecedor_id, connection);
             }
         }
+
+        public async Task<Fornecedor> EditarTelefone(TelefoneRequest telefone, MySqlConnection connection = null)
+        {
+            if (connection is null)
+                using (connection = await _connection.GetConnectionAsync());
+
+            telefone.Tipo_telefone_id = await _telefoneRepository.ObterIdTipoTelefone(telefone.TipoTelefone, connection);
+            var update = await _telefoneRepository.AtualizarTelefone(telefone, connection);
+            if (!update)
+                return null;
+
+            return await GetFornecedorAsync(telefone.Fornecedor_id, connection);
+        }
+
         #region Métodos privados
 
         static async Task<List<PessoaContato>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
