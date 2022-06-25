@@ -135,17 +135,17 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/editar-telefone/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditarTelefone(int fornecedor_id, int telefone_id, string ddd, string numero, string tipo_telefone)
+        public async Task<IActionResult> EditarTelefone(TelefoneRequest req)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var update = await _service.EditarTelefone(telefone_id, ddd, numero, tipo_telefone);
+                    var update = await _service.EditarTelefone(req);
                     if (!update)
-                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // Erro ao tentar atualizar o telefone...
+                        return View("Error", new ErrorViewModel().FornecedorErroAoTentarEditarTelefone()); 
 
-                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
+                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(req.Fornecedor_id);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -155,7 +155,7 @@ namespace Comercio.Controllers
             }
             else
             {
-                return View("Error", new ErrorViewModel().ErroDeValidacao());
+                return View("Error", new ErrorViewModel().ErroDeValidacao(ModelState.GetErros()));
             }
         }
 
