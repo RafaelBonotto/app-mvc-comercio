@@ -3,6 +3,7 @@ using Comercio.Data.Querys;
 using Comercio.Data.Repositories.Response;
 using Comercio.Entities;
 using Comercio.Interfaces.TelefoneInterfaces;
+using Comercio.Requests.Fornecedor;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using MySqlConnector;
@@ -26,12 +27,15 @@ namespace Comercio.Data.Repositories.Telefones
             _mapperTelefone = mapperTelefone;
         }
 
-        public async Task<bool> AtualizarTelefone(Telefone telefone)
+        public async Task<bool> AtualizarTelefone(TelefoneRequest telefone, MySqlConnection connection = null)
         {
-            using var connection = await _connection.GetConnectionAsync();
-            var telefoneBanco = connection.Get<Telefone>(telefone.Id);
-            if(telefoneBanco is null)
-                return false; // EXCEPTION...
+            if (connection is null)
+                using (connection = await _connection.GetConnectionAsync());
+
+            var telefoneBanco = connection.Get<Telefone>(telefone.Telefone_id);
+            if (telefoneBanco is null)
+                return false;
+
             telefoneBanco.Ddd = telefone.Ddd;
             telefoneBanco.Numero = telefone.Numero;
             telefoneBanco.Tipo_telefone_id = telefone.Tipo_telefone_id;
@@ -162,11 +166,14 @@ namespace Comercio.Data.Repositories.Telefones
             return ret;
         }
 
-        public async Task<int> ObterIdTipoTelefone(string tipoTelefone)
+        public async Task<int> ObterIdTipoTelefone(string tipoTelefone, MySqlConnection connection = null)
         {
-            using var connection = await _connection.GetConnectionAsync();
+            if (connection is null)
+                using (connection = await _connection.GetConnectionAsync()) ;
+
             return connection.QueryFirstOrDefault<int>(
-            TelefoneQuerys.SELECT_ID_TIPO_TELEFONE, new { tipoTelefone });
+                        sql: TelefoneQuerys.SELECT_ID_TIPO_TELEFONE, 
+                        param: new { tipoTelefone });
         }
 
         public async Task<Telefone> GetById(int telefone_id)
