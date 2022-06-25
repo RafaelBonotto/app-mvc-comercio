@@ -148,7 +148,7 @@ namespace Comercio.Controllers
                     var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                     return View("Detalhes", fornecedorViewModel);
                 }
-                catch (System.Exception)
+                catch (System.Exception ex)
                 {
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
                 }
