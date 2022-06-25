@@ -25,6 +25,8 @@ namespace Comercio.Entities
         public sbyte Ativo { get; set; }
         public DateTime Data_criacao { get; set; } 
         public DateTime Data_alteracao { get; set; }
+
+        [Write(false)]
         public List<TipoTelefoneResponse> TiposTelefone { get; set; }
     }
 }
