@@ -17,5 +17,7 @@ namespace Comercio.Requests.Fornecedor
         public string Numero{ get; set; }
 
         public string TipoTelefone { get; set; }
+
+        public int Tipo_telefone_id { get; set; } 
     }
 }
