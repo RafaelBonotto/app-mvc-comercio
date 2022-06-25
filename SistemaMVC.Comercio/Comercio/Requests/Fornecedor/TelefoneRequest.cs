@@ -4,6 +4,8 @@ namespace Comercio.Requests.Fornecedor
 {
     public class TelefoneRequest
     {
+        public int Telefone_id { get; set; }
+
         public int Fornecedor_id { get; set; }
 
         [MaxLength(3)]
