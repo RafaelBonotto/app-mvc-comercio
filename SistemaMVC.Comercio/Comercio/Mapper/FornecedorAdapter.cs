@@ -54,7 +54,7 @@ namespace Comercio.Mapper
                 Logradouro = req.Logradouro.ToUpper(),
                 Numero = req.Numero,
                 Complemento = string.IsNullOrEmpty(req.Complemento) ? string.Empty : req.Complemento.ToUpper(),
-                Cep = string.IsNullOrEmpty(req.Complemento) ? string.Empty : req.Cep,
+                Cep = string.IsNullOrEmpty(req.Cep) ? string.Empty : req.Cep,
                 Bairro = string.IsNullOrEmpty(req.Bairro) ? string.Empty : req.Bairro.ToUpper(),
                 Cidade = string.IsNullOrEmpty(req.Cidade) ? string.Empty : req.Cidade.ToUpper(),
                 Estado = string.IsNullOrEmpty(req.Estado) ? string.Empty : req.Estado.ToUpper(),
