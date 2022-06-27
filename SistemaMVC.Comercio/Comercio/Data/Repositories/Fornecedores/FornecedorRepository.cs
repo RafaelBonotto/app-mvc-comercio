@@ -99,7 +99,7 @@ namespace Comercio.Data.Repositories.Fornecedores
         {
             using var connection = await _connection.GetConnectionAsync();
             var endereco = _mapper.MontarInsertEndereco(req);
-            endereco.Tipo_endereco_id = await _enderecoRepository.ObterIdTipoEndereco(endereco.Tipo_endereco, connection);
+            endereco.Tipo_endereco_id = await _enderecoRepository.ObterIdTipoEndereco(req.TipoEndereco, connection);
             var insert = await _enderecoRepository.InserirEnderecoFornecedor(req.Fornecedor_id, endereco, connection);
             if (!insert)
                 return null;
