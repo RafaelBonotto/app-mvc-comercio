@@ -8,18 +8,19 @@ namespace Comercio.Requests.Fornecedor
         public int Fornecedor_id { get; set; }
 
         [MaxLength(100)]
-        [Required(ErrorMessage = "Campo logradouro obrigátorio")]
+        [Required(ErrorMessage = "Campo logradouro obrigátorio", AllowEmptyStrings = false)]
         public string Logradouro { get; set; }
 
         [MaxLength(10)]
-        [Required(ErrorMessage = "Campo Numero obrigátorio")]
+        [Required(ErrorMessage = "Campo Numero obrigátorio", AllowEmptyStrings = false)]
         public string Numero { get; set; }
 
         [MaxLength(30)]
         public string Complemento { get; set; }
 
         [MaxLength(9)]
-        [RegularExpression(@"^\d{5}-\d{3}$")]
+        [RegularExpression(@"^\d{5}-\d{3}$", ErrorMessage = "O CEP deve estar no formato: 00000-000")]
+        [Required(ErrorMessage = "Campo Cep obrigátorio", AllowEmptyStrings = false)]
         public string Cep { get; set; }
 
         [MaxLength(30)]
