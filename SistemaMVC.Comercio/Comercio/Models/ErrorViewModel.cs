@@ -144,5 +144,11 @@ namespace Comercio.Models
             this.Mensagem = "Erro ao tentar excluir o telefone do fornecedor.";
             return this;
         }
+        public ErrorViewModel FornecedorErroAoTentarInserirEndereco()
+        {
+            this.Mensagem = "Erro ao tentar inserir endereço do fornecedor.";
+            return this;
+        }
+
     }
 }
