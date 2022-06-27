@@ -12,7 +12,7 @@ namespace Comercio.Requests.Fornecedor
         public string Logradouro { get; set; }
 
         [MaxLength(10)]
-        [Required(ErrorMessage = "Campo Numero obrigátorio", AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Campo Número obrigátorio", AllowEmptyStrings = false)]
         public string Numero { get; set; }
 
         [MaxLength(30)]
