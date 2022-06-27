@@ -186,11 +186,11 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    var insert = await _service.InserirEndereco(request);
-                    if (!insert)
-                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO
+                    var fornecedor = await _service.InserirEndereco(request);
+                    if (fornecedor is null)
+                        return View("Error", new ErrorViewModel().FornecedorErroAoTentarInserirEndereco());
 
-                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(request.Fornecedor_id);
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -200,7 +200,7 @@ namespace Comercio.Controllers
             }
             else
             {
-                return View("Error", new ErrorViewModel().ErroDeValidacao());
+                return View("Error", new ErrorViewModel().ErroDeValidacao(ModelState.GetErros()));
             }
         }
 
