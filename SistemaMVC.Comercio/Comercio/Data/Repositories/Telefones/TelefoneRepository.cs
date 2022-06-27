@@ -58,12 +58,21 @@ namespace Comercio.Data.Repositories.Telefones
             }
         }
 
-        public async Task<bool> ExcluirTelefoneFornecedor(int fornecedor_id, int telefone_id)
+        public async Task<bool> ExcluirTelefoneFornecedor(int fornecedor_id, int telefone_id, MySqlConnection connection = null)
         {
-            using var connection = await _connection.GetConnectionAsync();
-            await connection.QueryAsync(
-                sql: TelefoneQuerys.DESATIVAR_TELEFONE_FORNECEDOR,
-                param: new { fornecedor_id, telefone_id });
+            if (connection is null)
+            {
+                using var conn = await _connection.GetConnectionAsync();
+                await conn.QueryAsync(
+                            sql: TelefoneQuerys.DESATIVAR_TELEFONE_FORNECEDOR,
+                            param: new { fornecedor_id, telefone_id });
+            }
+            else
+            {
+                await connection.QueryAsync(
+                           sql: TelefoneQuerys.DESATIVAR_TELEFONE_FORNECEDOR,
+                           param: new { fornecedor_id, telefone_id });
+            }
             return true;
         }
 
