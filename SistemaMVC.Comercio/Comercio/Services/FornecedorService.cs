@@ -88,12 +88,13 @@ namespace Comercio.Services
             return await _repositoryFornecedor.InserirTelefone(req.Fornecedor_id, telefone);
         }
 
-        public async Task<bool> InserirEndereco(EnderecoRequest req)
-        {
-            var endereco = _mapper.MontarInsertEndereco(req);
-            endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(req.TipoEndereco);
-            return await _repositoryEndereco.InserirEnderecoFornecedor(req.Fornecedor_id, endereco);
-        }
+        public async Task<Fornecedor> InserirEndereco(EnderecoRequest req)
+            => await _repositoryFornecedor.InserirEndereco(req);
+        //{
+            //var endereco = _mapper.MontarInsertEndereco(req);
+            //endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(req.TipoEndereco);
+            //return await _repositoryEndereco.InserirEnderecoFornecedor(req.Fornecedor_id, endereco);
+        //}
 
         public async Task<Fornecedor> EditarTelefone(TelefoneRequest req)
         {
