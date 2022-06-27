@@ -57,11 +57,21 @@ namespace Comercio.Data.Repositories.Enderecos
             }
         }
 
-        public async Task<int> ObterIdTipoEndereco(string tipoEndereco)
+        public async Task<int> ObterIdTipoEndereco(string tipoEndereco, MySqlConnection connection = null)
         {
-            using var connection = await _connection.GetConnectionAsync();
-            return connection.QueryFirstOrDefault<int>(
-                EnderecoQuerys.SELECT_ID_TIPO_ENDERECO, new { tipoEndereco });
+            if (connection is null)
+            {
+                using var conn = await _connection.GetConnectionAsync();
+                return conn.QueryFirstOrDefault<int>(
+                                sql: EnderecoQuerys.SELECT_ID_TIPO_ENDERECO, 
+                                param: new { tipoEndereco });
+            }
+            else
+            {
+                return connection.QueryFirstOrDefault<int>(
+                                sql: EnderecoQuerys.SELECT_ID_TIPO_ENDERECO,
+                                param: new { tipoEndereco });
+            }
         }
 
         public async Task<List<TipoEnderecoResponse>> ObterDescricaoTipoEndereco(MySqlConnection connection = null)
