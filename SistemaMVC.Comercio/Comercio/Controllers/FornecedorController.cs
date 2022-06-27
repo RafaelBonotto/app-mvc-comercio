@@ -164,11 +164,11 @@ namespace Comercio.Controllers
         {
             try
             {
-                var delete = await _service.ExcluirTelefone(fornecedor_id, telefone_id);
-                if (!delete)
-                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR EXCLUIR
+                var fornecedor = await _service.ExcluirTelefone(fornecedor_id, telefone_id);
+                if (fornecedor is null)
+                    return View("Error", new ErrorViewModel().FornecedorErroAoTentarExcluirTelefone());
 
-                var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
+                var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                 return View("Detalhes", fornecedorViewModel);
             }
             catch (System.Exception)
