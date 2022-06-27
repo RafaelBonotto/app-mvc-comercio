@@ -13,7 +13,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<bool> InserirVendedor(VendedorRequest request);
         Task<Fornecedor> InserirTelefone(TelefoneRequest request);
         Task<Fornecedor> EditarTelefone(TelefoneRequest request);
-        Task<bool> ExcluirTelefone(int fornecedor_id, int telefone_id);
+        Task<Fornecedor> ExcluirTelefone(int fornecedor_id, int telefone_id);
         Task<bool> InserirEndereco(EnderecoRequest request);
         Task<bool> EditarEndereco(EnderecoRequest endereco);
         Task<bool> EditarVendedor(VendedorRequest request);
