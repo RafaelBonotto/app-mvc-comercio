@@ -19,6 +19,18 @@ namespace Comercio.Validations.Telefone
 
         public bool ValidarNumero(string numero)
         {
+            if (string.IsNullOrEmpty(numero))
+                return false;
+
+            if (numero.Length < 8)
+                return false;
+
+            if (!numero.StartsWith("0800") && numero.Length > 9)
+                return false;
+
+            if(long.TryParse(numero.Length.ToString(), out _))
+                return true;
+
             return false;
         }
     }
