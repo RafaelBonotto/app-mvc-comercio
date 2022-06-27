@@ -26,9 +26,39 @@ namespace Comercio.Data.Repositories.Enderecos
             _mapper = mapper;
         }
 
-        public async Task<bool> InserirEnderecoFornecedor(int fornecedor_id, Endereco endereco)
+        public async Task<bool> InserirEnderecoFornecedor(int fornecedor_id, Endereco endereco, MySqlConnection connection = null)
         {
-            using (var connection = await _connection.GetConnectionAsync())
+            if (connection is null)
+            {
+                using (var conn = await _connection.GetConnectionAsync())
+                {
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            var endereco_id = await conn.InsertAsync<Endereco>(endereco, transaction);
+                            if (endereco_id <= 0)
+                                return false;
+
+                            var row = await conn.InsertAsync<EnderecoFornecedor>(
+                                _mapper.MontaInsertEnderecoFornecedor(fornecedor_id, endereco_id), transaction);
+                            if (row <= 0)
+                            {
+                                transaction.Rollback();
+                                return false;
+                            }
+                            transaction.Commit();
+                            return true;
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw;
+                        }
+                    }
+                }
+            }
+            else
             {
                 using (var transaction = connection.BeginTransaction())
                 {
