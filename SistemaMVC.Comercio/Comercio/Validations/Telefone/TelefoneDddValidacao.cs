@@ -19,6 +19,15 @@ namespace Comercio.Validations.Telefone
 
         public bool ValidarDdd(string ddd)
         {
+            if (string.IsNullOrEmpty(ddd))
+                return false;
+
+            if (ddd.Length > 3)
+                return false;
+
+            if (int.TryParse(ddd, out _))
+                return true;
+
             return false;
         }
     }
