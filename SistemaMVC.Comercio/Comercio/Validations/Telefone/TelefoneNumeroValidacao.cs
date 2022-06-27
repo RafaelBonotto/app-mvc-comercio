@@ -28,7 +28,7 @@ namespace Comercio.Validations.Telefone
             if (!numero.StartsWith("0800") && numero.Length > 9)
                 return false;
 
-            if(long.TryParse(numero.Length.ToString(), out _))
+            if(long.TryParse(numero, out _))
                 return true;
 
             return false;
