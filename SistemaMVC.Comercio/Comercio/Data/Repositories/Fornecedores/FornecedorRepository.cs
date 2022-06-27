@@ -95,6 +95,18 @@ namespace Comercio.Data.Repositories.Fornecedores
                 FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
         }
 
+        public async Task<Fornecedor> InserirEndereco(EnderecoRequest req)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            var endereco = _mapper.MontarInsertEndereco(req);
+            endereco.Tipo_endereco_id = await _enderecoRepository.ObterIdTipoEndereco(endereco.Tipo_endereco, connection);
+            var insert = await _enderecoRepository.InserirEnderecoFornecedor(
+                            req.Fornecedor_id, endereco, connection);
+            if (!insert)
+                return null;
+            return await GetFornecedorAsync(req.Fornecedor_id, connection);
+        }
+
         public async Task<bool> InserirVendedor(int fornecedor_id, PessoaContato vendedor, List<Telefone> telefones)
         {
             using var connection = await _connection.GetConnectionAsync();
