@@ -230,22 +230,22 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    var update = await _service.EditarEndereco(request);
+                    var fornecedor = await _service.EditarEndereco(request);
 
-                    if (!update)
-                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO 
+                    if (fornecedor is null)
+                        return View("Error", new ErrorViewModel().FornecedorErroAoTentarEditarEndereco());
 
-                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                     return View("Detalhes", fornecedorViewModel);
                 }
-                catch (System.Exception)
+                catch (System.Exception ex)
                 {
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
                 }
             }
             else
             {
-                return View("Error", new ErrorViewModel().ErroDeValidacao());
+                return View("Error", new ErrorViewModel().ErroDeValidacao(ModelState.GetErros()));
             }
         }
 
