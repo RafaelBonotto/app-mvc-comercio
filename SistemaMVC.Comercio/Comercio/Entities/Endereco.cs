@@ -1,5 +1,7 @@
-﻿using Dapper.Contrib.Extensions;
+﻿using Comercio.Data.Repositories.Response;
+using Dapper.Contrib.Extensions;
 using System;
+using System.Collections.Generic;
 
 namespace Comercio.Entities
 {
@@ -22,5 +24,8 @@ namespace Comercio.Entities
 
         [Write(false)]
         public string Tipo_endereco { get; set; }
+
+        [Write(false)]
+        public List<TipoEnderecoResponse> TiposEndereco { get; set; }
     }
 }
