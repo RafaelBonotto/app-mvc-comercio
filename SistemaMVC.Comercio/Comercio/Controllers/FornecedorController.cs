@@ -210,7 +210,9 @@ namespace Comercio.Controllers
             try
             {
                 var EnderecoViewModel = await _service.RetornarEnderecoFornecedorViewModel(fornecedor_id, endereco_id);
-                // VALIDAÇÃO NO RETORNO ?
+                if(EnderecoViewModel is null)
+                    return View("Error", new ErrorViewModel().FornecedorErroAoTentarCarregarEndereco());
+
                 return View("EditarEndereco", EnderecoViewModel);
             }
             catch (System.Exception)
