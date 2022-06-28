@@ -3,6 +3,7 @@ using Comercio.Data.Querys;
 using Comercio.Data.Repositories.Response;
 using Comercio.Entities;
 using Comercio.Interfaces.EnderecoInterfaces;
+using Comercio.Requests.Fornecedor;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using MySqlConnector;
@@ -167,23 +168,43 @@ namespace Comercio.Data.Repositories.Enderecos
             return enderecoBanco;
         }
 
-        public async Task<bool> AtualizarEndereco(Endereco endereco)
+        public async Task<bool> AtualizarEndereco(EnderecoRequest endereco, MySqlConnection connection = null)
         {
-            using var connection = await _connection.GetConnectionAsync();
-            var enderecoBanco = connection.Get<Endereco>(endereco.Id);
-            if (enderecoBanco is null)
-                return false;
-            enderecoBanco.Logradouro = endereco.Logradouro;
-            enderecoBanco.Numero = endereco.Numero;
-            enderecoBanco.Complemento = endereco.Complemento;
-            enderecoBanco.Cep = endereco.Cep;
-            enderecoBanco.Bairro = endereco.Bairro;
-            enderecoBanco.Cidade = endereco.Cidade;
-            enderecoBanco.Estado = endereco.Estado;
-            enderecoBanco.UF = endereco.UF;
-            enderecoBanco.Ativo = endereco.Ativo;
-            enderecoBanco.Data_alteracao = DateTime.Now;
-            return connection.Update<Endereco>(enderecoBanco);
+           if(connection is null)
+           {
+                using var conn = await _connection.GetConnectionAsync();
+                var enderecoBanco = conn.Get<Endereco>(endereco.Endereco_id);
+                if (enderecoBanco is null)
+                    return false;
+                enderecoBanco.Logradouro = string.IsNullOrEmpty(endereco.Logradouro) ? enderecoBanco.Logradouro : endereco.Logradouro.ToUpper();
+                enderecoBanco.Numero = string.IsNullOrEmpty(endereco.Numero) ? enderecoBanco.Numero : endereco.Numero.ToUpper();
+                enderecoBanco.Complemento = string.IsNullOrEmpty(endereco.Complemento) ? enderecoBanco.Complemento : endereco.Complemento.ToUpper();
+                enderecoBanco.Cep = string.IsNullOrEmpty(endereco.Cep) ? enderecoBanco.Cep : endereco.Cep;
+                enderecoBanco.Bairro = string.IsNullOrEmpty(endereco.Bairro) ? enderecoBanco.Bairro : endereco.Bairro.ToUpper();
+                enderecoBanco.Cidade = string.IsNullOrEmpty(endereco.Cidade) ? enderecoBanco.Cidade : endereco.Cidade.ToUpper();
+                enderecoBanco.Estado = string.IsNullOrEmpty(endereco.Estado) ? enderecoBanco.Estado : endereco.Estado.ToUpper();
+                enderecoBanco.UF = string.IsNullOrEmpty(endereco.Uf) ? enderecoBanco.UF : endereco.Uf.ToUpper();
+                enderecoBanco.Ativo = 1;
+                enderecoBanco.Data_alteracao = DateTime.Now;
+                return conn.Update<Endereco>(enderecoBanco);
+            }
+            else
+            {
+                var enderecoBanco = connection.Get<Endereco>(endereco.Endereco_id);
+                if (enderecoBanco is null)
+                    return false;
+                enderecoBanco.Logradouro = string.IsNullOrEmpty(endereco.Logradouro) ? enderecoBanco.Logradouro : endereco.Logradouro.ToUpper();
+                enderecoBanco.Numero = string.IsNullOrEmpty(endereco.Numero) ? enderecoBanco.Numero : endereco.Numero.ToUpper();
+                enderecoBanco.Complemento = string.IsNullOrEmpty(endereco.Complemento) ? enderecoBanco.Complemento : endereco.Complemento.ToUpper();
+                enderecoBanco.Cep = string.IsNullOrEmpty(endereco.Cep) ? enderecoBanco.Cep : endereco.Cep;
+                enderecoBanco.Bairro = string.IsNullOrEmpty(endereco.Bairro) ? enderecoBanco.Bairro : endereco.Bairro.ToUpper();
+                enderecoBanco.Cidade = string.IsNullOrEmpty(endereco.Cidade) ? enderecoBanco.Cidade : endereco.Cidade.ToUpper();
+                enderecoBanco.Estado = string.IsNullOrEmpty(endereco.Estado) ? enderecoBanco.Estado : endereco.Estado.ToUpper();
+                enderecoBanco.UF = string.IsNullOrEmpty(endereco.Uf) ? enderecoBanco.UF : endereco.Uf.ToUpper();
+                enderecoBanco.Ativo = 1;
+                enderecoBanco.Data_alteracao = DateTime.Now;
+                return connection.Update<Endereco>(enderecoBanco);
+            }
         }
 
         public async Task<bool> ExcluirEnderecoFornecedor(int fornecedor_id, int endereco_id)
