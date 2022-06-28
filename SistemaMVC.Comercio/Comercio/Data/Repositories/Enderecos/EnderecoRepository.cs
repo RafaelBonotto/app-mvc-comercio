@@ -163,6 +163,7 @@ namespace Comercio.Data.Repositories.Enderecos
             var enderecoBanco = connection.Get<Endereco>(id);
             if (enderecoBanco is null)
                 return null;
+            enderecoBanco.TiposEndereco = await this.ObterDescricaoTipoEndereco(connection);
             return enderecoBanco;
         }
 
@@ -171,7 +172,7 @@ namespace Comercio.Data.Repositories.Enderecos
             using var connection = await _connection.GetConnectionAsync();
             var enderecoBanco = connection.Get<Endereco>(endereco.Id);
             if (enderecoBanco is null)
-                return false; // EXCEPTION...
+                return false;
             enderecoBanco.Logradouro = endereco.Logradouro;
             enderecoBanco.Numero = endereco.Numero;
             enderecoBanco.Complemento = endereco.Complemento;
