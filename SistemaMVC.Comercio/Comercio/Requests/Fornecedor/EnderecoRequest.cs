@@ -36,5 +36,6 @@ namespace Comercio.Requests.Fornecedor
         public string Uf { get; set; }
 
         public string TipoEndereco { get; set; }
+        public int Tipo_endereco_id{ get; set; } 
     }
 }
