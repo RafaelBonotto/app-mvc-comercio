@@ -15,7 +15,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<Fornecedor> EditarTelefone(TelefoneRequest request);
         Task<Fornecedor> ExcluirTelefone(int fornecedor_id, int telefone_id);
         Task<Fornecedor> InserirEndereco(EnderecoRequest request);
-        Task<bool> EditarEndereco(EnderecoRequest endereco);
+        Task<Fornecedor> EditarEndereco(EnderecoRequest endereco);
         Task<bool> EditarVendedor(VendedorRequest request);
         Task<bool> ExcluirVendedor(int fornecedor_id, int vendedor_id);
         Task<bool> ExcluirEndereco(int fornecedor_id, int endereco_id);
