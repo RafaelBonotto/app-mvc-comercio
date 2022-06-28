@@ -156,5 +156,10 @@ namespace Comercio.Models
             return this;
         }
 
+        public ErrorViewModel FornecedorErroAoTentarEditarEndereco()
+        {
+            this.Mensagem = "Erro ao tentar editar o endereço do fornecedor.";
+            return this;
+        }
     }
 }
