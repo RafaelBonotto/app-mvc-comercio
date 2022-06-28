@@ -101,11 +101,9 @@ namespace Comercio.Services
             return await _repositoryFornecedor.AtualizarVendedor(req);
         }
 
-        public async Task<bool> EditarEndereco(EnderecoRequest req)
+        public async Task<Fornecedor> EditarEndereco(EnderecoRequest req)
         {
-            var endereco = _mapper.MontarUpdateEndereco(req);
-            endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(req.TipoEndereco);
-            return await _repositoryEndereco.AtualizarEndereco(endereco);
+            return await _repositoryFornecedor.EditarEndereco(req);
         }
 
         public async Task<Fornecedor> EditarNomeEmail(int fornecedor_id, string nome, string email)
