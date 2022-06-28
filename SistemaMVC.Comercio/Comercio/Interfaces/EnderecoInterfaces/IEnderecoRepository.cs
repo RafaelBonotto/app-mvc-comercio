@@ -1,5 +1,6 @@
 ﻿using Comercio.Data.Repositories.Response;
 using Comercio.Entities;
+using Comercio.Requests.Fornecedor;
 using MySqlConnector;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace Comercio.Interfaces.EnderecoInterfaces
 {
     public interface IEnderecoRepository 
     {
-        Task<bool> AtualizarEndereco(Endereco endereco);
+        Task<bool> AtualizarEndereco(EnderecoRequest endereco, MySqlConnection connection = null);
         Task<Endereco> GetById(int id);
         Task<bool> InserirEnderecoFornecedor(int fornecedor_id, Endereco endereco, MySqlConnection connection = null);
         Task<bool> ExcluirEnderecoFornecedor(int fornecedor_id, int endereco_id);
