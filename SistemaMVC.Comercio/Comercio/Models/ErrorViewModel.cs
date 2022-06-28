@@ -150,5 +150,11 @@ namespace Comercio.Models
             return this;
         }
 
+        public ErrorViewModel FornecedorErroAoTentarCarregarEndereco()
+        {
+            this.Mensagem = "Erro ao tentar carregar endereço do fornecedor.";
+            return this;
+        }
+
     }
 }
