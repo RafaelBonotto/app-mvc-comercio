@@ -144,7 +144,8 @@ namespace Comercio.Mapper
                 Cidade = endereco.Cidade,
                 Estado = endereco.Estado,
                 UF = endereco.UF,
-                Tipo_endereco_id = endereco.Tipo_endereco_id
+                Tipo_endereco_id = endereco.Tipo_endereco_id,
+                TiposEnderecoBanco = new SelectList(endereco.TiposEndereco)
             };
         }
 
