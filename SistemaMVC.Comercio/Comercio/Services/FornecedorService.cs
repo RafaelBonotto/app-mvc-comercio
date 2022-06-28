@@ -90,11 +90,6 @@ namespace Comercio.Services
 
         public async Task<Fornecedor> InserirEndereco(EnderecoRequest req)
             => await _repositoryFornecedor.InserirEndereco(req);
-        //{
-            //var endereco = _mapper.MontarInsertEndereco(req);
-            //endereco.Tipo_endereco_id = await _repositoryEndereco.ObterIdTipoEndereco(req.TipoEndereco);
-            //return await _repositoryEndereco.InserirEnderecoFornecedor(req.Fornecedor_id, endereco);
-        //}
 
         public async Task<Fornecedor> EditarTelefone(TelefoneRequest req)
         {
@@ -140,9 +135,9 @@ namespace Comercio.Services
         public async Task<EnderecoFornecedorViewModel> RetornarEnderecoFornecedorViewModel(int fornecedor_id, int endreco_id)
         {
             var enderecoBanco = await _repositoryEndereco.GetById(endreco_id);
+            if (enderecoBanco is null)
+                return null;
             var enderecoViewModel = _mapper.MontaEnderecoFornecedorViewModel(enderecoBanco, fornecedor_id);
-            var tiposEndereco = new SelectList(await _repositoryEndereco.ObterDescricaoTipoEndereco());
-            enderecoViewModel.TiposEnderecoBanco = tiposEndereco;
             return enderecoViewModel;
         }
 
