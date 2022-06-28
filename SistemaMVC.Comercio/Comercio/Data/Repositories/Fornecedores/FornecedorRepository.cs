@@ -290,6 +290,17 @@ namespace Comercio.Data.Repositories.Fornecedores
             return await GetFornecedorAsync(telefone.Fornecedor_id, connection);
         }
 
+        public async Task<Fornecedor> EditarEndereco(EnderecoRequest req)
+        {
+            using var conn = await _connection.GetConnectionAsync();
+            req.Tipo_endereco_id = await _enderecoRepository.ObterIdTipoEndereco(req.TipoEndereco, conn);
+            var updateEndereco = await _enderecoRepository.AtualizarEndereco(req, conn);
+            if (!updateEndereco)
+                return null;
+
+            return await GetFornecedorAsync(req.Fornecedor_id, conn);
+        }
+
         public async Task<Fornecedor> ExcluirTelefone(int fornecedor_id, int telefone_id)
         {
             using var connection = await _connection.GetConnectionAsync();
