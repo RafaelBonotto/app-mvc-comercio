@@ -150,8 +150,8 @@ namespace Comercio.Services
         public Task<bool> ExcluirVendedor(int fornecedor_id, int vendedor_id)
             => _repositoryFornecedor.ExcluirVendedor(fornecedor_id, vendedor_id);
 
-        public async Task<bool> ExcluirEndereco(int fornecedor_id, int endereco_id)
-           => await _repositoryEndereco.ExcluirEnderecoFornecedor(fornecedor_id, endereco_id);
+        public async Task<Fornecedor> ExcluirEndereco(int fornecedor_id, int endereco_id)
+           => await _repositoryFornecedor.ExcluirEndereco(fornecedor_id, endereco_id);
 
         public async Task<Fornecedor> ExcluirTelefone(int fornecedor_id, int telefone_id)
            => await _repositoryFornecedor.ExcluirTelefone(fornecedor_id, telefone_id);
