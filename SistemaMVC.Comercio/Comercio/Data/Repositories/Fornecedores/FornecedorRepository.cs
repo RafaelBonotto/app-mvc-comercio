@@ -105,7 +105,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             return await GetFornecedorAsync(req.Fornecedor_id, connection);
         }
 
-        public async Task<bool> InserirVendedor(int fornecedor_id, PessoaContato vendedor, List<Telefone> telefones)
+        public async Task<Fornecedor> InserirVendedor(int fornecedor_id, PessoaContato vendedor, List<Telefone> telefones)
         {
             using var connection = await _connection.GetConnectionAsync();
             using var transaction = connection.BeginTransaction();
@@ -113,7 +113,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             {
                 var vendedor_id = await connection.InsertAsync<PessoaContato>(vendedor, transaction);
                 if (vendedor_id <= 0)
-                    return false;
+                    return null;
 
                 var vendedorFornecedorId = await connection.InsertAsync<PessoaContatoFornecedor>(
                     entityToInsert: _mapper.MontaInsertVendedorFornecedor(fornecedor_id, vendedor_id), 
@@ -122,7 +122,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 if (vendedor_id <= 0)
                 {
                     transaction.Rollback();
-                    return false;
+                    return null;
                 }
 
                 foreach (var telefone in telefones)
@@ -131,7 +131,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                     if (telefone_id <= 0)
                     {
                         transaction.Rollback();
-                        return false;
+                        return null;
                     }
 
                     var vendedorTelefoneId = await connection.InsertAsync<PessoaContatoTelefone>(
@@ -139,11 +139,11 @@ namespace Comercio.Data.Repositories.Fornecedores
                     if (vendedorTelefoneId <= 0)
                     {
                         transaction.Rollback();
-                        return false;
+                        return null;
                     }
                 }
                 transaction.Commit();
-                return true;
+                return await GetFornecedorAsync(fornecedor_id, connection);
             }
             catch (Exception)
             {
@@ -220,7 +220,11 @@ namespace Comercio.Data.Repositories.Fornecedores
         public async Task<PessoaContato> GetVendedor(int id)
         {
             using var connection = await _connection.GetConnectionAsync();
-            return connection.Get<PessoaContato>(id);
+            var vendedor = connection.Get<PessoaContato>(id);
+            if (vendedor is null)
+                return null;
+            vendedor.Telefones = await this.GetTelefoneVendedor(id, connection);
+            return vendedor;
         }
 
         public async Task<List<Telefone>> GetTelefoneVendedor(int vendedor_id, MySqlConnection connection = null, MySqlTransaction transaction = null)
