@@ -1,4 +1,7 @@
-﻿namespace Comercio.Models
+﻿using Comercio.Entities;
+using System.Collections.Generic;
+
+namespace Comercio.Models
 {
     public class VendedorFornecedorViewModel
     {
@@ -10,5 +13,6 @@
         public string Numero { get; set; }
         public string DddAdicional { get; set; }
         public string NumeroAdicional { get; set; }
+        public List<Telefone> Telefones { get; set; }
     }
 }
