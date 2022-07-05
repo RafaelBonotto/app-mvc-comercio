@@ -22,6 +22,6 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         FornecedorViewModel CriarFornecedorViewModel(Fornecedor fornecedor);
         TelefoneFornecedorViewModel MontaTelefoneFornecedorViewModel(Telefone telefone, int fornecedor_id);
         EnderecoFornecedorViewModel MontaEnderecoFornecedorViewModel(Endereco endereco, int fornecedor_id);
-        VendedorFornecedorViewModel MontaVendedorFornecedorViewModel(PessoaContato vendedor, List<Telefone> telefone, int fornecedor_id);
+        VendedorFornecedorViewModel MontaVendedorFornecedorViewModel(PessoaContato vendedor, int fornecedor_id);
     }
 }
