@@ -99,7 +99,7 @@ namespace Comercio.Data.Repositories.Fornecedores
         {
             using var connection = await _connection.GetConnectionAsync();
             var endereco = _mapper.MontarInsertEndereco(req);
-            endereco.Tipo_endereco_id = await _enderecoRepository.ObterIdTipoEndereco(req.TipoEndereco, connection);
+            endereco.Tipo_endereco_id = await _enderecoRepository.ObterIdTipoEndereco(req.Tipo_endereco, connection);
             var insert = await _enderecoRepository.InserirEnderecoFornecedor(req.Fornecedor_id, endereco, connection);
             if (!insert)
                 return null;
@@ -293,12 +293,20 @@ namespace Comercio.Data.Repositories.Fornecedores
         public async Task<Fornecedor> EditarEndereco(EnderecoRequest req)
         {
             using var conn = await _connection.GetConnectionAsync();
-            req.Tipo_endereco_id = await _enderecoRepository.ObterIdTipoEndereco(req.TipoEndereco, conn);
+            req.Tipo_endereco_id = await _enderecoRepository.ObterIdTipoEndereco(req.Tipo_endereco, conn);
             var updateEndereco = await _enderecoRepository.AtualizarEndereco(req, conn);
             if (!updateEndereco)
                 return null;
 
             return await GetFornecedorAsync(req.Fornecedor_id, conn);
+        }
+        public async Task<Fornecedor> ExcluirEndereco(int fornecedor_id, int endereco_id)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            var delete = await _enderecoRepository.ExcluirEnderecoFornecedor(fornecedor_id, endereco_id, connection);
+            if (!delete)
+                return null;
+            return await GetFornecedorAsync(fornecedor_id, connection);
         }
 
         public async Task<Fornecedor> ExcluirTelefone(int fornecedor_id, int telefone_id)
