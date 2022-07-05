@@ -1,6 +1,5 @@
 ﻿using Comercio.Data.ConnectionManager;
 using Comercio.Data.Querys;
-using Comercio.Data.Repositories.Base.Intrerfaces;
 using Comercio.Entities;
 using Comercio.Enums;
 using Comercio.Interfaces.Base;
