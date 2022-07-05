@@ -149,7 +149,7 @@ namespace Comercio.Mapper
             };
         }
 
-        public VendedorFornecedorViewModel MontaVendedorFornecedorViewModel(PessoaContato vendedor, List<Telefone> telefone, int fornecedor_id)
+        public VendedorFornecedorViewModel MontaVendedorFornecedorViewModel(PessoaContato vendedor, int fornecedor_id)
         {
             return new VendedorFornecedorViewModel
             {
@@ -157,10 +157,10 @@ namespace Comercio.Mapper
                 Vendedor_id = vendedor.Id,
                 Nome = vendedor.Nome,
                 Email = vendedor.Email,
-                Ddd = telefone.First().Ddd,
-                Numero = telefone.First().Numero,
-                DddAdicional = telefone.Count > 1 ? telefone.Last().Ddd : string.Empty,
-                NumeroAdicional = telefone.Count > 1 ? telefone.Last().Numero : string.Empty
+                Ddd = vendedor.Telefones.First().Ddd,
+                Numero = vendedor.Telefones.First().Numero,
+                DddAdicional = vendedor.Telefones.Count > 1 ? vendedor.Telefones.Last().Ddd : string.Empty,
+                NumeroAdicional = vendedor.Telefones.Count > 1 ? vendedor.Telefones.Last().Numero : string.Empty
             };
         }
 
