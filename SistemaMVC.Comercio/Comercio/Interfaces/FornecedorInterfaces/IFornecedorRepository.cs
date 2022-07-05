@@ -9,7 +9,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
 {
     public interface IFornecedorRepository
     {
-        Task<bool> InserirVendedor(int fornecedor_id, PessoaContato vendedor, List<Telefone> telefones);
+        Task<Fornecedor> InserirVendedor(int fornecedor_id, PessoaContato vendedor, List<Telefone> telefones);
         Task<Fornecedor> InserirEndereco(EnderecoRequest req);
         Task<bool> AtualizarVendedor(VendedorRequest vendedor);
         Task<bool> ExcluirVendedor(int fornecedor_id, int vendedor_id);
