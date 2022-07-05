@@ -65,7 +65,7 @@ namespace Comercio.Services
             return fornecedorResponse;
         }
 
-        public async Task<bool> InserirVendedor(VendedorRequest req)
+        public async Task<Fornecedor> InserirVendedor(VendedorRequest req)
         {
             var vendedor = _mapper.MontaPessoaContato(req.Nome, req.Email);
 
@@ -142,8 +142,9 @@ namespace Comercio.Services
         public async Task<VendedorFornecedorViewModel> RetornarVendedorFornecedorViewModel(int fornecedor_id, int vendedor_id)
         {
             var vendedorBanco = await _repositoryFornecedor.GetVendedor(vendedor_id);
-            var telefonesVendedor = await _repositoryFornecedor.GetTelefoneVendedor(vendedor_id);
-            var VendedorViewModel = _mapper.MontaVendedorFornecedorViewModel(vendedorBanco, telefonesVendedor, fornecedor_id);
+            if (vendedorBanco is null)
+                return null;
+            var VendedorViewModel = _mapper.MontaVendedorFornecedorViewModel(vendedorBanco, fornecedor_id);
             return VendedorViewModel;
         }
 
