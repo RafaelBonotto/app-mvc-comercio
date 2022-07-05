@@ -254,11 +254,11 @@ namespace Comercio.Controllers
         {
             try
             {
-                var delete = await _service.ExcluirEndereco(fornecedor_id, endereco_id);
-                if (!delete)
-                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // MSG ERRO AO TENTAR EXCLUIR
+                var fornecedor = await _service.ExcluirEndereco(fornecedor_id, endereco_id);
+                if (fornecedor is null)
+                    return View("Error", new ErrorViewModel().FornecedorErroAoTentarExcluirEndereco());
 
-                var fornecedorViewModel = await _service.RetornarForncedorViewModel(fornecedor_id);
+                var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                 return View("Detalhes", fornecedorViewModel);
             }
             catch (System.Exception)
