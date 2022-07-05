@@ -276,11 +276,11 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    var insert = await _service.InserirVendedor(request);
-                    if (!insert)
-                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // ERRO AO TENTAR ADICIONAR
+                    var fornecedor = await _service.InserirVendedor(request);
+                    if (fornecedor is null)
+                        return View("Error", new ErrorViewModel().FornecedorErroAoTentarInserirVendedor());
 
-                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(request.Fornecedor_id);
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -290,7 +290,7 @@ namespace Comercio.Controllers
             }
             else
             {
-                return View("Error", new ErrorViewModel().ErroDeValidacao());
+                return View("Error", new ErrorViewModel().ErroDeValidacao(ModelState.GetErros()));
             }
         }
 
@@ -300,7 +300,9 @@ namespace Comercio.Controllers
             try
             {
                 var vendedorViewModel = await _service.RetornarVendedorFornecedorViewModel(fornecedor_id, vendedor_id);
-                // VALIDAÇÃO NO RETORNO ?
+                if(vendedorViewModel is null)
+                    return View("Error", new ErrorViewModel().FornecedorErroAoTentarCarregarVendedor());
+
                 return View("EditarVendedor", vendedorViewModel);
             }
             catch (System.Exception)
