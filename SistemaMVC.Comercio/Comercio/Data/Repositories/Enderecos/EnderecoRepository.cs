@@ -207,13 +207,23 @@ namespace Comercio.Data.Repositories.Enderecos
             }
         }
 
-        public async Task<bool> ExcluirEnderecoFornecedor(int fornecedor_id, int endereco_id)
+        public async Task<bool> ExcluirEnderecoFornecedor(int fornecedor_id, int endereco_id, MySqlConnection connection = null)
         {
-            using var connection = await _connection.GetConnectionAsync();
-            await connection.QueryAsync(
+            if (connection is null)
+            {
+                using var conn = await _connection.GetConnectionAsync();
+                await conn.QueryAsync(
+                    sql: EnderecoQuerys.DESATIVAR_ENDERECO_FORNECEDOR,
+                    param: new { fornecedor_id, endereco_id });
+                return true;
+            }
+            else
+            {
+                await connection.QueryAsync(
                 sql: EnderecoQuerys.DESATIVAR_ENDERECO_FORNECEDOR,
                 param: new { fornecedor_id, endereco_id });
-            return true;
+                return true;
+            }
         }
     }
 }
