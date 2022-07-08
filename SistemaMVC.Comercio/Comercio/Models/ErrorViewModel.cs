@@ -179,5 +179,11 @@ namespace Comercio.Models
             this.Mensagem = "Erro ao tentar encontrar o vendedor do fornecedor.";
             return this;
         }
+
+        public ErrorViewModel FornecedorErroAoTentarExcluirVendedor()
+        {
+            this.Mensagem = "Erro ao tentar excluir o vendedor do fornecedor.";
+            return this;
+        }
     }
 }
