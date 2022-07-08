@@ -152,7 +152,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             }
         }
 
-        public async Task<bool> AtualizarVendedor(VendedorRequest vendedor)
+        public async Task<Fornecedor> AtualizarVendedor(VendedorRequest vendedor)
         {
             using var connection = await _connection.GetConnectionAsync();
             using var transaction = connection.BeginTransaction();
@@ -165,7 +165,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                 vendedorBanco.Data_alteracao = DateTime.Now;
                 var update = await connection.UpdateAsync<PessoaContato>(vendedorBanco, transaction);
                 if (!update)
-                    return false;
+                    return null;
 
                 var telefones = await this.GetTelefoneVendedor(vendedorBanco.Id, connection, transaction);
                 foreach (var telefone in telefones)
@@ -186,11 +186,11 @@ namespace Comercio.Data.Repositories.Fornecedores
                     if (!updateTelefone)
                     {
                         transaction.Rollback();
-                        return false;
+                        return null;
                     }
                 }
                 transaction.Commit();
-                return true;
+                return await this.GetFornecedorAsync(vendedor.Fornecedor_id, connection);
             }
             catch (Exception ex)
             {
