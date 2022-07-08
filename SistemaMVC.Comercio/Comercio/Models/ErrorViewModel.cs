@@ -185,5 +185,17 @@ namespace Comercio.Models
             this.Mensagem = "Erro ao tentar excluir o vendedor do fornecedor.";
             return this;
         }
+
+        public ErrorViewModel FornecedorErroAoTentarEditarVendedor()
+        {
+            this.Mensagem = "Erro ao tentar editar o vendedor do fornecedor.";
+            return this;
+        }
+
+        public ErrorViewModel FornecedorErroAoBuscarFornecedor()
+        {
+            this.Mensagem = "Erro ao tentar encontrar o fornecedor.";
+            return this;
+        }
     }
 }
