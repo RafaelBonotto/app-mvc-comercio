@@ -96,7 +96,7 @@ namespace Comercio.Services
             return await _repositoryFornecedor.EditarTelefone(req);
         }
 
-        public async Task<bool> EditarVendedor(VendedorRequest req)
+        public async Task<Fornecedor> EditarVendedor(VendedorRequest req)
         {
             return await _repositoryFornecedor.AtualizarVendedor(req);
         }
