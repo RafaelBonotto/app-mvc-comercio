@@ -3,12 +3,8 @@ using Comercio.Extensions;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
 using Comercio.Requests.Fornecedor;
-using Comercio.Validations.Base;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Comercio.Controllers
@@ -27,6 +23,7 @@ namespace Comercio.Controllers
         }
 
         public IActionResult Index() => View();
+
         public IActionResult Inserir() => View();
 
         [HttpPost]
