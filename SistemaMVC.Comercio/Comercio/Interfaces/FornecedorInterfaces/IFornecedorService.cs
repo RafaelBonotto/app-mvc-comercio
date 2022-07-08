@@ -1,5 +1,4 @@
-﻿using Comercio.Data.Repositories.Response;
-using Comercio.Entities;
+﻿using Comercio.Entities;
 using Comercio.Models;
 using Comercio.Requests.Fornecedor;
 using System.Collections.Generic;
@@ -17,7 +16,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<Fornecedor> InserirEndereco(EnderecoRequest request);
         Task<Fornecedor> EditarEndereco(EnderecoRequest endereco);
         Task<bool> EditarVendedor(VendedorRequest request);
-        Task<bool> ExcluirVendedor(int fornecedor_id, int vendedor_id);
+        Task<Fornecedor> ExcluirVendedor(int fornecedor_id, int vendedor_id);
         Task<Fornecedor> ExcluirEndereco(int fornecedor_id, int endereco_id);
         Task<Fornecedor> EditarNomeEmail(int fornecedor_id, string nome, string email);
         Task<List<Fornecedor>> ListarFornecedores();
