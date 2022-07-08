@@ -148,7 +148,7 @@ namespace Comercio.Services
             return VendedorViewModel;
         }
 
-        public Task<bool> ExcluirVendedor(int fornecedor_id, int vendedor_id)
+        public Task<Fornecedor> ExcluirVendedor(int fornecedor_id, int vendedor_id)
             => _repositoryFornecedor.ExcluirVendedor(fornecedor_id, vendedor_id);
 
         public async Task<Fornecedor> ExcluirEndereco(int fornecedor_id, int endereco_id)
