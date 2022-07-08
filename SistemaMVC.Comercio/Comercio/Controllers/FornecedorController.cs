@@ -320,11 +320,11 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    var update = await _service.EditarVendedor(req);
-                    if (!update)
-                        return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina()); // Erro ao tentar atualizar 
+                    var fornecedor = await _service.EditarVendedor(req);
+                    if (fornecedor is null)
+                        return View("Error", new ErrorViewModel().FornecedorErroAoTentarEditarVendedor());
 
-                    var fornecedorViewModel = await _service.RetornarForncedorViewModel(req.Fornecedor_id);
+                    var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                     return View("Detalhes", fornecedorViewModel);
                 }
                 catch (System.Exception)
@@ -334,7 +334,7 @@ namespace Comercio.Controllers
             }
             else
             {
-                return View("Error", new ErrorViewModel().ErroDeValidacao());
+                return View("Error", new ErrorViewModel().ErroDeValidacao(ModelState.GetErros()));
             }
         }
 
@@ -363,7 +363,7 @@ namespace Comercio.Controllers
             {
                 var fornecedores = await _service.ListarFornecedores();
                 if (fornecedores.Count == 0)
-                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());// Alterar erro
+                    return View("Error", new ErrorViewModel().FornecedorErroAoBuscarFornecedor());
 
                 var listaViewModel = new List<FornecedorViewModel>();
                 foreach (var fornecedor in fornecedores)
@@ -384,7 +384,7 @@ namespace Comercio.Controllers
             {
                 var fornecedor = await _service.BuscarFornecedor(id);
                 if (fornecedor is null)
-                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());// Alterar erro
+                    return View("Error", new ErrorViewModel().FornecedorErroAoBuscarFornecedor());
 
                 var fornecedorViewModel =_mapper.CriarFornecedorViewModel(fornecedor);
                 return View("Detalhes", fornecedorViewModel);
@@ -402,7 +402,7 @@ namespace Comercio.Controllers
             {
                 var fornecedor = await _service.BuscarFornecedor(id);
                 if (fornecedor is null)
-                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());// Alterar erro
+                    return View("Error", new ErrorViewModel().FornecedorErroAoBuscarFornecedor());
 
                 var fornecedorViewModel = _mapper.CriarFornecedorViewModel(fornecedor);
                 return View("ExibirFornecedor", fornecedorViewModel);
