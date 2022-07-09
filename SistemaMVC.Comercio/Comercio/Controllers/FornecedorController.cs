@@ -409,5 +409,21 @@ namespace Comercio.Controllers
                 return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
             }
         }
+        [HttpGet("[controller]/excluir")]
+        public async Task<IActionResult> ExcluirFornecedor(int id)
+        {
+            try
+            {
+                var delete = await _service.ExcluirFornecedor(id);
+                if (!delete)
+                    return View("Error", new ErrorViewModel().FornecedorErroAoTentarExcluir());
+
+                return View("Index");
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
     }
 }
