@@ -9,6 +9,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
     public interface IFornecedorService
     {
         Task<Fornecedor> InserirFornecedor(FornecedorViewModel fornecedor);
+        Task<bool> ExcluirFornecedor(int id);
         Task<Fornecedor> InserirVendedor(VendedorRequest request);
         Task<Fornecedor> InserirTelefone(TelefoneRequest request);
         Task<Fornecedor> EditarTelefone(TelefoneRequest request);
