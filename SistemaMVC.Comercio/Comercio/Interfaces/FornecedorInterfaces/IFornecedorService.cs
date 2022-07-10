@@ -21,6 +21,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<Fornecedor> ExcluirEndereco(int fornecedor_id, int endereco_id);
         Task<Fornecedor> EditarNomeEmail(int fornecedor_id, string nome, string email);
         Task<List<Fornecedor>> ListarFornecedores();
+        Task<List<Produto>> ListarProdutos(int fornecedor_id);
         Task<List<Fornecedor>> FiltrarPorSetor(string setor);
         Task<Fornecedor> BuscarFornecedor(int id);
         Task<FornecedorViewModel> RetornarForncedorViewModel(int fornecedor_id);
