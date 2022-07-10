@@ -65,6 +65,9 @@ namespace Comercio.Services
             return fornecedorResponse;
         }
 
+        public async Task<bool> ExcluirFornecedor(int id)
+            => await _repositoryFornecedor.ExcluirFornecedor(id);
+
         public async Task<Fornecedor> InserirVendedor(VendedorRequest req)
         {
             var vendedor = _mapper.MontaPessoaContato(req.Nome, req.Email);
