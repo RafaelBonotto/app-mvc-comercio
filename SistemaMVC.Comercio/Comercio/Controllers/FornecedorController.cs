@@ -374,6 +374,28 @@ namespace Comercio.Controllers
             }
         }
 
+        [HttpGet("[controller]/listarProdutos")]
+        public async Task<IActionResult> ListarProdutos(int fornecedor_id)
+        {
+            try
+            {
+                var produtos = await _service.ListarProdutos(fornecedor_id);
+                if (produtos.Count == 0)
+                    return View("Error", new ErrorViewModel().FornecedorNenhumProdutoEncontrado());
+
+                // CRIAR VIEW PRODUTOfORNECEDOR CRIAR NO_MAPPER CRIALISTAPROUTOVIEWMODEL E PASSAR PARA VIEW...
+                //var listaViewModel = new List<ProdutoViewModel>();
+                //foreach (var produto in produtos)
+                //    listaViewModel.Add(_mapper.CriarProdutoViewModel(produto));
+
+                return View("Produtos");//, listaViewModel);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
+
         [HttpGet("[controller]/detalhes")]
         public async Task<IActionResult> Detalhes(int id)
         {
