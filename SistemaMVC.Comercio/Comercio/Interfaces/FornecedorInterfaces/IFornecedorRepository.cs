@@ -1,5 +1,4 @@
-﻿using Comercio.Data.Repositories.Response;
-using Comercio.Entities;
+﻿using Comercio.Entities;
 using Comercio.Requests.Fornecedor;
 using MySqlConnector;
 using System.Collections.Generic;
@@ -21,5 +20,6 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<Fornecedor> InserirTelefone(int fornecedor_id, Telefone telefone, MySqlConnection connection = null);
         Task<Fornecedor> EditarTelefone(TelefoneRequest telefone, MySqlConnection connection = null);
         Task<Fornecedor> EditarEndereco(EnderecoRequest endereco);
+        Task<List<Produto>> ListarProdutos(int fornecedor_id);
     }
 }
