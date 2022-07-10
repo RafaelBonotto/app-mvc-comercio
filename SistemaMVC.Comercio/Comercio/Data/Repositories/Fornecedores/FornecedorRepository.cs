@@ -94,6 +94,22 @@ namespace Comercio.Data.Repositories.Fornecedores
                 FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
         }
 
+        public async Task<bool> ExcluirFornecedor(int id)
+        {
+            using (var connection = await _connection.GetConnectionAsync())
+            {
+                var fornecedorBanco = await connection.GetAsync<Fornecedor>(id);
+                if (fornecedorBanco is null)
+                    return false;
+
+                await connection.QueryAsync(
+                    sql: FornecedorQuerys.DESATIVAR_FORNECEDOR,
+                    param: new { id });
+
+                return true;
+            }
+        }
+
         public async Task<Fornecedor> InserirEndereco(EnderecoRequest req)
         {
             using var connection = await _connection.GetConnectionAsync();
