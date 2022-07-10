@@ -363,6 +363,25 @@ namespace Comercio.Data.Repositories.Fornecedores
             return ret;
         }
 
+        public async Task<List<Produto>> ListarProdutos(int fornecedor_id)
+        {
+            List<Produto> ret = new();
+            using var connection = await _connection.GetConnectionAsync();
+
+            var produtoIds = await connection.QueryAsync<int>(
+                sql: FornecedorQuerys.SELECT_PRODUTO_ID,
+                param: new { fornecedor_id });
+
+            if (produtoIds.Any())
+            {
+                foreach (var id in produtoIds)
+                    ret.Add(await connection.QueryFirstOrDefaultAsync<Produto>(
+                          sql: FornecedorQuerys.SELECT_PRODUTOS,
+                          param: new { id }));
+            }
+            return ret;
+        }
+
         private async Task<Fornecedor> GetFornecedorAsync(int id, MySqlConnection connection)
         {
             var fornecedor = connection.Get<Fornecedor>(id);
