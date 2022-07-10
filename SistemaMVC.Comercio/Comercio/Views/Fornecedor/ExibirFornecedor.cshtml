@@ -130,7 +130,11 @@
 
 <hr />
 <div>
-    <a asp-controller="Fornecedor" asp-action="detalhes" asp-route-id=@Model.Id class="btn btn-success btn-sm">ATUALIZAR DADOS DO FORNECEDOR</a>
+    <a asp-controller="Fornecedor" asp-action="detalhes" asp-route-id=@Model.Id class="btn btn-success btn-sm">ATUALIZAR DADOS</a>
+</div>
+<hr />
+<div>
+    <a asp-controller="Fornecedor" asp-action="listarProdutos" asp-route-fornecedor_id=@Model.Id class="btn btn-success btn-sm">PRODUTOS</a>
 </div>
 <hr />
 <div>
