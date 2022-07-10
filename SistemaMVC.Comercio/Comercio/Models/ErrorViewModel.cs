@@ -197,5 +197,11 @@ namespace Comercio.Models
             this.Mensagem = "Erro ao tentar encontrar o fornecedor.";
             return this;
         }
+
+        public ErrorViewModel FornecedorErroAoTentarExcluir()
+        {
+            this.Mensagem = "Erro ao tentar excluir o fornecedor.";
+            return this;
+        }
     }
 }
