@@ -25,5 +25,8 @@
                                                     WHERE tb.fornecedor_id = @fornecedor_id
                                                     AND tb.pessoa_contato_id = @vendedor_id";
 
+        public const string DESATIVAR_FORNECEDOR = @"UPDATE tb_fornecedor tb
+                                                        SET ativo = 0 
+                                                        WHERE  tb.id = @id";
     }
 }
