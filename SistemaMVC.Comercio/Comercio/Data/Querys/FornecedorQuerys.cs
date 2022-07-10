@@ -28,5 +28,13 @@
         public const string DESATIVAR_FORNECEDOR = @"UPDATE tb_fornecedor tb
                                                         SET ativo = 0 
                                                         WHERE  tb.id = @id";
+
+        public const string SELECT_PRODUTO_ID = @"SELECT produto_id 
+                                                    FROM tb_fornecedor_produto tb
+                                                    WHERE tb.fornecedor_id = @fornecedor_id";
+
+        public const string SELECT_PRODUTOS = @"SELECT * 
+                                                    FROM tb_produto tb
+                                                    WHERE tb.id = @id";
     }
 }
