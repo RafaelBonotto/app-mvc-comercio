@@ -409,7 +409,7 @@ namespace Comercio.Controllers
                 return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
             }
         }
-        [HttpGet("[controller]/excluir")]
+        [HttpGet("[controller]/excluirFornecedor")]
         public async Task<IActionResult> ExcluirFornecedor(int id)
         {
             try
