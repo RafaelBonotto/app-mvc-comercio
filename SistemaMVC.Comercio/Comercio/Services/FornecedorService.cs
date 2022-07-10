@@ -163,6 +163,9 @@ namespace Comercio.Services
         public async Task<List<Fornecedor>> ListarFornecedores()
             => await _repositoryBase.GetAllAsync();
 
+        public async Task<List<Produto>> ListarProdutos(int fornecedor_id)
+            => await _repositoryFornecedor.ListarProdutos(fornecedor_id);
+
         public async Task<Fornecedor> BuscarFornecedor(int id)
             => await _repositoryBase.GetByIdAsync(id);
     }
