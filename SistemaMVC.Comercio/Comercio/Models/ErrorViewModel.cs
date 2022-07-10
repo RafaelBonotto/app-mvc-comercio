@@ -203,5 +203,11 @@ namespace Comercio.Models
             this.Mensagem = "Erro ao tentar excluir o fornecedor.";
             return this;
         }
+
+        public ErrorViewModel FornecedorNenhumProdutoEncontrado()
+        {
+            this.Mensagem = "Não foi encontrado nenhum produto para esse fornecedor.";
+            return this;
+        }
     }
 }
