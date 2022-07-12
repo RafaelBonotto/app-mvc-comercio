@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Comercio.Models.ProdutoViewModel>
+
+@{
+    ViewData["Title"] = "fornecedor/listarProdutos";
+}
+
+<h4 class="display-4">PRODUTOS</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Codigo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SetorDescricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Preco_venda)
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Codigo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <th>
+                    @Html.DisplayFor(modelItem => item.Ativo)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SetorDescricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Preco_venda)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />
+<div>
+    <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
+</div>
+
+
