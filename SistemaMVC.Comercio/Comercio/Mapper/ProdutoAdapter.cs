@@ -42,7 +42,7 @@ namespace Comercio.Mapper
                 Id = produto.Id,
                 Codigo = produto.Codigo,
                 Descricao = produto.Descricao.ToUpper(),
-                Preco_custo = produto.Preco_custo.ToString("N2"),
+                Preco_custo = "Não Registrado",//produto.Preco_custo.ToString("N2"),
                 Preco_venda = produto.Preco_venda.ToString("N2"),
                 Ativo = produto.Ativo == 0 ? "INATIVO " : "ATIVO",
                 SetorDescricao = produto.Setor.Descricao.ToUpper()
