@@ -199,5 +199,24 @@ namespace Comercio.Mapper
                 Data_alteracao = DateTime.Now
             };
         }
+
+        public List<ProdutoViewModel> MontaForncedorProdutoViewModel(List<Produto> produtos)
+        {
+            List<ProdutoViewModel> ret = new();
+            foreach (var produto in produtos)
+            {
+                ret.Add(new ProdutoViewModel()
+                {
+                    Id = produto.Id,
+                    Codigo = produto.Codigo,
+                    Descricao = produto.Descricao.ToUpper(),
+                    Preco_custo = produto.Preco_custo.ToString("N2"),
+                    Preco_venda = produto.Preco_venda.ToString("N2"),
+                    Ativo = produto.Ativo == 0 ? "INATIVO " : "ATIVO",
+                    SetorDescricao = produto.Setor.Descricao.ToUpper()
+                });
+            }
+            return ret;
+        }
     }
 }
