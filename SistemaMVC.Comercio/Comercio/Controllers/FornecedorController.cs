@@ -383,12 +383,8 @@ namespace Comercio.Controllers
                 if (produtos.Count == 0)
                     return View("Error", new ErrorViewModel().FornecedorNenhumProdutoEncontrado());
 
-                // CRIAR VIEW PRODUTOfORNECEDOR CRIAR NO_MAPPER CRIALISTAPROUTOVIEWMODEL E PASSAR PARA VIEW...
-                //var listaViewModel = new List<ProdutoViewModel>();
-                //foreach (var produto in produtos)
-                //    listaViewModel.Add(_mapper.CriarProdutoViewModel(produto));
-
-                return View("Produtos");//, listaViewModel);
+                var viewModel = _mapper.MontaForncedorProdutoViewModel(produtos);
+                return View("FornecedorProduto", viewModel);
             }
             catch (System.Exception)
             {
