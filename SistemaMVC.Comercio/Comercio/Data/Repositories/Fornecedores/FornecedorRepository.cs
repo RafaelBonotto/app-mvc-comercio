@@ -17,8 +17,7 @@ using System.Threading.Tasks;
 
 namespace Comercio.Data.Repositories.Fornecedores
 {
-    public class FornecedorRepository : IRepositoryBase<Fornecedor>,/*EXCLUIR INTERFACE E MÉTODOS=>IBaseRepository<Fornecedor>, */
-        IFornecedorRepository
+    public class FornecedorRepository : IRepositoryBase<Fornecedor>, IFornecedorRepository
     {
         private readonly IMySqlConnectionManager _connection;
         private readonly IFornecedorAdapter _mapper;
