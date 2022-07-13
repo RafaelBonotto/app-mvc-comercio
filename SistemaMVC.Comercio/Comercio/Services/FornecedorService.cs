@@ -19,7 +19,6 @@ namespace Comercio.Services
     public class FornecedorService : IFornecedorService
     {
         private readonly IRepositoryBase<Fornecedor> _repositoryBase;
-        private readonly IBaseRepository<Fornecedor> _baseRepository;
         private readonly IFornecedorRepository _repositoryFornecedor;
         private readonly ITelefoneRepository _repositoryTelefone;
         private readonly IEnderecoRepository _repositoryEndereco;
