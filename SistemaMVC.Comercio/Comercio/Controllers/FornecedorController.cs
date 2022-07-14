@@ -4,6 +4,7 @@ using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Models;
 using Comercio.Requests.Fornecedor;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -437,6 +438,20 @@ namespace Comercio.Controllers
                     return View("Error", new ErrorViewModel().FornecedorErroAoTentarExcluir());
 
                 return View("Index");
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
+
+        [HttpGet("[controller]/filtro")]
+        public async Task<IActionResult> CarregaSetoresExibeViewFiltro()
+        {
+            try
+            {
+                var setores = new SelectList(await _service.ListarSetores());
+                return View("Filtro", setores);
             }
             catch (System.Exception)
             {
