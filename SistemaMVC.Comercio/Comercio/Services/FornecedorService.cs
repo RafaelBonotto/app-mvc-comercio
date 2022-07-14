@@ -1,6 +1,4 @@
-﻿using Comercio.Data.Repositories.Base.Intrerfaces;
-using Comercio.Data.Repositories.Response;
-using Comercio.Entities;
+﻿using Comercio.Entities;
 using Comercio.Enums;
 using Comercio.Exceptions.Fornecedor;
 using Comercio.Interfaces.Base;
@@ -9,7 +7,6 @@ using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.TelefoneInterfaces;
 using Comercio.Models;
 using Comercio.Requests.Fornecedor;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -167,5 +164,8 @@ namespace Comercio.Services
 
         public async Task<Fornecedor> BuscarFornecedor(int id)
             => await _repositoryBase.GetByIdAsync(id);
+
+        public async Task<List<Setor>> ListarSetores() 
+            => await _repositoryFornecedor.ObterSetores();
     }
 }
