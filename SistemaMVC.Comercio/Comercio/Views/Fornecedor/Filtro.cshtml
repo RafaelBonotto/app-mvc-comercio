@@ -1,0 +1,38 @@
+﻿@model IEnumerable<SelectListItem>
+@{
+    ViewData["Title"] = "fornecedor/filtro";
+}
+
+<h4 class="display-4">BUSCAR FORNECEDOR</h4>
+<hr />
+
+<div class="w-50 p-3" style="background-color: #C0C0C0;">
+    <form asp-action="filtrarPorNome">
+        <div class="form-group">
+            <label for="codigo" class="control-label"><strong>BUSCAR POR NOME</strong></label>
+            <input type="text" class="form-control" name="codigo" placeholder="Nome do fornecedor">
+        </div>
+        <hr />
+        <div>
+            <input type="submit" value="BUSCAR" class="btn btn-success btn-group-lg">
+        </div>
+    </form>
+</div>
+<hr />
+<div class="w-50 p-3" style="background-color: #eee; ">
+    <form asp-action="filtrarPorSetor">
+        <div class="form-group">
+            <div class="form-group col-md-4">
+                <label for="setor"><strong>BUSCAR POR SETOR</strong></label>
+                <select name="setor" asp-items="@Model" class="form-control">
+                </select>
+            </div>
+        </div>
+        <hr />
+        <div>
+            <input type="submit" value="BUSCAR" class="btn btn-success btn-group-lg">
+        </div>
+    </form>
+</div>
+<hr />
+<a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
