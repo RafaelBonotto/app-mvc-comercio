@@ -28,5 +28,6 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<TelefoneFornecedorViewModel> RetornarTelefoneFornecedorViewModel(int fornecedor_id, int telefone_id);
         Task<EnderecoFornecedorViewModel> RetornarEnderecoFornecedorViewModel(int fornecedor_id, int endreco_id);
         Task<VendedorFornecedorViewModel> RetornarVendedorFornecedorViewModel(int fornecedor_id, int vendedor_id);
+        Task<List<Setor>> ListarSetores();
     }
 }
