@@ -381,6 +381,22 @@ namespace Comercio.Data.Repositories.Fornecedores
             return ret;
         }
 
+        public async Task<List<Setor>> ObterSetores()
+        {
+            try
+            {
+                using var connection = await _connection.GetConnectionAsync();
+                var setores = await connection.QueryAsync<Setor>(ProdutoQuerys.SELECT_LISTAR_SETORES);
+                foreach (var setor in setores)
+                    setor.Descricao = setor.Descricao.ToUpper();
+                return setores.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         private async Task<Fornecedor> GetFornecedorAsync(int id, MySqlConnection connection)
         {
             var fornecedor = connection.Get<Fornecedor>(id);
