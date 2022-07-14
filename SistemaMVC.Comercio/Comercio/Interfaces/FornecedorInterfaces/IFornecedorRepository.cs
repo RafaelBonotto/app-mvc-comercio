@@ -21,5 +21,6 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<Fornecedor> EditarTelefone(TelefoneRequest telefone, MySqlConnection connection = null);
         Task<Fornecedor> EditarEndereco(EnderecoRequest endereco);
         Task<List<Produto>> ListarProdutos(int fornecedor_id);
+        Task<List<Setor>> ObterSetores();
     }
 }
