@@ -22,5 +22,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<Fornecedor> EditarEndereco(EnderecoRequest endereco);
         Task<List<Produto>> ListarProdutos(int fornecedor_id);
         Task<List<Setor>> ObterSetores();
+        Task<List<Fornecedor>> FiltarPorSetor(string setor);
+        Task<List<Fornecedor>> FiltarPorNome(string nome);
     }
 }
