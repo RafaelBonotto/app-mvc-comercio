@@ -23,6 +23,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
         Task<List<Fornecedor>> ListarFornecedores();
         Task<List<Produto>> ListarProdutos(int fornecedor_id);
         Task<List<Fornecedor>> FiltrarPorSetor(string setor);
+        Task<List<Fornecedor>> FiltrarPorNome(string nome);
         Task<Fornecedor> BuscarFornecedor(int id);
         Task<FornecedorViewModel> RetornarForncedorViewModel(int fornecedor_id);
         Task<TelefoneFornecedorViewModel> RetornarTelefoneFornecedorViewModel(int fornecedor_id, int telefone_id);
