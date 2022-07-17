@@ -458,5 +458,46 @@ namespace Comercio.Controllers
                 return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
             }
         }
+
+        [Route("[controller]/filtrarPorNome")]
+        public async Task<IActionResult> FiltrarPorNome(string nome)
+        {
+            try
+            {
+                var fornecedor = await _service.FiltrarPorNome(nome);
+                if (fornecedor.Count == 0)
+                    return View("Error", new ErrorViewModel().ErroFiltroNaoEncontrado());
+
+                var listaViewModel = new List<FornecedorViewModel>();
+                foreach (var item in fornecedor)
+                    listaViewModel.Add(_mapper.CriarFornecedorViewModel(item));
+                return View("Fornecedores", listaViewModel);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
+
+        [Route("[controller]/filtrarPorSetor")]
+        public async Task<IActionResult> FiltrarPorSetor(string setor)
+        {
+            try
+            {
+                var fornecedor = await _service.FiltrarPorSetor(setor);
+                if (fornecedor.Count == 0)
+                    return View("Error", new ErrorViewModel().ErroFiltroNaoEncontrado());
+
+                var listaViewModel = new List<FornecedorViewModel>();
+                foreach (var item in fornecedor)
+                    listaViewModel.Add(_mapper.CriarFornecedorViewModel(item));
+
+                return View("Fornecedores", listaViewModel);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
     }
 }
