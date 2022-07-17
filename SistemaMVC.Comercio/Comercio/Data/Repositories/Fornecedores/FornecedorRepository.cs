@@ -2,6 +2,7 @@
 using Comercio.Data.Querys;
 using Comercio.Entities;
 using Comercio.Enums;
+using Comercio.Exceptions.Fornecedor;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.EnderecoInterfaces;
 using Comercio.Interfaces.FornecedorInterfaces;
@@ -40,9 +41,32 @@ namespace Comercio.Data.Repositories.Fornecedores
         {
             using (var connection = await _connection.GetConnectionAsync())
             {
+                if (string.IsNullOrEmpty(fornecedor.Cnpj))
+                {
+                    var checkFornecedor = await connection.QueryAsync<Fornecedor>(
+                        sql: FornecedorQuerys.SELECT_POR_CNPJ,
+                        param: new { cnpj = fornecedor.Cnpj });
+
+                    if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 1)
+                        throw new CnpjInvalidoException();
+
+                    if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 0)
+                    {
+                        var fornecedorBanco = checkFornecedor.First();
+                        fornecedorBanco.Ativo = 1;
+                        fornecedorBanco.Nome_empresa = !string.IsNullOrEmpty(fornecedor.Nome_empresa) ? fornecedor.Nome_empresa.ToUpper() : fornecedorBanco.Nome_empresa;
+                        fornecedorBanco.Email = !string.IsNullOrEmpty(fornecedor.Email) ? fornecedor.Email.ToLower() : fornecedorBanco.Email;
+                        var update = await connection.UpdateAsync(fornecedorBanco);
+                        if (!update)
+                            return null;
+
+                        return await this.GetFornecedorAsync(fornecedorBanco.Id, connection);
+                    }
+                }
                 var fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
                 if (fornecdorId <= 0)
                     return null;
+
                 return await this.GetFornecedorAsync(fornecedor.Id, connection);
             }
         }
@@ -395,9 +419,12 @@ namespace Comercio.Data.Repositories.Fornecedores
         public async Task<List<Fornecedor>> FiltarPorNome(string nome)
         {
             using var connection = await _connection.GetConnectionAsync();
-            // CRIAR QUERY QUE PEGA PELO NOME EMPRESA
-            return (connection.Query<Fornecedor>(
-                FornecedorQuerys., new { nome })).ToList();
+            var fornecedores = connection.Query<Fornecedor>(
+                sql: FornecedorQuerys.SELECT_FORNECEDOR_POR_NOME, 
+                param: new { nome });
+            if (fornecedores.Any())
+                return fornecedores.ToList(); ;
+            return null; 
         }
 
         #region Métodos privados
