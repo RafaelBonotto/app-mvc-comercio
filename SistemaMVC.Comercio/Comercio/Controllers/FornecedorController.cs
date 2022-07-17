@@ -465,7 +465,7 @@ namespace Comercio.Controllers
             try
             {
                 var fornecedor = await _service.FiltrarPorNome(nome);
-                if (fornecedor.Count == 0)
+                if (fornecedor is null || fornecedor.Count == 0)
                     return View("Error", new ErrorViewModel().ErroFiltroNaoEncontrado());
 
                 var listaViewModel = new List<FornecedorViewModel>();
