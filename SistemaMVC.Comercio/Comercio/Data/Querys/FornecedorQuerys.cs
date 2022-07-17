@@ -46,5 +46,10 @@
         public const string SELECT_ID_SETOR = @"SELECT id 
                                                 FROM tb_setor TBS
                                                 WHERE TBS.descricao = @setorDescricao";
+
+        public const string SELECT_FORNECEDOR_POR_NOME = @"SELECT * 
+                                                            FROM tb_fornecedor TBF 
+                                                            WHERE TBF.nome_empresa 
+                                                            LIKE CONCAT('%',@nome,'%')";
     }
 }
