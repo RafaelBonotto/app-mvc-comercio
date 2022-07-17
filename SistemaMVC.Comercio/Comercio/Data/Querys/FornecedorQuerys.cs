@@ -36,5 +36,15 @@
         public const string SELECT_PRODUTOS = @"SELECT * 
                                                     FROM tb_produto tb
                                                     WHERE tb.id = @id";
+
+        public const string SELECT_FORNECEDOR_ID_POR_SETOR = @"SELECT fornecedor_id 
+                                                                FROM tb_fornecedor_produto TBFP
+                                                                INNER JOIN tb_produto TBP
+                                                                ON TBFP.produto_id = TBP.id
+                                                                WHERE TBP.setor_id = @setor_id";
+
+        public const string SELECT_ID_SETOR = @"SELECT id 
+                                                FROM tb_setor TBS
+                                                WHERE TBS.descricao = @setorDescricao";
     }
 }
