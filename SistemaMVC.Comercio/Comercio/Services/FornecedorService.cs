@@ -35,10 +35,11 @@ namespace Comercio.Services
             _mapper = mapper;
         }
 
-        public Task<List<Fornecedor>> FiltrarPorSetor(string setor)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async Task<List<Fornecedor>> FiltrarPorSetor(string setor)
+            => await _repositoryFornecedor.FiltrarPorSetor(setor);
+
+        public async Task<List<Fornecedor>> FiltrarPorNome(string nome)
+            => await _repositoryFornecedor.FiltrarPorNome(nome);
 
         public async Task<Fornecedor> InserirFornecedor(FornecedorViewModel fornecedor)
         {
