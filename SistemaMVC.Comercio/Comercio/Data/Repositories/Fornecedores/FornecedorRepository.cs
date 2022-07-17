@@ -336,32 +336,6 @@ namespace Comercio.Data.Repositories.Fornecedores
             return await GetFornecedorAsync(fornecedor_id, connection);
         }
 
-        #region Métodos privados
-
-        static async Task<List<PessoaContato>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
-        {
-            List<PessoaContato> ret = new();
-            var vendedorIds = await connection.QueryAsync<int>(
-                  sql: FornecedorQuerys.SELECT_ID_VENDEDOR_FORNECEDOR,
-                  param: new { fornecedor_id });
-            if (vendedorIds.Any())
-            {
-                foreach (var id in vendedorIds)
-                {
-                    var vendedor = connection.Get<PessoaContato>(id);
-                    var telefoneIds = await connection.QueryAsync<int>(
-                        sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
-                        param: new { vendedor_id = id });
-
-                    if (telefoneIds.Any())
-                        foreach (var telefoneId in telefoneIds)
-                            vendedor.Telefones.Add(connection.Get<Telefone>(telefoneId));
-                    ret.Add(vendedor);
-                }
-            }
-            return ret;
-        }
-
         public async Task<List<Produto>> ListarProdutos(int fornecedor_id)
         {
             List<Produto> ret = new();
@@ -395,6 +369,61 @@ namespace Comercio.Data.Repositories.Fornecedores
             {
                 throw;
             }
+        }
+
+        public async Task<List<Fornecedor>> FiltarPorSetor(string setorDescricao)
+        {
+            List<Fornecedor> ret = new();
+            using var connection = await _connection.GetConnectionAsync();
+            var setor_id = await connection.QueryFirstOrDefaultAsync<int>(
+                    sql: FornecedorQuerys.SELECT_ID_SETOR, 
+                    param: new { setorDescricao });
+            if(setor_id <= 0)
+                return ret;
+
+            var fornecedorIds = (connection.Query<int>(
+                    sql: FornecedorQuerys.SELECT_FORNECEDOR_ID_POR_SETOR, 
+                    param:new { setor_id })).ToList();
+
+            if (fornecedorIds.Any())
+                foreach (var id in fornecedorIds)
+                    ret.Add(await this.GetFornecedorAsync(id, connection));
+
+            return ret;
+        }
+
+        public async Task<List<Fornecedor>> FiltarPorNome(string nome)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            // CRIAR QUERY QUE PEGA PELO NOME EMPRESA
+            return (connection.Query<Fornecedor>(
+                FornecedorQuerys., new { nome })).ToList();
+        }
+
+        #region Métodos privados
+
+        static async Task<List<PessoaContato>> RetornarVendedorDoFornecedor(int fornecedor_id, MySqlConnection connection)
+        {
+            List<PessoaContato> ret = new();
+            var vendedorIds = await connection.QueryAsync<int>(
+                  sql: FornecedorQuerys.SELECT_ID_VENDEDOR_FORNECEDOR,
+                  param: new { fornecedor_id });
+            if (vendedorIds.Any())
+            {
+                foreach (var id in vendedorIds)
+                {
+                    var vendedor = connection.Get<PessoaContato>(id);
+                    var telefoneIds = await connection.QueryAsync<int>(
+                        sql: FornecedorQuerys.SELECT_ID_TELEFONE_VENDEDOR,
+                        param: new { vendedor_id = id });
+
+                    if (telefoneIds.Any())
+                        foreach (var telefoneId in telefoneIds)
+                            vendedor.Telefones.Add(connection.Get<Telefone>(telefoneId));
+                    ret.Add(vendedor);
+                }
+            }
+            return ret;
         }
 
         private async Task<Fornecedor> GetFornecedorAsync(int id, MySqlConnection connection)
