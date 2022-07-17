@@ -39,7 +39,7 @@ namespace Comercio.Mapper
             return new Fornecedor()
             {
                 Nome_empresa = fornecedor.Nome_empresa.ToUpper(),
-                Cnpj = fornecedor.Cnpj.Equals("CNPJMASTER") ? string.Empty : fornecedor.Cnpj,
+                Cnpj = fornecedor.Cnpj.ToUpper().Equals("CNPJMASTER") ? string.Empty : fornecedor.Cnpj,
                 Email = string.IsNullOrEmpty(fornecedor.Email) ? string.Empty : fornecedor.Email.ToLower(),
                 Ativo = 1,
                 Data_criacao = DateTime.Now,
