@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Comercio.Models.FornecedorViewModel>
+
+@{
+    ViewData["Title"] = "fornecedor/listar";
+}
+
+<h4 class="display-4">FORNECEDORES</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome_empresa)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome_empresa)
+                </td>
+                <td>
+                    <a asp-controller="Produto" asp-action="obterFornecedorDetalhes" asp-route-fornecedor_id="@item.Id" class="btn btn-success btn-sm">DETALHES</a>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+<hr />
+<div>
+    <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
+</div>
+
+
