@@ -54,14 +54,9 @@
                                                     WHERE
                                                     tb_setor.descricao LIKE CONCAT('%',@descricao,'%')";
 
-        public const string SELECT_LISTAR_FORNECEDORES = @"SELECT *
-                                                            FROM
-                                                            tb_fornecedor
-                                                            INNER JOIN
-                                                            tb_fornecedor_produto 
-                                                            ON tb_fornecedor_produto.fornecedor_id = tb_fornecedor.id
-                                                            WHERE
-                                                            tb_fornecedor_produto.produto_id = @produto_id";
+        public const string SELECT_ID_FORNECEDOR_POR_PRODUTO = @"SELECT fornecedor_id 
+                                                                    FROM tb_fornecedor_produto TBFP 
+                                                                    WHERE TBFP.produto_id = @produto_id;";
                                                         
     }
 }
