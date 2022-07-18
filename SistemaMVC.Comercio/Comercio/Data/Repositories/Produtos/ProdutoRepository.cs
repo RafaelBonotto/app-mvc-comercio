@@ -3,6 +3,7 @@ using Comercio.Data.Querys;
 using Comercio.Entities;
 using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
+using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
 using Dapper;
 using Dapper.Contrib.Extensions;
@@ -16,10 +17,14 @@ namespace Comercio.Data.Repositories.Produtos
     public class ProdutoRepository : IRepositoryBase<Produto>, IProdutoRepository
     {
         private readonly IMySqlConnectionManager _connection;
+        private readonly IFornecedorRepository _fornecedorRepository;
 
-        public ProdutoRepository(IMySqlConnectionManager connection)
+        public ProdutoRepository(
+            IMySqlConnectionManager connection,
+            IFornecedorRepository fornecedorRepository)
         {
             _connection = connection;
+            _fornecedorRepository = fornecedorRepository;
         }
 
         public async Task<Produto> AddAsync(Produto produto)
@@ -186,18 +191,28 @@ namespace Comercio.Data.Repositories.Produtos
             }
         }
 
-        public async Task<List<Fornecedor>> ObterFornecedor(int produtoId)
+        public async Task<List<Fornecedor>> ObterFornecedor(int produto_id)
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                return (await connection.QueryAsync<Fornecedor>(
-                    ProdutoQuerys.SELECT_LISTAR_FORNECEDORES, new { produtoId })).ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            List<Fornecedor> ret = new();
+            using var connection = await _connection.GetConnectionAsync();
+            var fornecedorIds = await connection.QueryAsync<int>(
+                ProdutoQuerys.SELECT_ID_FORNECEDOR_POR_PRODUTO, new { produto_id });
+
+            if (fornecedorIds.Any())
+                foreach (var id in fornecedorIds)
+                    ret.Add(await _fornecedorRepository.GetFornecedorAsync(id, connection));
+
+            return ret;
+        }
+
+        public async Task<Fornecedor> ObterFornecedorDetalhes(int fornecedor_id)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            var fornecedor = await _fornecedorRepository.GetFornecedorAsync(fornecedor_id, connection);
+            if (fornecedor is null)
+                return null;
+
+            return fornecedor;
         }
     }
 }
