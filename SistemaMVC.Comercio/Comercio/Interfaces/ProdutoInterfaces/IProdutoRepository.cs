@@ -10,6 +10,7 @@ namespace Comercio.Interfaces.ProdutoInterfaces
         Task<List<Produto>> FiltrarPorSetor(string setor);
         Task<List<Setor>> ObterSetores();
         Task<int> ObterSetorId(string setor);
-        Task<List<Fornecedor>> ObterFornecedor(int produtoId);
+        Task<List<Fornecedor>> ObterFornecedor(int produto_id);
+        Task<Fornecedor> ObterFornecedorDetalhes(int fornecedor_id);
     }
 }
