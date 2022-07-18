@@ -117,6 +117,17 @@ namespace Comercio.Data.Repositories.Fornecedores
                 FornecedorQuerys.SELECT_POR_CNPJ, new { cnpj })).ToList();
         }
 
+        public async Task<Fornecedor> GetFornecedorAsync(int id, MySqlConnection connection)
+        {
+            var fornecedor = connection.Get<Fornecedor>(id);
+            fornecedor.Telefone = await _telefoneRepository.ListarTelefoneFornecedor(id, connection);
+            fornecedor.Endereco = await _enderecoRepository.ObterEnderecoFornecedor(fornecedor.Id, connection);
+            fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
+            fornecedor.DescricaoTipoEndereco = await _enderecoRepository.ObterDescricaoTipoEndereco(connection);
+            fornecedor.DescricaoTipoTelefone = await _telefoneRepository.ListarDescricaoTipoTelefone(connection);
+            return fornecedor;
+        }
+
         public async Task<bool> ExcluirFornecedor(int id)
         {
             using (var connection = await _connection.GetConnectionAsync())
@@ -141,7 +152,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             var insert = await _enderecoRepository.InserirEnderecoFornecedor(req.Fornecedor_id, endereco, connection);
             if (!insert)
                 return null;
-            return await GetFornecedorAsync(req.Fornecedor_id, connection);
+            return await this.GetFornecedorAsync(req.Fornecedor_id, connection);
         }
 
         public async Task<Fornecedor> InserirVendedor(int fornecedor_id, PessoaContato vendedor, List<Telefone> telefones)
@@ -182,7 +193,7 @@ namespace Comercio.Data.Repositories.Fornecedores
                     }
                 }
                 transaction.Commit();
-                return await GetFornecedorAsync(fornecedor_id, connection);
+                return await this.GetFornecedorAsync(fornecedor_id, connection);
             }
             catch (Exception)
             {
@@ -301,14 +312,14 @@ namespace Comercio.Data.Repositories.Fornecedores
                 var insert = await _telefoneRepository.InserirTelefoneFornecedor(fornecedor_id, telefone, conn);
                 if (!insert)
                     return null;
-                return await GetFornecedorAsync(fornecedor_id, conn);
+                return await this.GetFornecedorAsync(fornecedor_id, conn);
             }
             else
             {
                 var insert = await _telefoneRepository.InserirTelefoneFornecedor(fornecedor_id, telefone, connection);
                 if (!insert)
                     return null;
-                return await GetFornecedorAsync(fornecedor_id, connection);
+                return await this.GetFornecedorAsync(fornecedor_id, connection);
             }
         }
 
@@ -322,14 +333,14 @@ namespace Comercio.Data.Repositories.Fornecedores
                 if (!updateTelefone)
                     return null;
 
-                return await GetFornecedorAsync(telefone.Fornecedor_id, conn);
+                return await this.GetFornecedorAsync(telefone.Fornecedor_id, conn);
             }
             telefone.Tipo_telefone_id = await _telefoneRepository.ObterIdTipoTelefone(telefone.Tipo_telefone, connection);
             var update = await _telefoneRepository.AtualizarTelefone(telefone, connection);
             if (!update)
                 return null;
 
-            return await GetFornecedorAsync(telefone.Fornecedor_id, connection);
+            return await this.GetFornecedorAsync(telefone.Fornecedor_id, connection);
         }
 
         public async Task<Fornecedor> EditarEndereco(EnderecoRequest req)
@@ -340,7 +351,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             if (!updateEndereco)
                 return null;
 
-            return await GetFornecedorAsync(req.Fornecedor_id, conn);
+            return await this.GetFornecedorAsync(req.Fornecedor_id, conn);
         }
         public async Task<Fornecedor> ExcluirEndereco(int fornecedor_id, int endereco_id)
         {
@@ -348,7 +359,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             var delete = await _enderecoRepository.ExcluirEnderecoFornecedor(fornecedor_id, endereco_id, connection);
             if (!delete)
                 return null;
-            return await GetFornecedorAsync(fornecedor_id, connection);
+            return await this.GetFornecedorAsync(fornecedor_id, connection);
         }
 
         public async Task<Fornecedor> ExcluirTelefone(int fornecedor_id, int telefone_id)
@@ -357,7 +368,7 @@ namespace Comercio.Data.Repositories.Fornecedores
             var delete = await _telefoneRepository.ExcluirTelefoneFornecedor(fornecedor_id, telefone_id, connection);
             if (!delete)
                 return null;
-            return await GetFornecedorAsync(fornecedor_id, connection);
+            return await this.GetFornecedorAsync(fornecedor_id, connection);
         }
 
         public async Task<List<Produto>> ListarProdutos(int fornecedor_id)
@@ -453,16 +464,6 @@ namespace Comercio.Data.Repositories.Fornecedores
             return ret;
         }
 
-        private async Task<Fornecedor> GetFornecedorAsync(int id, MySqlConnection connection)
-        {
-            var fornecedor = connection.Get<Fornecedor>(id);
-            fornecedor.Telefone = await _telefoneRepository.ListarTelefoneFornecedor(id, connection);
-            fornecedor.Endereco = await _enderecoRepository.ObterEnderecoFornecedor(fornecedor.Id, connection);
-            fornecedor.Vendedor = await RetornarVendedorDoFornecedor(fornecedor.Id, connection);
-            fornecedor.DescricaoTipoEndereco = await _enderecoRepository.ObterDescricaoTipoEndereco(connection);
-            fornecedor.DescricaoTipoTelefone = await _telefoneRepository.ListarDescricaoTipoTelefone(connection);
-            return fornecedor;
-        }
         #endregion
     }
 }
