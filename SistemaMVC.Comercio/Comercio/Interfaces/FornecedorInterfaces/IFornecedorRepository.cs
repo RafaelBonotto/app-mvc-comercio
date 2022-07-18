@@ -8,6 +8,7 @@ namespace Comercio.Interfaces.FornecedorInterfaces
 {
     public interface IFornecedorRepository
     {
+        Task<Fornecedor> GetFornecedorAsync(int id, MySqlConnection connection);
         Task<Fornecedor> InserirVendedor(int fornecedor_id, PessoaContato vendedor, List<Telefone> telefones);
         Task<Fornecedor> InserirEndereco(EnderecoRequest req);
         Task<Fornecedor> AtualizarVendedor(VendedorRequest vendedor);
