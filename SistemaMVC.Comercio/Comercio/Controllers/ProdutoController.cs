@@ -1,4 +1,6 @@
 ﻿using Comercio.Exceptions.Produto;
+using Comercio.Extensions;
+using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +15,16 @@ namespace Comercio.Controllers
     {
         private readonly IProdutoService _produtoService;
         private readonly IProdutoAdapter _mapper;
+        private readonly IFornecedorAdapter _mapperFornecedor;
        
-        public ProdutoController(IProdutoService produtoService, IProdutoAdapter adaper)
+        public ProdutoController(
+            IProdutoService produtoService, 
+            IProdutoAdapter adaper, 
+            IFornecedorAdapter mapperFornecedor)
         {
             _produtoService = produtoService;
             _mapper = adaper;
+            _mapperFornecedor = mapperFornecedor;
         }
 
         public IActionResult Index() => View();
@@ -142,7 +149,7 @@ namespace Comercio.Controllers
                     return View("Error", new ErrorViewModel().ErroAoCarregarDetalhes());
 
                 var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
-                var setores = new SelectList(await _produtoService.ListarSetores());
+                var setores = new SelectList(await _produtoService.ListarSetores()); // AQUI EXCLUIR (CARREGA SETORES NO REPOSITORY)
                 if(setores is null)
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
 
@@ -158,9 +165,7 @@ namespace Comercio.Controllers
         [HttpPost]
         [Route("[controller]/adicionar/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Adicionar(
-            [Bind("Id, Codigo, Descricao, SetorDescricao, Preco_custo, Preco_venda")]
-            ProdutoViewModel produto)
+        public async Task<IActionResult> Adicionar(ProdutoViewModel produto)
         {
             if (ModelState.IsValid)
             {
@@ -184,16 +189,14 @@ namespace Comercio.Controllers
             }
             else
             {
-                return View("Error", new ErrorViewModel().ErroDeValidacao());
+                return View("Error", new ErrorViewModel().ErroDeValidacao(ModelState.GetErros()));
             }
         }
 
         [HttpPost]
         [Route("[controller]/atualizar/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Atualizar(
-            [Bind("Id, Codigo, Descricao, SetorDescricao, Preco_custo, Preco_venda")]
-            ProdutoViewModel produto)
+        public async Task<IActionResult> Atualizar(ProdutoViewModel produto)
         {
             if (ModelState.IsValid)
             {
@@ -213,7 +216,7 @@ namespace Comercio.Controllers
             }
             else
             {
-                return View("Error", new ErrorViewModel().ErroDeValidacao());
+                return View("Error", new ErrorViewModel().ErroDeValidacao(ModelState.GetErros()));
             }
         }
 
@@ -236,19 +239,39 @@ namespace Comercio.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]/fornecedores")]
+        [Route("[controller]/obterFornecedor")]
         public async Task<IActionResult> ObterFornecedor(int produtoId)
         {
             try
             {
-                var fornecedor = await _produtoService.ObterFornecedor(produtoId);
-                if (fornecedor.Any())
-                {
-                    var fornecedorViewModel = _mapper.MontaListaFornecedorViewModel(fornecedor);
-                    return View("Fornecedores", fornecedorViewModel);
-                }
-                return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
-                
+                var fornecedores = await _produtoService.ObterFornecedor(produtoId);
+                if (fornecedores is null || fornecedores.Count == 0)
+                    return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
+
+                var listaViewModel = new List<FornecedorViewModel>();
+                foreach (var fornecedor in fornecedores)
+                    listaViewModel.Add(_mapperFornecedor.CriarFornecedorViewModel(fornecedor));
+
+                return View("ExibirFornecedor", listaViewModel);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
+
+        [HttpGet]
+        [Route("[controller]/obterFornecedorDetalhes")]
+        public async Task<IActionResult> ObterFornecedordetalhes(int fornecedor_id)
+        {
+            try
+            {
+                var fornecedor = await _produtoService.ObterFornecedorDetalhes(fornecedor_id);
+                if (fornecedor is null)
+                    return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
+
+                var viewModel = _mapperFornecedor.CriarFornecedorViewModel(fornecedor);
+                return View("ExibirFornecedorDetalhes", viewModel);
             }
             catch (System.Exception)
             {
