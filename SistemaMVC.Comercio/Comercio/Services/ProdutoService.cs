@@ -36,16 +36,10 @@ namespace Comercio.Services
         }
         
         public async Task<List<Fornecedor>> ObterFornecedor(int produtoId)
-        {
-            try
-            {
-                return await _repository.ObterFornecedor(produtoId);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+            => await _repository.ObterFornecedor(produtoId);
+
+        public async Task<Fornecedor> ObterFornecedorDetalhes(int fornecedor_id)
+            => await _repository.ObterFornecedorDetalhes(fornecedor_id);
 
         public async Task<Produto> AtualizarProduto(ProdutoViewModel produto)
         {
