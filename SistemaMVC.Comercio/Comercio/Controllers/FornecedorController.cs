@@ -385,7 +385,7 @@ namespace Comercio.Controllers
                     return View("Error", new ErrorViewModel().FornecedorNenhumProdutoEncontrado());
 
                 var viewModel = _mapper.MontaForncedorProdutoViewModel(produtos);
-                return View("FornecedorProduto", viewModel);
+                return View("ExibirProduto", viewModel);
             }
             catch (System.Exception)
             {
