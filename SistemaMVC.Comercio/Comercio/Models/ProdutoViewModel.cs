@@ -39,5 +39,6 @@ namespace Comercio.Models
         public int Setor_id { get; set; }
 
         public IEnumerable<SelectListItem> SetoresBanco { get; set; } 
+        public IEnumerable<SelectListItem> FornecedoresBanco { get; set; }  
     }
 }
