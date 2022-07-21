@@ -13,7 +13,7 @@ namespace Comercio.Validations.Base
         {
             var aux = (dynamic)validationContext.ObjectInstance;
 
-            if(aux.Cnpj == CNPJMASTER)
+            if(aux.Cnpj.ToUpper() == CNPJMASTER)
                 return ValidationResult.Success;
 
             if (!this.ValidarCnpj(aux.Cnpj))
