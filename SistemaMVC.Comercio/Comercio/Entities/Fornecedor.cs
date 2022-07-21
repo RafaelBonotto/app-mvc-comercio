@@ -33,5 +33,8 @@ namespace Comercio.Entities
 
         [Write(false)]
         public List<TipoEnderecoResponse> DescricaoTipoEndereco { get; set; } = new();
+
+        public override string ToString()
+            => this.Nome_empresa;
     }
 }
