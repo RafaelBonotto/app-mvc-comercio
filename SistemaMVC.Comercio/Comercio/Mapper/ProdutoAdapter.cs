@@ -2,6 +2,7 @@
 using Comercio.Interfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 
@@ -45,7 +46,8 @@ namespace Comercio.Mapper
                 Preco_custo = "Não Registrado",//produto.Preco_custo.ToString("N2"),
                 Preco_venda = produto.Preco_venda.ToString("N2"),
                 Ativo = produto.Ativo == 0 ? "INATIVO " : "ATIVO",
-                SetorDescricao = produto.Setor.Descricao.ToUpper()
+                SetorDescricao = produto.Setor.Descricao.ToUpper(),
+                FornecedoresBanco = new SelectList(produto.Fornecedores)
             };
         }
 
