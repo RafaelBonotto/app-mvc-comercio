@@ -57,6 +57,10 @@
         public const string SELECT_ID_FORNECEDOR_POR_PRODUTO = @"SELECT fornecedor_id 
                                                                     FROM tb_fornecedor_produto TBFP 
                                                                     WHERE TBFP.produto_id = @produto_id;";
+
+        public const string SELECT_LISTA_FORNECEDORES = @"SELECT cnpj, nome_empresa 
+                                                            FROM tb_fornecedor TBF 
+                                                            WHERE TBF.ativo = 1;";
                                                         
     }
 }
