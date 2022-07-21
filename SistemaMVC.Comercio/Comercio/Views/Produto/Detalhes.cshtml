@@ -75,7 +75,8 @@
                 </div>
                 <div class="modal-body">
                     <form asp-controller="Produto" asp-action="adicionarFornecedor" asp-route-produtoId="@Model.Id">
-                        <h6>NOME DO FORNECEDOR: <select name="fornecedorDescricao" asp-items="@Model" class="form-control"></select></h6>
+                        <h6>CNPJ - NOME DA EMPRESA</h6>
+                        <select place-holder="CNPJ - NOME DO FORNECEDOR" name="fornecedorDescricao" asp-items="@Model.FornecedoresBanco" class="form-control" ></select>
                         
                         <input type="submit" value="ADICIONAR" class="btn-danger" />
                     </form>
