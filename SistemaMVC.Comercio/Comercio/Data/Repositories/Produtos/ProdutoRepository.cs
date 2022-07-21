@@ -5,8 +5,10 @@ using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
+using Comercio.Responses.Produto;
 using Dapper;
 using Dapper.Contrib.Extensions;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,7 +109,7 @@ namespace Comercio.Data.Repositories.Produtos
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var response = connection.Query<Produto, Setor, Produto>(
+                var produto = connection.Query<Produto, Setor, Produto>(
                             sql: ProdutoQuerys.SELECT_POR_ID,
                             (produto, setor) =>
                             {
@@ -115,7 +117,9 @@ namespace Comercio.Data.Repositories.Produtos
                                 return produto;
                             },
                             param: new { produto_id }).FirstOrDefault();
-                return response;
+
+                produto.Fornecedores = await MontaFornecedoresDoProduto(connection);
+                return produto;
             }
             catch (Exception)
             {
@@ -129,14 +133,19 @@ namespace Comercio.Data.Repositories.Produtos
             {
                 using var connection = await _connection.GetConnectionAsync();
                 List<Produto> ret = new();
-                return connection.Query<Produto, Setor, Produto>(
+                var produtos = connection.Query<Produto, Setor, Produto>(
                                     sql: ProdutoQuerys.SELECT_POR_CODIGO,
                                     (produto, setor) =>
                                     {
                                         produto.Setor = setor;
                                         return produto;
                                     },
-                                    param: new { codigo }).ToList();                
+                                    param: new { codigo }).ToList();
+                if (produtos.Any())
+                    foreach (var produto in produtos)
+                        produto.Fornecedores = await this.MontaFornecedoresDoProduto(connection);
+
+                return produtos;
             }
             catch (Exception)
             {
@@ -213,6 +222,27 @@ namespace Comercio.Data.Repositories.Produtos
                 return null;
 
             return fornecedor;
+        }
+
+        private async Task<List<Fornecedor>> MontaFornecedoresDoProduto(MySqlConnection connection)
+        {
+            List<Fornecedor> ret = new();
+            var fornecedoresResponse = await connection.QueryAsync<ListaFornecedorResponse>(
+                    sql: ProdutoQuerys.SELECT_LISTA_FORNECEDORES);
+
+            if (fornecedoresResponse.Any())
+            {
+                foreach (var fornecedor in fornecedoresResponse)
+                {
+                    ret.Add(new Fornecedor()
+                    {
+                        Id = fornecedor.Id,
+                        Cnpj = fornecedor.Cnpj,
+                        Nome_empresa = $"{fornecedor.Cnpj} - {fornecedor.Nome_empresa}"
+                    });
+                }
+            }
+            return ret;
         }
     }
 }
