@@ -1,5 +1,6 @@
 ﻿using Dapper.Contrib.Extensions;
 using System;
+using System.Collections.Generic;
 
 namespace Comercio.Entities
 {
@@ -17,6 +18,9 @@ namespace Comercio.Entities
         public DateTime Data_alteracao { get; set; }
 
         [Write(false)]
-        public virtual Setor Setor { get; set; } 
+        public virtual Setor Setor { get; set; }
+
+        [Write(false)]
+        public virtual List<Fornecedor> Fornecedores { get; set; }
     }
 }
