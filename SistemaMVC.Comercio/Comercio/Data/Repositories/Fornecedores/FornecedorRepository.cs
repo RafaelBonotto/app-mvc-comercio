@@ -24,6 +24,7 @@ namespace Comercio.Data.Repositories.Fornecedores
         private readonly IFornecedorAdapter _mapper;
         private readonly ITelefoneRepository _telefoneRepository;
         private readonly IEnderecoRepository _enderecoRepository;
+        private const string CNPJMASTER = "CNPJMASTER";
 
         public FornecedorRepository(
             IMySqlConnectionManager connection, 
@@ -41,27 +42,41 @@ namespace Comercio.Data.Repositories.Fornecedores
         {
             using (var connection = await _connection.GetConnectionAsync())
             {
-                if (string.IsNullOrEmpty(fornecedor.Cnpj))
+                if (fornecedor.Cnpj.ToUpper().Equals(CNPJMASTER))
                 {
-                    var checkFornecedor = await connection.QueryAsync<Fornecedor>(
-                        sql: FornecedorQuerys.SELECT_POR_CNPJ,
-                        param: new { cnpj = fornecedor.Cnpj });
+                    var cnpjProvisorio = Guid.NewGuid();
+                    fornecedor.Cnpj = cnpjProvisorio.ToString().Substring(0,14);
 
-                    if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 1)
-                        throw new CnpjInvalidoException();
+                    var fornecedorInsertId = await connection.InsertAsync<Fornecedor>(fornecedor);
+                    if (fornecedorInsertId <= 0)
+                        return null;
 
-                    if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 0)
-                    {
-                        var fornecedorBanco = checkFornecedor.First();
-                        fornecedorBanco.Ativo = 1;
-                        fornecedorBanco.Nome_empresa = !string.IsNullOrEmpty(fornecedor.Nome_empresa) ? fornecedor.Nome_empresa.ToUpper() : fornecedorBanco.Nome_empresa;
-                        fornecedorBanco.Email = !string.IsNullOrEmpty(fornecedor.Email) ? fornecedor.Email.ToLower() : fornecedorBanco.Email;
-                        var update = await connection.UpdateAsync(fornecedorBanco);
-                        if (!update)
-                            return null;
+                    var novoFornecedor = await connection.GetAsync<Fornecedor>(fornecedorInsertId);
+                    novoFornecedor.Cnpj = fornecedorInsertId.ToString().PadLeft(14, '0');
+                    var update = await connection.UpdateAsync(novoFornecedor);
+                    if (!update)
+                        return null;// rollback...
 
-                        return await this.GetFornecedorAsync(fornecedorBanco.Id, connection);
-                    }
+                    return await this.GetFornecedorAsync(novoFornecedor.Id, connection);
+                }
+                var checkFornecedor = await connection.QueryAsync<Fornecedor>(
+                         sql: FornecedorQuerys.SELECT_POR_CNPJ,
+                         param: new { cnpj = fornecedor.Cnpj });
+
+                if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 1)
+                    throw new CnpjInvalidoException();
+
+                if (checkFornecedor.Any() && checkFornecedor.First().Ativo == 0)
+                {
+                    var fornecedorBanco = checkFornecedor.First();
+                    fornecedorBanco.Ativo = 1;
+                    fornecedorBanco.Nome_empresa = !string.IsNullOrEmpty(fornecedor.Nome_empresa) ? fornecedor.Nome_empresa.ToUpper() : fornecedorBanco.Nome_empresa;
+                    fornecedorBanco.Email = !string.IsNullOrEmpty(fornecedor.Email) ? fornecedor.Email.ToLower() : fornecedorBanco.Email;
+                    var update = await connection.UpdateAsync(fornecedorBanco);
+                    if (!update)
+                        return null;
+
+                    return await this.GetFornecedorAsync(fornecedorBanco.Id, connection);
                 }
                 var fornecdorId = await connection.InsertAsync<Fornecedor>(fornecedor);
                 if (fornecdorId <= 0)
