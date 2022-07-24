@@ -244,5 +244,39 @@ namespace Comercio.Data.Repositories.Produtos
             }
             return ret;
         }
+
+        public async Task<Produto> InserirFornecedorProduto(int produtoId, string fornecedorDescricao)
+        {
+            var cnpj = fornecedorDescricao.Split("-")[0].Trim();
+            using var connection = await _connection.GetConnectionAsync();
+            var fornecedorId = await connection.QueryFirstOrDefaultAsync<int>(
+                sql: ProdutoQuerys.SELECT_FORNECEDOR_POR_CNPJ,
+                param: new { cnpj });
+
+            var insert = await connection.InsertAsync<FornecedorProduto>(new FornecedorProduto()
+            {
+                Fornecedor_id = fornecedorId,
+                Produto_id = produtoId
+            });
+            if (insert <= 0)
+                return null; 
+
+            return await this.GetProdutoAsync(produtoId, connection);
+        }
+        
+        public async Task<Produto> GetProdutoAsync(int produto_id, MySqlConnection connection)
+        {
+            var produto = connection.Query<Produto, Setor, Produto>(
+                             sql: ProdutoQuerys.SELECT_POR_ID,
+                             (produto, setor) =>
+                             {
+                                 produto.Setor = setor;
+                                 return produto;
+                             },
+                             param: new { produto_id }).FirstOrDefault();
+
+            produto.Fornecedores = await MontaFornecedoresDoProduto(connection);
+            return produto;
+        }
     }
 }
