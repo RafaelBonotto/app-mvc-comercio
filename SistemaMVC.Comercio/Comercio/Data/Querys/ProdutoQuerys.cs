@@ -61,6 +61,9 @@
         public const string SELECT_LISTA_FORNECEDORES = @"SELECT cnpj, nome_empresa 
                                                             FROM tb_fornecedor TBF 
                                                             WHERE TBF.ativo = 1;";
-                                                        
+
+        public const string SELECT_FORNECEDOR_POR_CNPJ = @"SELECT id
+                                                            FROM tb_fornecedor
+                                                            WHERE tb_fornecedor.cnpj = @cnpj";
     }
 }
