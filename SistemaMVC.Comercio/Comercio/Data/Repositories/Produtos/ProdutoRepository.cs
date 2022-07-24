@@ -70,6 +70,11 @@ namespace Comercio.Data.Repositories.Produtos
                                     return produto;
                                 },
                                 param: new { descricao }).ToList();
+
+                if (response.Any())
+                    foreach (var produto in response)
+                        produto.Fornecedores = await MontaFornecedoresDoProduto(connection);
+
                 return response;
             }
             catch (Exception)
@@ -91,6 +96,11 @@ namespace Comercio.Data.Repositories.Produtos
                                     return produto;
                                 },
                                 param: new { setor }).ToList();
+
+                if(response.Any())
+                    foreach (var produto in response)
+                        produto.Fornecedores = await MontaFornecedoresDoProduto(connection);
+
                 return response;
             }
             catch (Exception)
