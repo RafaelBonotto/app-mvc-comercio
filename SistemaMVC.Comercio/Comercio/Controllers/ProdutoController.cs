@@ -194,6 +194,33 @@ namespace Comercio.Controllers
         }
 
         [HttpPost]
+        [Route("[controller]/adicionarFornecedor/")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AdicionarFornecedor(int produtoId, string fornecedorDescricao)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var produtoResponse = await _produtoService.InserirFornecedorProduto(produtoId, fornecedorDescricao);
+                    if (produtoResponse is null)
+                        return View("Error", new ErrorViewModel().ProdutoErroAoTentarInserirFornecedor());
+
+                    var produtoViewModel = _mapper.MontaProdutoViewModel(produtoResponse);
+                    return View("Detalhes", produtoViewModel);
+                }
+                catch (System.Exception)
+                {
+                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+                }
+            }
+            else
+            {
+                return View("Error", new ErrorViewModel().ErroDeValidacao(ModelState.GetErros()));
+            }
+        }
+
+        [HttpPost]
         [Route("[controller]/atualizar/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Atualizar(ProdutoViewModel produto)
