@@ -12,6 +12,7 @@ namespace Comercio.Interfaces.ProdutoInterfaces
         Task<List<Produto>> FiltrarPorSetor(string setor);
         Task<Produto> DetalhesProduto(int id);        
         Task<Produto> InserirProduto(ProdutoViewModel produto);
+        Task<Produto> InserirFornecedorProduto(int produtoId, string fornecedorDescricao);
         Task<Produto> AtualizarProduto(ProdutoViewModel produto);
         Task<bool> ExcluirProduto(int produtoId);
         Task<List<Fornecedor>> ObterFornecedor(int produtoId);
