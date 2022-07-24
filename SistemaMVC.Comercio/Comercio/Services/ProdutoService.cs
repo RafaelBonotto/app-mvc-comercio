@@ -143,6 +143,9 @@ namespace Comercio.Services
             }
         }
 
+        public async Task<Produto> InserirFornecedorProduto(int produtoId, string fornecedorDescricao)
+            => await _repository.InserirFornecedorProduto(produtoId, fornecedorDescricao);
+
         public async Task<List<Setor>> ListarSetores
             ()=> await _repository.ObterSetores();
     }
