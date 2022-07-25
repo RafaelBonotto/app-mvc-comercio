@@ -10,5 +10,6 @@ namespace Comercio.Interfaces.ProdutoInterfaces
         Produto MontaProdutoInsertRepositorio(ProdutoViewModel produtoViewModel);
         ProdutoViewModel MontaProdutoViewModel(Produto produto);
         List<FornecedorViewModel> MontaListaFornecedorViewModel(List<Fornecedor> fornecedores);
+        ListarFornecedorViewModel CriarListaFornecedorViewModel(Fornecedor fornecedor, int produto_id);
     }
 }
