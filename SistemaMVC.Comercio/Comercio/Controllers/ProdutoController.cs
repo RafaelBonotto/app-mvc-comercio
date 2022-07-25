@@ -275,9 +275,9 @@ namespace Comercio.Controllers
                 if (fornecedores is null || fornecedores.Count == 0)
                     return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
 
-                var listaViewModel = new List<FornecedorViewModel>();
+                var listaViewModel = new List<ListarFornecedorViewModel>();
                 foreach (var fornecedor in fornecedores)
-                    listaViewModel.Add(_mapperFornecedor.CriarFornecedorViewModel(fornecedor));
+                    listaViewModel.Add(_mapper.CriarListaFornecedorViewModel(fornecedor, produtoId));
 
                 return View("ExibirFornecedor", listaViewModel);
             }
