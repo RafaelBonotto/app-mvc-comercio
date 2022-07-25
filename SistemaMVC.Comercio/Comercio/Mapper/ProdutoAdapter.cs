@@ -10,6 +10,24 @@ namespace Comercio.Mapper
 {
     public class ProdutoAdapter : IProdutoAdapter
     {
+        public ListarFornecedorViewModel CriarListaFornecedorViewModel(Fornecedor fornecedor, int produto_id)
+        {
+            var ret = new ListarFornecedorViewModel
+            {
+                Id = fornecedor.Id,
+                Produto_id = produto_id,
+                Cnpj = fornecedor.Cnpj,
+                Email = fornecedor.Email,
+                Nome_empresa = fornecedor.Nome_empresa.ToUpper(),
+                Telefone = fornecedor.Telefone,
+                Endereco = fornecedor.Endereco,
+                Vendedor = fornecedor.Vendedor
+            };
+            ret.TipoTelefone = new SelectList(fornecedor.DescricaoTipoTelefone);
+            ret.TipoEndereco = new SelectList(fornecedor.DescricaoTipoEndereco);
+            return ret;
+        }
+
         public Produto MontaProdutoUpdateRepositorio(ProdutoViewModel produtoViewModel, Produto produtoRepositorio)
         {
             produtoRepositorio.Descricao = produtoViewModel.Descricao;
