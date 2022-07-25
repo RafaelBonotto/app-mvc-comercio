@@ -1,10 +1,8 @@
-﻿using Comercio.Data.Repositories.Response;
-using Comercio.Entities;
+﻿using Comercio.Entities;
 using Comercio.Enums;
 using Comercio.Models;
 using Comercio.Requests.Fornecedor;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Comercio.Interfaces.FornecedorInterfaces
 {
