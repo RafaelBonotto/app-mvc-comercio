@@ -1,10 +1,14 @@
-﻿@model Comercio.Models.FornecedorViewModel
+﻿@model Comercio.Models.ListarFornecedorViewModel
 @{
     ViewData["Title"] = "produto/exibirFornecedorDetalhes";
 }
 
 <h1>@Model.Nome_empresa </h1>
 <hr />
+
+<!-- Botão para acionar modal ExcluirFornecedor-->
+<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExcluirFornecedor">EXCLLUIR</button>
+
 <div>
     <dl class="row">
         <dt class="col-sm-2">
@@ -129,6 +133,28 @@
 </div>
 
 <hr />
+
+<!-- Modal ExcluirFornecedor-->
+<div class="modal fade" id="modalExcluirFornecedor" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">EXCLUIR FORNECEDOR</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja excluir o fornecedor desse produto ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <a asp-controller="Produto" asp-action="excluirFornecedor" asp-route-fornecedorId="@Model.Id" asp-route-produtoId="@Model.Produto_id" class="btn btn-danger">Excluir</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div>
     <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
 </div>
