@@ -17,20 +17,17 @@
     </thead>
     <tbody>
         @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome_empresa)
-            </td>
-            <td>
-                <a asp-controller="Produto" asp-action="obterFornecedorDetalhes" asp-route-fornecedor_id="@item.Id" class="btn btn-success btn-sm">DETALHES</a>
-            </td>
-            <td>
-                <a asp-controller="Produto" asp-action="ExcluirFornecedor" asp-route-fornecedor_id="@item.Id" asp-route-proudto_id="@item.Produto_id" class="btn btn-danger btn-sm">EXCLUIR</a>
-            </td>
-        </tr>
+         {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome_empresa)
+                </td>
+                <td>
+                    <a asp-controller="Produto" asp-action="obterFornecedorDetalhes" asp-route-fornecedorId="@item.Id" asp-route-produtoId="@item.Produto_id" class="btn btn-success btn-sm">DETALHES</a>
+                </td>
+            </tr>
 
-        }
+         }
     </tbody>
 </table>
 <hr />
