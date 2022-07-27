@@ -289,15 +289,15 @@ namespace Comercio.Controllers
 
         [HttpGet]
         [Route("[controller]/obterFornecedorDetalhes")]
-        public async Task<IActionResult> ObterFornecedordetalhes(int fornecedor_id)
+        public async Task<IActionResult> ObterFornecedordetalhes(int fornecedorId, int produtoId)
         {
             try
             {
-                var fornecedor = await _produtoService.ObterFornecedorDetalhes(fornecedor_id);
+                var fornecedor = await _produtoService.ObterFornecedorDetalhes(fornecedorId);
                 if (fornecedor is null)
                     return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
 
-                var viewModel = _mapperFornecedor.CriarFornecedorViewModel(fornecedor);
+                var viewModel = _mapper.CriarListaFornecedorViewModel(fornecedor, produtoId);
                 return View("ExibirFornecedorDetalhes", viewModel);
             }
             catch (System.Exception)
