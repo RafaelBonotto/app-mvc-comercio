@@ -14,6 +14,7 @@ namespace Comercio.Interfaces.ProdutoInterfaces
         Task<List<Fornecedor>> ObterFornecedor(int produto_id);
         Task<Fornecedor> ObterFornecedorDetalhes(int fornecedor_id);
         Task<Produto> InserirFornecedorProduto(int produtoId, string fornecedorDescricao);
-         Task<Produto> GetProdutoAsync(int produto_id, MySqlConnection connection);
+        Task<Produto> GetProdutoAsync(int produto_id, MySqlConnection connection);
+        Task<List<Fornecedor>> ExcluirFornecedor(int fornecedorId, int produtoId);
     }
 }
