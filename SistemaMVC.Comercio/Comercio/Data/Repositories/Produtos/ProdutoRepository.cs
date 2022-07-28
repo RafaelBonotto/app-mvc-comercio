@@ -263,20 +263,60 @@ namespace Comercio.Data.Repositories.Produtos
                 sql: ProdutoQuerys.SELECT_FORNECEDOR_POR_CNPJ,
                 param: new { cnpj });
 
-            var insert = await connection.InsertAsync<FornecedorProduto>(new FornecedorProduto()
-            {
-                Fornecedor_id = fornecedorId,
-                Produto_id = produtoId,
-                Ativo = 1,
-                Data_criacao = DateTime.Now,
-                Data_alteracao = DateTime.Now
-            });
-            if (insert <= 0)
-                return null; 
+            var fornecedorJaCadastrado = await connection.QueryFirstOrDefaultAsync<FornecedorProduto>(
+                sql: ProdutoQuerys.SELECT_FORNECEDOR_PRODUTO,
+                param: new { fornecedorId, produtoId });
 
+            if(fornecedorJaCadastrado is not null)
+            {
+                fornecedorJaCadastrado.Ativo = 1;
+                fornecedorJaCadastrado.Data_alteracao = DateTime.Now;
+                var update = await connection.UpdateAsync<FornecedorProduto>(fornecedorJaCadastrado);
+                if (!update)
+                    return null;
+            }
+            else
+            {
+                var insert = await connection.InsertAsync<FornecedorProduto>(new FornecedorProduto()
+                {
+                    Fornecedor_id = fornecedorId,
+                    Produto_id = produtoId,
+                    Ativo = 1,
+                    Data_criacao = DateTime.Now,
+                    Data_alteracao = DateTime.Now
+                });
+                if (insert <= 0)
+                    return null;
+            }
             return await this.GetProdutoAsync(produtoId, connection);
         }
-        
+
+        public async Task<List<Fornecedor>> ExcluirFornecedor(int fornecedorId, int produtoId)
+        {
+            using var connection = await _connection.GetConnectionAsync();
+            var fornecedorBanco = await connection.QueryFirstOrDefaultAsync<FornecedorProduto>(
+                sql: ProdutoQuerys.SELECT_FORNECEDOR_PRODUTO,
+                param: new { fornecedorId , produtoId });
+
+            fornecedorBanco.Ativo = 0;
+            fornecedorBanco.Data_alteracao = DateTime.Now;
+
+            var update = await connection.UpdateAsync<FornecedorProduto>(fornecedorBanco);
+            if (!update)
+                return null;
+
+            List<Fornecedor> ret = new();
+
+            var fornecedorIds = await connection.QueryAsync<int>(
+                ProdutoQuerys.SELECT_ID_FORNECEDOR_POR_PRODUTO, new { produto_id = produtoId });
+
+            if (fornecedorIds.Any())
+                foreach (var id in fornecedorIds)
+                    ret.Add(await _fornecedorRepository.GetFornecedorAsync(id, connection));
+
+            return ret;
+        }
+
         public async Task<Produto> GetProdutoAsync(int produto_id, MySqlConnection connection)
         {
             var produto = connection.Query<Produto, Setor, Produto>(
