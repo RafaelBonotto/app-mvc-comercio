@@ -305,5 +305,26 @@ namespace Comercio.Controllers
                 return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
             }
         }
+
+        [Route("[controller]/excluirFornecedor")]
+        public async Task<IActionResult> ExcluirFornecedor(int fornecedorId, int produtoId)
+        {
+            try
+            {
+                var fornecedores = await _produtoService.ExcluirFornecedor(fornecedorId, produtoId);
+                if (fornecedores is null)
+                    return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
+
+                var listaViewModel = new List<ListarFornecedorViewModel>();
+                foreach (var fornecedor in fornecedores)
+                    listaViewModel.Add(_mapper.CriarListaFornecedorViewModel(fornecedor, produtoId));
+
+                return View("ExibirFornecedor", listaViewModel);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
     }
 }
