@@ -29,12 +29,9 @@ namespace Comercio.Services
             throw new NotImplementedException();
         }
 
-        // Não implementado...
-        public Task<List<Fornecedor>> ExcluirFornecedor(int produtoId, int fornecedorId)
-        {
-            throw new NotImplementedException();
-        }
-        
+        public async Task<List<Fornecedor>> ExcluirFornecedor(int fornecedorId, int produtoId)
+        => await _repository.ExcluirFornecedor(fornecedorId, produtoId);
+
         public async Task<List<Fornecedor>> ObterFornecedor(int produtoId)
             => await _repository.ObterFornecedor(produtoId);
 
