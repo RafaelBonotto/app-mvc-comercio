@@ -266,7 +266,10 @@ namespace Comercio.Data.Repositories.Produtos
             var insert = await connection.InsertAsync<FornecedorProduto>(new FornecedorProduto()
             {
                 Fornecedor_id = fornecedorId,
-                Produto_id = produtoId
+                Produto_id = produtoId,
+                Ativo = 1,
+                Data_criacao = DateTime.Now,
+                Data_alteracao = DateTime.Now
             });
             if (insert <= 0)
                 return null; 
