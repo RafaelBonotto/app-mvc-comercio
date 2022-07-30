@@ -113,7 +113,7 @@ namespace Comercio.Controllers
         {
             try
             {
-                var produtos = await _produtoService.FiltrarPorSetor(setor);
+                var produtos = await _repositoryProduto.FiltrarPorSetor(setor);
                 if(produtos.Count == 0)
                     return View("Error", new ErrorViewModel().ErroFiltroNaoEncontrado());
 
