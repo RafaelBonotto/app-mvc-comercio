@@ -76,27 +76,7 @@ namespace Comercio.Services
        
 
        
-        public async Task<Produto> InserirProduto(ProdutoViewModel produto)
-        {
-            try
-            {
-                var checkProduto = await _repositoryBase.GetByKeyAsync(produto.Codigo);
-                if (checkProduto.Any() && checkProduto.First().Ativo == 1)
-                    throw new CodigoInvalidoException();
-                if (checkProduto.Any() && checkProduto.First().Ativo == 0)
-                {
-                    produto.Id = checkProduto.First().Id;
-                    return await this.AtualizarProduto(produto);
-                }
-                produto.Setor_id = await _repository.ObterSetorId(produto.SetorDescricao);
-                var produtoRepository = _mapper.MontaProdutoInsertRepositorio(produto);
-                return await _repositoryBase.AddAsync(produtoRepository);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
+        
 
         public async Task<Produto> InserirFornecedorProduto(int produtoId, string fornecedorDescricao)
             => await _repository.InserirFornecedorProduto(produtoId, fornecedorDescricao);
