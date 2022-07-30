@@ -19,6 +19,5 @@ namespace Comercio.Interfaces.ProdutoInterfaces
         Task<Fornecedor> ObterFornecedorDetalhes(int fornecedor_id);
         Task<List<Fornecedor>> ExcluirFornecedor(int produtoId, int fornecedorId);
         Task<Produto> AdicionarFornecedor(int produtoId, string fornecedorDescricao);
-        Task<List<Setor>> ListarSetores();
     }
 }
