@@ -7,7 +7,6 @@ namespace Comercio.Interfaces.ProdutoInterfaces
 {
     public interface IProdutoService
     {
-        Task<Produto> AtualizarProduto(ProdutoViewModel produto);
         Task<bool> ExcluirProduto(int produtoId);
         Task<List<Fornecedor>> ObterFornecedor(int produtoId);
         Task<Fornecedor> ObterFornecedorDetalhes(int fornecedor_id);
