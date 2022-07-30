@@ -51,7 +51,6 @@ namespace Comercio
             services.AddScoped(typeof(IEnderecoAdapter), typeof(EnderecoAdapter));
             services.AddScoped(typeof(IVendedorAdapter), typeof(VendedorAdapter));
             // Services
-            services.AddScoped(typeof(IProdutoService), typeof(ProdutoService));
             services.AddScoped(typeof(ISetorService), typeof(SetorService));
             services.AddScoped(typeof(IFornecedorService), typeof(FornecedorService));
             // Repository Base
