@@ -38,22 +38,7 @@ namespace Comercio.Services
         public async Task<Fornecedor> ObterFornecedorDetalhes(int fornecedor_id)
             => await _repository.ObterFornecedorDetalhes(fornecedor_id);
 
-        public async Task<Produto> AtualizarProduto(ProdutoViewModel produto)
-        {
-            try
-            {
-                Produto produtoRepository = await _repositoryBase.GetByIdAsync(produto.Id);
-                produto.Setor_id = await _repository.ObterSetorId(produto.SetorDescricao);
-                produtoRepository = _mapper.MontaProdutoUpdateRepositorio(
-                                                            produtoViewModel: produto,
-                                                            produtoRepositorio: produtoRepository);
-                return await _repositoryBase.UpdateAsync(produtoRepository);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
+       
 
        
         public async Task<bool> ExcluirProduto(int produtoId)
