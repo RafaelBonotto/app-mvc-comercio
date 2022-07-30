@@ -1,5 +1,7 @@
-﻿using Comercio.Exceptions.Produto;
+﻿using Comercio.Entities;
+using Comercio.Exceptions.Produto;
 using Comercio.Extensions;
+using Comercio.Interfaces.Base;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Models;
@@ -17,17 +19,20 @@ namespace Comercio.Controllers
         private readonly IProdutoAdapter _mapper;
         private readonly IFornecedorAdapter _mapperFornecedor;
         private readonly IProdutoRepository _repositoryProduto;
+        private readonly IRepositoryBase<Produto> _repositoryBase;
        
         public ProdutoController(
             IProdutoService produtoService, 
             IProdutoAdapter adaper, 
             IFornecedorAdapter mapperFornecedor,
-            IProdutoRepository repositoryProduto)
+            IProdutoRepository repositoryProduto,
+            IRepositoryBase<Produto> repositoryBase)
         {
             _produtoService = produtoService;
             _mapper = adaper;
             _mapperFornecedor = mapperFornecedor;
             _repositoryProduto = repositoryProduto;
+            _repositoryBase = repositoryBase;
         }
 
         public IActionResult Index() => View();
@@ -67,7 +72,7 @@ namespace Comercio.Controllers
         {
             try
             {
-                var produtos = await _produtoService.FiltrarPorCodigo(codigo);
+                var produtos =  await _repositoryBase.GetByKeyAsync(codigo);
                 if (produtos.Count == 0)
                     return View("Error", new ErrorViewModel().ErroFiltroNaoEncontrado());
 
@@ -88,7 +93,7 @@ namespace Comercio.Controllers
         {
             try
             {
-                var produtos = await _produtoService.FiltrarPorDescricao(descricao);
+                var produtos = await _repositoryProduto.FiltrarPorDescricao(descricao);
                 if(produtos.Count == 0)
                     return View("Error", new ErrorViewModel().ErroFiltroNaoEncontrado());
 
