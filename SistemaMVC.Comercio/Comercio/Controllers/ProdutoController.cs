@@ -16,15 +16,18 @@ namespace Comercio.Controllers
         private readonly IProdutoService _produtoService;
         private readonly IProdutoAdapter _mapper;
         private readonly IFornecedorAdapter _mapperFornecedor;
+        private readonly IProdutoRepository _repositoryProduto;
        
         public ProdutoController(
             IProdutoService produtoService, 
             IProdutoAdapter adaper, 
-            IFornecedorAdapter mapperFornecedor)
+            IFornecedorAdapter mapperFornecedor,
+            IProdutoRepository repositoryProduto)
         {
             _produtoService = produtoService;
             _mapper = adaper;
             _mapperFornecedor = mapperFornecedor;
+            _repositoryProduto = repositoryProduto;
         }
 
         public IActionResult Index() => View();
@@ -34,7 +37,7 @@ namespace Comercio.Controllers
         {
             try
             {
-                var setores = new SelectList(await _produtoService.ListarSetores());
+                var setores = new SelectList(await _repositoryProduto.ObterSetores());
                 return View("Filtro", setores);
             }
             catch (System.Exception)
@@ -49,7 +52,7 @@ namespace Comercio.Controllers
             try
             {
                 ProdutoViewModel produtoViewModel = new();
-                var setores = new SelectList(await _produtoService.ListarSetores());
+                var setores = new SelectList(await _repositoryProduto.ObterSetores());
                 produtoViewModel.SetoresBanco = setores;
                 return View("Inserir", produtoViewModel);
             }
@@ -149,7 +152,7 @@ namespace Comercio.Controllers
                     return View("Error", new ErrorViewModel().ErroAoCarregarDetalhes());
 
                 var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
-                var setores = new SelectList(await _produtoService.ListarSetores()); // AQUI EXCLUIR (CARREGA SETORES NO REPOSITORY)
+                var setores = new SelectList(await _repositoryProduto.ObterSetores()); // AQUI EXCLUIR (CARREGA SETORES NO REPOSITORY)
                 if(setores is null)
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
 
