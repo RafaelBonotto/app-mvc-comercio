@@ -152,12 +152,12 @@ namespace Comercio.Controllers
         {
             try
             {
-                var produto = await _produtoService.DetalhesProduto(id);
+                var produto = await _repositoryBase.GetByIdAsync(id);
                 if (produto is null)
                     return View("Error", new ErrorViewModel().ErroAoCarregarDetalhes());
 
                 var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
-                var setores = new SelectList(await _repositoryProduto.ObterSetores()); // AQUI EXCLUIR (CARREGA SETORES NO REPOSITORY)
+                var setores = new SelectList(await _repositoryProduto.ObterSetores()); // AQUI EXCLUIR (CARREGA SETORES NO get by id da REPOSITORY)
                 if(setores is null)
                     return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
 
@@ -178,8 +178,9 @@ namespace Comercio.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {                    
-                    var produtoResponse = await _produtoService.InserirProduto(produto);
+                {
+                    var produtoRepository = _mapper.MontaProdutoInsertRepositorio(produto);
+                    var produtoResponse = await _repositoryBase.AddAsync(produtoRepository);
                     if (produtoResponse is null)
                         return View("Error", new ErrorViewModel().ProdutoErroAoTentarInserir());
 
