@@ -1,6 +1,7 @@
 ﻿using Comercio.Data.ConnectionManager;
 using Comercio.Data.Querys;
 using Comercio.Entities;
+using Comercio.Exceptions.Produto;
 using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.FornecedorInterfaces;
@@ -20,24 +21,62 @@ namespace Comercio.Data.Repositories.Produtos
     {
         private readonly IMySqlConnectionManager _connection;
         private readonly IFornecedorRepository _fornecedorRepository;
+        private readonly IProdutoAdapter _mapper;
 
         public ProdutoRepository(
             IMySqlConnectionManager connection,
-            IFornecedorRepository fornecedorRepository)
+            IFornecedorRepository fornecedorRepository,
+            IProdutoAdapter mapper)
         {
             _connection = connection;
             _fornecedorRepository = fornecedorRepository;
+            _mapper = mapper;
         }
 
         public async Task<Produto> AddAsync(Produto produto)
         {
             try
             {
-                using var connection = await _connection.GetConnectionAsync();                           
+                using var connection = await _connection.GetConnectionAsync();
+
+
+                var produtoBanco = await connection.GetAsync<Produto>(produto.Id);
+                if (produtoBanco is not null && produtoBanco.Ativo == 1)
+                    throw new CodigoInvalidoException();
+
+                if (produtoBanco is not null && produtoBanco.Ativo == 0)
+                {
+                    produtoBanco.Ativo = 1;
+                    produtoBanco.Data_alteracao = DateTime.Now;
+                    var update = await connection.UpdateAsync<Produto>(produtoBanco);
+                    if (!update)
+                        return null;
+
+                    //produtoBanco.Setor = connection.Get<Setor>(produtoBanco.Setor_id);
+
+                    //var fornecedorIds = await connection.QueryAsync<int>(
+                    //        sql: ProdutoQuerys.SELECT_ID_FORNECEDOR_POR_PRODUTO, 
+                    //        param: new { produto_id = produtoBanco.Id });
+
+                    //if (fornecedorIds.Any())
+                    //    foreach (var id in fornecedorIds)
+                    //        produtoBanco.Fornecedores.Add(await _fornecedorRepository.GetFornecedorAsync(id, connection));
+
+                    //return produtoBanco;
+
+                    return await GetProdutoAsync(produtoBanco.Id, connection);
+                }
+                produto.Setor_id = await connection.QueryFirstAsync<int>(
+                          sql: ProdutoQuerys.SELECT_ID_SETOR,
+                          param: new { descricao = produto.Setor.Descricao });
+
                 var row = await connection.InsertAsync<Produto>(produto);
                 if (row > 0)
-                    return await this.GetByIdAsync(row);
+                    return await GetProdutoAsync(row, connection);
+
                 return null;
+
+
             }
             catch (Exception)
             {
@@ -97,7 +136,7 @@ namespace Comercio.Data.Repositories.Produtos
                                 },
                                 param: new { setor }).ToList();
 
-                if(response.Any())
+                if (response.Any())
                     foreach (var produto in response)
                         produto.Fornecedores = await MontaFornecedoresDoProduto(connection);
 
@@ -262,7 +301,7 @@ namespace Comercio.Data.Repositories.Produtos
                 sql: ProdutoQuerys.SELECT_FORNECEDOR_PRODUTO,
                 param: new { fornecedorId, produtoId });
 
-            if(fornecedorJaCadastrado is not null)
+            if (fornecedorJaCadastrado is not null)
             {
                 fornecedorJaCadastrado.Ativo = 1;
                 fornecedorJaCadastrado.Data_alteracao = DateTime.Now;
@@ -291,7 +330,7 @@ namespace Comercio.Data.Repositories.Produtos
             using var connection = await _connection.GetConnectionAsync();
             var fornecedorBanco = await connection.QueryFirstOrDefaultAsync<FornecedorProduto>(
                 sql: ProdutoQuerys.SELECT_FORNECEDOR_PRODUTO,
-                param: new { fornecedorId , produtoId });
+                param: new { fornecedorId, produtoId });
 
             fornecedorBanco.Ativo = 0;
             fornecedorBanco.Data_alteracao = DateTime.Now;
