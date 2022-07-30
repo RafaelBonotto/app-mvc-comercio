@@ -82,17 +82,7 @@ namespace Comercio.Services
             }
         }
 
-        public async Task<List<Produto>> FiltrarPorCodigo(string codigo)
-        {
-            try
-            {
-                return await _repositoryBase.GetByKeyAsync(codigo);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
+       
 
         public async Task<List<Produto>> FiltrarPorDescricao(string descricao)
         {
@@ -143,7 +133,6 @@ namespace Comercio.Services
         public async Task<Produto> InserirFornecedorProduto(int produtoId, string fornecedorDescricao)
             => await _repository.InserirFornecedorProduto(produtoId, fornecedorDescricao);
 
-        public async Task<List<Setor>> ListarSetores
-            ()=> await _repository.ObterSetores();
+        
     }
 }
