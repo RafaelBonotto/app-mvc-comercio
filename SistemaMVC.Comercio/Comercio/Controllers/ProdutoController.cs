@@ -211,7 +211,7 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    var produtoResponse = await _produtoService.InserirFornecedorProduto(produtoId, fornecedorDescricao);
+                    var produtoResponse = await _repositoryProduto.InserirFornecedorProduto(produtoId, fornecedorDescricao);
                     if (produtoResponse is null)
                         return View("Error", new ErrorViewModel().ProdutoErroAoTentarInserirFornecedor());
 
