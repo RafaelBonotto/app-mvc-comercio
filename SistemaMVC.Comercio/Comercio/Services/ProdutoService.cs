@@ -70,17 +70,5 @@ namespace Comercio.Services
                 throw;
             }
         }
-
-       
-
-       
-
-       
-        
-
-        public async Task<Produto> InserirFornecedorProduto(int produtoId, string fornecedorDescricao)
-            => await _repository.InserirFornecedorProduto(produtoId, fornecedorDescricao);
-
-        
     }
 }
