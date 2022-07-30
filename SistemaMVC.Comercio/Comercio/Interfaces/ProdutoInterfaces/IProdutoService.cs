@@ -7,7 +7,6 @@ namespace Comercio.Interfaces.ProdutoInterfaces
 {
     public interface IProdutoService
     {
-        Task<Produto> InserirProduto(ProdutoViewModel produto);
         Task<Produto> InserirFornecedorProduto(int produtoId, string fornecedorDescricao);
         Task<Produto> AtualizarProduto(ProdutoViewModel produto);
         Task<bool> ExcluirProduto(int produtoId);
