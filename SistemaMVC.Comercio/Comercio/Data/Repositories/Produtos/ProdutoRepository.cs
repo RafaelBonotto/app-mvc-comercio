@@ -218,10 +218,27 @@ namespace Comercio.Data.Repositories.Produtos
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var response = await connection.UpdateAsync<Produto>(produto);
-                if (!response)
-                    return null;
-                return await this.GetByIdAsync(produto.Id);
+                produto.Setor_id = await connection.QueryFirstAsync<int>(
+                                ProdutoQuerys.SELECT_ID_SETOR,
+                                new { descricao = produto.Setor.Descricao });
+
+                var produtoBanco = await connection.GetAsync<Produto>(produto.Id);
+                if(produtoBanco is not null)
+                {
+                    produtoBanco.Descricao = produto.Descricao;
+                    produtoBanco.Preco_custo = double.Parse(produto.Preco_custo.ToString().Replace(".", ","));
+                    produtoBanco.Preco_venda = double.Parse(produto.Preco_venda.ToString().Replace(".", ","));
+                    produtoBanco.Setor_id = produto.Setor_id;
+                    produtoBanco.Ativo = 1;
+                    produtoBanco.Data_alteracao = DateTime.Now;
+
+                    var update = await connection.UpdateAsync<Produto>(produtoBanco);
+                    if (!update)
+                        return null;
+
+                    return await GetProdutoAsync(produtoBanco.Id, connection);
+                }
+                return null;
             }
             catch (Exception)
             {
