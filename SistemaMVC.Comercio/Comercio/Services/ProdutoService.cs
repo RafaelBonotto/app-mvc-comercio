@@ -84,30 +84,9 @@ namespace Comercio.Services
 
        
 
-        public async Task<List<Produto>> FiltrarPorDescricao(string descricao)
-        {
-            try
-            {
-                return await _repository.FiltrarPorDescricao(descricao);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
+       
 
-        public async Task<List<Produto>> FiltrarPorSetor(string setor)
-        {
-            try
-            {
-                return await _repository.FiltrarPorSetor(setor);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
-
+       
         public async Task<Produto> InserirProduto(ProdutoViewModel produto)
         {
             try
