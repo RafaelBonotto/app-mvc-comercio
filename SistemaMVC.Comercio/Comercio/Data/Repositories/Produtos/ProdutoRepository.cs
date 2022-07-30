@@ -165,18 +165,13 @@ namespace Comercio.Data.Repositories.Produtos
 
         public async Task<List<Setor>> ObterSetores()
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                var setores = await connection.QueryAsync<Setor>(ProdutoQuerys.SELECT_LISTAR_SETORES);
-                foreach (var setor in setores)
-                    setor.Descricao = setor.Descricao.ToUpper();
-                return setores.ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            using var connection = await _connection.GetConnectionAsync();
+            var setores = await connection.QueryAsync<Setor>(ProdutoQuerys.SELECT_LISTAR_SETORES);
+            if (setores is null)
+                return null;
+            foreach (var setor in setores)
+                setor.Descricao = setor.Descricao.ToUpper();
+            return setores.ToList();
         }
 
         public async Task<Produto> UpdateAsync(Produto produto)
