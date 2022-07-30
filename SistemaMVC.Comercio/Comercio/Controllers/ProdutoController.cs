@@ -15,20 +15,17 @@ namespace Comercio.Controllers
 {
     public class ProdutoController : Controller
     {
-        private readonly IProdutoService _produtoService;
         private readonly IProdutoAdapter _mapper;
         private readonly IFornecedorAdapter _mapperFornecedor;
         private readonly IProdutoRepository _repositoryProduto;
         private readonly IRepositoryBase<Produto> _repositoryBase;
        
         public ProdutoController(
-            IProdutoService produtoService, 
             IProdutoAdapter adaper, 
             IFornecedorAdapter mapperFornecedor,
             IProdutoRepository repositoryProduto,
             IRepositoryBase<Produto> repositoryBase)
         {
-            _produtoService = produtoService;
             _mapper = adaper;
             _mapperFornecedor = mapperFornecedor;
             _repositoryProduto = repositoryProduto;
@@ -263,8 +260,8 @@ namespace Comercio.Controllers
         {
             try
             {
-                var delete = await _produtoService.ExcluirProduto(id);
-                if (!delete)
+                Produto response = await _repositoryBase.DeleteAsync(id);
+                if(response is null)
                     return View("Error", new ErrorViewModel().ProdutoErroAoTentarExcluir());
 
                 return View("Index");
@@ -281,7 +278,7 @@ namespace Comercio.Controllers
         {
             try
             {
-                var fornecedores = await _produtoService.ObterFornecedor(produtoId);
+                var fornecedores = await _repositoryProduto.ObterFornecedor(produtoId);
                 if (fornecedores is null || fornecedores.Count == 0)
                     return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
 
@@ -303,7 +300,7 @@ namespace Comercio.Controllers
         {
             try
             {
-                var fornecedor = await _produtoService.ObterFornecedorDetalhes(fornecedorId);
+                var fornecedor = await _repositoryProduto.ObterFornecedorDetalhes(fornecedorId);
                 if (fornecedor is null)
                     return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
 
@@ -321,7 +318,7 @@ namespace Comercio.Controllers
         {
             try
             {
-                var fornecedores = await _produtoService.ExcluirFornecedor(fornecedorId, produtoId);
+                var fornecedores = await _repositoryProduto.ExcluirFornecedor(fornecedorId, produtoId);
                 if (fornecedores is null)
                     return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
 
