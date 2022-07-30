@@ -41,7 +41,7 @@ namespace Comercio.Mapper
 
         public Produto MontaProdutoInsertRepositorio(ProdutoViewModel produtoViewModel)
         {
-            return new Produto()
+            Produto produto = new()
             {
                 Codigo = produtoViewModel.Codigo,
                 Descricao = produtoViewModel.Descricao.ToUpper(),
@@ -52,6 +52,8 @@ namespace Comercio.Mapper
                 Data_criacao = DateTime.Now,
                 Data_alteracao = DateTime.Now
             };
+            produto.Setor.Descricao = produtoViewModel.SetorDescricao;
+            return produto;
         }
 
         public ProdutoViewModel MontaProdutoViewModel(Produto produto)
@@ -77,7 +79,7 @@ namespace Comercio.Mapper
                 ret.Add(new FornecedorViewModel()
                 {
                     Nome_empresa = fornecedor.Nome_empresa
-                }); 
+                });
             }
             return ret;
         }
