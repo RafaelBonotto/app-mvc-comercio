@@ -134,7 +134,7 @@ namespace Comercio.Controllers
         {
             try
             {
-                var produto = await _produtoService.DetalhesProduto(id);
+                var produto = await _repositoryBase.GetByIdAsync(id);
                 if (produto is null)
                     return View("Error", new ErrorViewModel().ErroAoCarregarDetalhes());
 
