@@ -21,16 +21,13 @@ namespace Comercio.Data.Repositories.Produtos
     {
         private readonly IMySqlConnectionManager _connection;
         private readonly IFornecedorRepository _fornecedorRepository;
-        private readonly IProdutoAdapter _mapper;
 
         public ProdutoRepository(
             IMySqlConnectionManager connection,
-            IFornecedorRepository fornecedorRepository,
-            IProdutoAdapter mapper)
+            IFornecedorRepository fornecedorRepository)
         {
             _connection = connection;
             _fornecedorRepository = fornecedorRepository;
-            _mapper = mapper;
         }
 
         public async Task<Produto> AddAsync(Produto produto)
@@ -87,12 +84,16 @@ namespace Comercio.Data.Repositories.Produtos
         public async Task<Produto> DeleteAsync(int id)
         {
             using var connection = await _connection.GetConnectionAsync();
-            var produto = await this.GetByIdAsync(id);
+            var produto = await connection.GetAsync<Produto>(id);
+            if (produto is null)
+                return null;
+
             produto.Ativo = 0;
             produto.Data_alteracao = DateTime.Now;
-            var response = connection.Update<Produto>(produto);
-            if (!response)
+            var update = connection.Update<Produto>(produto);
+            if (!update)
                 return null;
+
             return produto;
         }
 
