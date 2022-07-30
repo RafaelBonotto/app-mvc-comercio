@@ -55,18 +55,7 @@ namespace Comercio.Services
             }
         }
 
-        public async Task<Produto> DetalhesProduto(int id)
-        {
-            try
-            {
-                return await _repositoryBase.GetByIdAsync(id);                 
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        
+       
         public async Task<bool> ExcluirProduto(int produtoId)
         {
             try
