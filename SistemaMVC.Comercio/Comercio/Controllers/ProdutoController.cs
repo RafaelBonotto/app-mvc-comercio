@@ -238,7 +238,8 @@ namespace Comercio.Controllers
             {
                 try
                 {
-                    var produtoResponse = await _produtoService.AtualizarProduto(produto);
+                    var produtoRepositorio = _mapper.MontaProdutoUpdateRepositorio(produto);
+                    var produtoResponse = await _repositoryBase.UpdateAsync(produtoRepositorio);
                     if (produtoResponse is null)
                         return View("Error", new ErrorViewModel().ProdutoErroAoTentarAtualizar());
 
