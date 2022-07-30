@@ -28,15 +28,19 @@ namespace Comercio.Mapper
             return ret;
         }
 
-        public Produto MontaProdutoUpdateRepositorio(ProdutoViewModel produtoViewModel, Produto produtoRepositorio)
+        public Produto MontaProdutoUpdateRepositorio(ProdutoViewModel produtoViewModel)
         {
-            produtoRepositorio.Descricao = produtoViewModel.Descricao;
-            produtoRepositorio.Preco_custo = double.Parse(produtoViewModel.Preco_custo.Replace(".", ","));
-            produtoRepositorio.Preco_venda = double.Parse(produtoViewModel.Preco_venda.Replace(".", ","));
-            produtoRepositorio.Setor_id = produtoViewModel.Setor_id;
-            produtoRepositorio.Ativo = 1;
-            produtoRepositorio.Data_alteracao = DateTime.Now;
-            return produtoRepositorio;
+            Produto produto = new()
+            {
+                Descricao = produtoViewModel.Descricao,
+                Preco_custo = double.Parse(produtoViewModel.Preco_custo.Replace(".", ",")),
+                Preco_venda = double.Parse(produtoViewModel.Preco_venda.Replace(".", ",")),
+                Setor_id = produtoViewModel.Setor_id,
+                Ativo = 1,
+                Data_alteracao = DateTime.Now
+            };
+            produto.Setor.Descricao = produtoViewModel.SetorDescricao;
+            return produto;
         }
 
         public Produto MontaProdutoInsertRepositorio(ProdutoViewModel produtoViewModel)
