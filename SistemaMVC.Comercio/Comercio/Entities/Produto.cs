@@ -21,6 +21,9 @@ namespace Comercio.Entities
         public virtual Setor Setor { get; set; } = new();
 
         [Write(false)]
-        public virtual List<Fornecedor> Fornecedores { get; set; } = new();
+        public virtual List<Fornecedor> FornecedoresBanco { get; set; } = new();
+
+        [Write(false)]
+        public virtual List<Fornecedor> FornecedorProduto { get; set; } = new(); 
     }
 }
