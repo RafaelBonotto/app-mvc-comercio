@@ -1,4 +1,5 @@
-﻿using Comercio.Validations.Produtos;
+﻿using Comercio.Entities;
+using Comercio.Validations.Produtos;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -37,6 +38,8 @@ namespace Comercio.Models
         public string SetorDescricao { get; set; }
 
         public int Setor_id { get; set; }
+
+        public List<Fornecedor> FornecedorProduto { get; set; }
 
         public IEnumerable<SelectListItem> SetoresBanco { get; set; } 
         public IEnumerable<SelectListItem> FornecedoresBanco { get; set; }  
