@@ -35,8 +35,6 @@ namespace Comercio.Data.Repositories.Produtos
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-
-
                 var produtoBanco = await connection.GetAsync<Produto>(produto.Id);
                 if (produtoBanco is not null && produtoBanco.Ativo == 1)
                     throw new CodigoInvalidoException();
