@@ -76,7 +76,7 @@ namespace Comercio.Controllers
             try
             {
                 var produtos =  await _repositoryBase.GetByKeyAsync(codigo);
-                if (produtos.Count == 0)
+                if (produtos is null || produtos.Count == 0)
                     return View("Error", new ErrorViewModel().ErroFiltroNaoEncontrado());
 
                 var listaViewModel = new List<ProdutoViewModel>();
@@ -143,6 +143,22 @@ namespace Comercio.Controllers
 
                 var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
                 return View("Detalhes", produtoViewModel);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
+
+        [Route("[controller]/viewDetalhes")]
+        public async Task<IActionResult> ViewDetalhes(ProdutoViewModel produto)
+        {
+            try
+            {
+                if (produto is null)
+                    return View("Error", new ErrorViewModel().ErroAoCarregarDetalhes());
+
+                return View("Detalhes", produto);
             }
             catch (System.Exception)
             {
