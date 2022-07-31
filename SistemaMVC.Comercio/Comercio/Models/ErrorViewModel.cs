@@ -49,9 +49,16 @@ namespace Comercio.Models
             return this;
         }
 
+        // ERROS DE PRODUTOS: 
         public ErrorViewModel ProdutoErroCodigoInvalido()
         {
             this.Mensagem = "Não foi possível inserir ou atualizar o produto, foi encontrado um produto ativo com o mesmo código.";
+            return this;
+        }
+
+        public ErrorViewModel ProdutoErroAoCarregarSetores()
+        {
+            this.Mensagem = "Não foi possível carregar os setores do produto.";
             return this;
         }
 
