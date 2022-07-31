@@ -40,6 +40,9 @@ namespace Comercio.Controllers
             try
             {
                 var setores = new SelectList(await _repositoryProduto.ObterSetores());
+                if(setores is null)
+                    return View("Error", new ErrorViewModel().ProdutoErroAoCarregarSetores());
+
                 return View("Filtro", setores);
             }
             catch (System.Exception)
@@ -55,6 +58,9 @@ namespace Comercio.Controllers
             {
                 ProdutoViewModel produtoViewModel = new();
                 var setores = new SelectList(await _repositoryProduto.ObterSetores());
+                if (setores is null)
+                    return View("Error", new ErrorViewModel().ProdutoErroAoCarregarSetores());
+
                 produtoViewModel.SetoresBanco = setores;
                 return View("Inserir", produtoViewModel);
             }
