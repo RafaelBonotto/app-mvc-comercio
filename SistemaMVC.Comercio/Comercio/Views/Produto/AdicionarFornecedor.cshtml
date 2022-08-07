@@ -3,12 +3,17 @@
     ViewData["Title"] = "produto/adicionarFornecedor";
 }
 
-<h1 class="display-4">SLAVAR FORNECEDOR</h1>
+<h1 class="display-4">SALVAR FORNECEDOR</h1>
 
 <hr />
+
+<h5><strong>@Model.Codigo - @Model.Descricao</strong></h5>
+
+<hr />
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AdicionarFornecedor">
+        <form asp-controller="Produto" asp-action="AdicionarFornecedor" asp-route-produtoId="@Model.Id">
             <div class="form-group">
                 <label><strong>CNPJ - NOME DO FORNECEDOR</strong></label>
                 <select place-holder="CNPJ - NOME DO FORNECEDOR" name="fornecedorDescricao" asp-items="@Model.FornecedoresBanco" class="form-control"></select>
