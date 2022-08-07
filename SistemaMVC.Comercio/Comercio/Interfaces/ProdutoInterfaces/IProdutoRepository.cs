@@ -16,5 +16,6 @@ namespace Comercio.Interfaces.ProdutoInterfaces
         Task<Produto> InserirFornecedorProduto(int produtoId, string fornecedorDescricao);
         Task<Produto> GetProdutoAsync(int produto_id, MySqlConnection connection);
         Task<List<Fornecedor>> ExcluirFornecedor(int fornecedorId, int produtoId);
+        Task<List<Fornecedor>> CarregarTodosFornecedores(MySqlConnection connection = null);
     }
 }
