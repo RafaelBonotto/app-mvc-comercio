@@ -301,11 +301,19 @@ namespace Comercio.Data.Repositories.Produtos
             return fornecedor;
         }
 
-        private async Task<List<Fornecedor>> CarregarTodosFornecedores(MySqlConnection connection)
+        public async Task<List<Fornecedor>> CarregarTodosFornecedores(MySqlConnection connection = null)
         {
             List<Fornecedor> ret = new();
-            var fornecedoresResponse = await connection.QueryAsync<ListaFornecedorResponse>(
+            IEnumerable<ListaFornecedorResponse> fornecedoresResponse;
+            if (connection is null)
+            {
+                using var conn = await _connection.GetConnectionAsync();
+                fornecedoresResponse = await conn.QueryAsync<ListaFornecedorResponse>(
                     sql: ProdutoQuerys.SELECT_LISTA_FORNECEDORES);
+            }
+            else
+                fornecedoresResponse = await connection.QueryAsync<ListaFornecedorResponse>(
+                        sql: ProdutoQuerys.SELECT_LISTA_FORNECEDORES);
 
             if (fornecedoresResponse.Any())
             {
