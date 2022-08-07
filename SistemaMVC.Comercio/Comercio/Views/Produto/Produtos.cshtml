@@ -51,14 +51,13 @@
                     <a asp-controller="Produto" 
                        asp-action="viewDetalhes" 
                        asp-route-Id="@item.Id" 
+                       asp-route-Ativo="@item.Ativo"
                        asp-route-Descricao="@item.Descricao" 
                        asp-route-Codigo="@item.Codigo" 
                        asp-route-Preco_custo="@item.Preco_custo" 
                        asp-route-Preco_venda="@item.Preco_venda" 
                        asp-route-setorDescricao="@item.SetorDescricao" 
                        asp-route-setor_id="@item.Setor_id" 
-                       asp-route-FornecedoresBanco="@item.FornecedoresBanco"
-                       asp-route-FornecedorProduto="@item.FornecedorProduto"
                        class="btn btn-success btn-sm">Detalhes</a>
                 </td>
 
