@@ -249,6 +249,24 @@ namespace Comercio.Controllers
             }
         }
 
+        [Route("[controller]/adicionarFornecedorView")]
+        public async Task<IActionResult> AdicionarFornecedorView(ProdutoViewModel produto)
+        {
+            try
+            {
+                var fornecedores = await _repositoryProduto.CarregarTodosFornecedores();
+                if (fornecedores is null)
+                    return View("Error", new ErrorViewModel().ProdutoErroAoCarregarFornecedores());
+
+                produto.FornecedoresBanco = new SelectList(fornecedores);
+                return View("AdicionarFornecedor", produto);
+            }
+            catch (System.Exception)
+            {
+                return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
+            }
+        }
+
         [HttpPost]
         [Route("[controller]/atualizar/{id}")]
         [ValidateAntiForgeryToken]
