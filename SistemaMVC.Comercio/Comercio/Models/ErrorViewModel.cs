@@ -62,6 +62,12 @@ namespace Comercio.Models
             return this;
         }
 
+        public ErrorViewModel ProdutoErroAoCarregarFornecedores()
+        {
+            this.Mensagem = "Não foi possível carregar os fornecedores.";
+            return this;
+        }
+
         public ErrorViewModel ProdutoErroAoTentarInserir()
         {
             this.Mensagem = "Não foi possível inserir o produto.";
