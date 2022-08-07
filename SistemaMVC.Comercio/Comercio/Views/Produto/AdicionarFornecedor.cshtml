@@ -1,0 +1,29 @@
+﻿@model Comercio.Models.ProdutoViewModel
+@{
+    ViewData["Title"] = "produto/adicionarFornecedor";
+}
+
+<h1 class="display-4">SLAVAR FORNECEDOR</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AdicionarFornecedor">
+            <div class="form-group">
+                <label><strong>CNPJ - NOME DO FORNECEDOR</strong></label>
+                <select place-holder="CNPJ - NOME DO FORNECEDOR" name="fornecedorDescricao" asp-items="@Model.FornecedoresBanco" class="form-control"></select>
+                </div>
+            <div class="form-group">
+                <input type="submit" value="SALVAR" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
