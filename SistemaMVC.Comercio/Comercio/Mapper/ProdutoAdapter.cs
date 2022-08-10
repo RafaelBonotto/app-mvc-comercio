@@ -71,8 +71,8 @@ namespace Comercio.Mapper
                 Preco_venda = produto.Preco_venda.ToString("N2"),
                 Ativo = produto.Ativo == 0 ? "INATIVO " : "ATIVO",
                 SetorDescricao = produto.Setor.Descricao.ToUpper(),
-                FornecedoresBanco = new SelectList(produto.FornecedoresBanco),
-                FornecedorProduto = produto.FornecedorProduto
+                //FornecedoresBanco = new SelectList(produto.FornecedoresBanco),
+                //FornecedorProduto = produto.FornecedorProduto
             };
         }
 
