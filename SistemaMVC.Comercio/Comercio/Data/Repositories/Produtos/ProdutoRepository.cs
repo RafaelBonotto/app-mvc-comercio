@@ -109,9 +109,9 @@ namespace Comercio.Data.Repositories.Produtos
                                 },
                                 param: new { descricao }).ToList();
 
-                if (response.Any())
-                    foreach (var produto in response)
-                        produto.FornecedoresBanco = await CarregarTodosFornecedores(connection);
+                //if (response.Any())
+                //    foreach (var produto in response)
+                //        produto.FornecedoresBanco = await CarregarTodosFornecedores(connection);
 
                 return response;
             }
