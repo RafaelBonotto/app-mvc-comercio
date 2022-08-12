@@ -319,11 +319,11 @@ namespace Comercio.Controllers
         {
             try
             {
+                var listaViewModel = new List<ListarFornecedorViewModel>();
                 var fornecedores = await _repositoryProduto.ObterFornecedor(produtoId);
                 if (fornecedores is null || fornecedores.Count == 0)
-                    return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
+                    return View("ExibirFornecedor", listaViewModel);
 
-                var listaViewModel = new List<ListarFornecedorViewModel>();
                 foreach (var fornecedor in fornecedores)
                     listaViewModel.Add(_mapper.CriarListaFornecedorViewModel(fornecedor, produtoId));
 
