@@ -250,7 +250,7 @@ namespace Comercio.Controllers
         }
 
         [Route("[controller]/adicionarFornecedorView")]
-        public async Task<IActionResult> AdicionarFornecedorView(ProdutoViewModel produto)
+        public async Task<IActionResult> AdicionarFornecedorView(ProdutoViewModel produto)// produto_id e busca cod e descricao p/ exibir a view junto c/ listta de fornecedores
         {
             try
             {
@@ -319,15 +319,14 @@ namespace Comercio.Controllers
         {
             try
             {
-                var listaViewModel = new List<ListarFornecedorViewModel>();
-                var fornecedores = await _repositoryProduto.ObterFornecedor(produtoId);
+                var viewModel = new ObterFornecedorViewModel();
+                var fornecedores = await _repositoryProduto.ObterFornecedorDescricaoId(produtoId);
                 if (fornecedores is null || fornecedores.Count == 0)
-                    return View("ExibirFornecedor", listaViewModel);
+                    return View("ExibirFornecedor", viewModel);
 
-                foreach (var fornecedor in fornecedores)
-                    listaViewModel.Add(_mapper.CriarListaFornecedorViewModel(fornecedor, produtoId));
-
-                return View("ExibirFornecedor", listaViewModel);
+                viewModel.Produto_id = produtoId;
+                viewModel.Fornecedores = fornecedores;
+                return View("ExibirFornecedor", viewModel);
             }
             catch (System.Exception)
             {
@@ -345,7 +344,7 @@ namespace Comercio.Controllers
                 if (fornecedor is null)
                     return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
 
-                var viewModel = _mapper.CriarListaFornecedorViewModel(fornecedor, produtoId);
+                var viewModel = _mapper.CriarObterFornecedorDetalhesViewModel(fornecedor, produtoId);
                 return View("ExibirFornecedorDetalhes", viewModel);
             }
             catch (System.Exception)
@@ -363,11 +362,12 @@ namespace Comercio.Controllers
                 if (fornecedores is null)
                     return View("Error", new ErrorViewModel().ProdutoFornecedorNaoEncontrado());
 
-                var listaViewModel = new List<ListarFornecedorViewModel>();
-                foreach (var fornecedor in fornecedores)
-                    listaViewModel.Add(_mapper.CriarListaFornecedorViewModel(fornecedor, produtoId));
-
-                return View("ExibirFornecedor", listaViewModel);
+                ObterFornecedorViewModel viewModel = new()
+                {
+                    Produto_id = produtoId,
+                    Fornecedores = fornecedores
+                };
+                return View("ExibirFornecedor", viewModel);
             }
             catch (System.Exception)
             {
