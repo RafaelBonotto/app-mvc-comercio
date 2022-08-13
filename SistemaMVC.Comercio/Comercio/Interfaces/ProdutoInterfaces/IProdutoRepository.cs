@@ -1,4 +1,5 @@
 ﻿using Comercio.Entities;
+using Comercio.Models;
 using MySqlConnector;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,11 +12,11 @@ namespace Comercio.Interfaces.ProdutoInterfaces
         Task<List<Produto>> FiltrarPorSetor(string setor);
         Task<List<Setor>> ObterSetores();
         Task<int> ObterSetorId(string setor);
-        Task<List<Fornecedor>> ObterFornecedor(int produto_id, MySqlConnection connection = null);
+        Task<List<FornecedorDescricaoId>> ObterFornecedorDescricaoId(int produtoId, MySqlConnection connection = null);
         Task<Fornecedor> ObterFornecedorDetalhes(int fornecedor_id);
         Task<Produto> InserirFornecedorProduto(int produtoId, string fornecedorDescricao);
         Task<Produto> GetProdutoAsync(int produto_id, MySqlConnection connection);
-        Task<List<Fornecedor>> ExcluirFornecedor(int fornecedorId, int produtoId);
+        Task<List<FornecedorDescricaoId>> ExcluirFornecedor(int fornecedorId, int produtoId);
         Task<List<Fornecedor>> CarregarTodosFornecedores(MySqlConnection connection = null);
     }
 }
