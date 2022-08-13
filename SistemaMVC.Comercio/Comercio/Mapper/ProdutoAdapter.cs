@@ -10,9 +10,9 @@ namespace Comercio.Mapper
 {
     public class ProdutoAdapter : IProdutoAdapter
     {
-        public ListarFornecedorViewModel CriarListaFornecedorViewModel(Fornecedor fornecedor, int produto_id)
+        public ObterFornecedorDetalhesViewModel CriarObterFornecedorDetalhesViewModel(Fornecedor fornecedor, int produto_id)
         {
-            var ret = new ListarFornecedorViewModel
+            var ret = new ObterFornecedorDetalhesViewModel
             {
                 Id = fornecedor.Id,
                 Produto_id = produto_id,
