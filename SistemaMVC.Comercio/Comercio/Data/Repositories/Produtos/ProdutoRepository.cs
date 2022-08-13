@@ -6,6 +6,7 @@ using Comercio.Interfaces;
 using Comercio.Interfaces.Base;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
+using Comercio.Models;
 using Comercio.Responses.Produto;
 using Dapper;
 using Dapper.Contrib.Extensions;
@@ -194,7 +195,7 @@ namespace Comercio.Data.Repositories.Produtos
                     foreach (var produto in produtos)
                     {
                         produto.FornecedoresBanco = await this.CarregarTodosFornecedores(connection);
-                        produto.FornecedorProduto = await this.ObterFornecedor(produto.Id, connection);
+                        //produto.FornecedorProduto = await this.ObterFornecedor(produto.Id, connection);
                     }
                 }
                         
@@ -266,29 +267,29 @@ namespace Comercio.Data.Repositories.Produtos
             }
         }
 
-        public async Task<List<Fornecedor>> ObterFornecedor(int produto_id, MySqlConnection connection = null)
+        public async Task<List<FornecedorDescricaoId>> ObterFornecedorDescricaoId(int produto_id, MySqlConnection connection = null)
         {
-            List<Fornecedor> ret = new();
+            IEnumerable<FornecedorDescricaoId> fornecedorBanco;
             if (connection is null)
             {
                 using var conn = await _connection.GetConnectionAsync();
-                var fornecedorIds = await conn.QueryAsync<int>(
-                    sql: ProdutoQuerys.SELECT_ID_FORNECEDOR_POR_PRODUTO, 
+                fornecedorBanco = await conn.QueryAsync<FornecedorDescricaoId>(
+                    sql: ProdutoQuerys.SELECT_OBTER_FORNECEDOR_POR_ID_PRODUTO, 
                     param: new { produto_id });
 
-                if (fornecedorIds.Any())
-                    foreach (var id in fornecedorIds)
-                        ret.Add(await _fornecedorRepository.GetFornecedorAsync(id, conn));
-                return ret;
-            }
-            var idsFornecedor = await connection.QueryAsync<int>(
-                sql: ProdutoQuerys.SELECT_ID_FORNECEDOR_POR_PRODUTO, 
-                param: new { produto_id });
+                if (fornecedorBanco.Any())
+                    return fornecedorBanco.ToList();
 
-            if (idsFornecedor.Any())
-                foreach (var id in idsFornecedor)
-                    ret.Add(await _fornecedorRepository.GetFornecedorAsync(id, connection));
-            return ret;
+                return null;
+            }
+            fornecedorBanco = await connection.QueryAsync<FornecedorDescricaoId>(
+                    sql: ProdutoQuerys.SELECT_OBTER_FORNECEDOR_POR_ID_PRODUTO,
+                    param: new { produto_id });
+
+            if (fornecedorBanco.Any())
+                return fornecedorBanco.ToList();
+
+            return null;
         }
 
         public async Task<Fornecedor> ObterFornecedorDetalhes(int fornecedor_id)
@@ -366,7 +367,7 @@ namespace Comercio.Data.Repositories.Produtos
             return await this.GetProdutoAsync(produtoId, connection);
         }
 
-        public async Task<List<Fornecedor>> ExcluirFornecedor(int fornecedorId, int produtoId)
+        public async Task<List<FornecedorDescricaoId>> ExcluirFornecedor(int fornecedorId, int produtoId)
         {
             using var connection = await _connection.GetConnectionAsync();
             var fornecedorBanco = await connection.QueryFirstOrDefaultAsync<FornecedorProduto>(
@@ -380,16 +381,7 @@ namespace Comercio.Data.Repositories.Produtos
             if (!update)
                 return null;
 
-            List<Fornecedor> ret = new();
-
-            var fornecedorIds = await connection.QueryAsync<int>(
-                ProdutoQuerys.SELECT_ID_FORNECEDOR_POR_PRODUTO, new { produto_id = produtoId });
-
-            if (fornecedorIds.Any())
-                foreach (var id in fornecedorIds)
-                    ret.Add(await _fornecedorRepository.GetFornecedorAsync(id, connection));
-
-            return ret;
+            return await ObterFornecedorDescricaoId(produtoId, connection);
         }
 
         public async Task<Produto> GetProdutoAsync(int produto_id, MySqlConnection connection)
