@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Comercio.Models.ListarFornecedorViewModel>
+﻿@model Comercio.Models.ObterFornecedorViewModel
 
 @{
     ViewData["Title"] = "fornecedor/listar";
@@ -10,27 +10,42 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nome_empresa)
+                @*@Html.DisplayNameFor(model => model.Descricao)*@
+                Fornecedor
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-         {
+        @foreach (var item in Model.Fornecedores)
+        {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nome_empresa)
+                    @Html.DisplayFor(modelItem => item.Descricao)
                 </td>
                 <td>
-                    <a asp-controller="Produto" asp-action="obterFornecedorDetalhes" asp-route-fornecedorId="@item.Id" asp-route-produtoId="@item.Produto_id" class="btn btn-success btn-sm">DETALHES</a>
+                    <a asp-controller="Produto" 
+                       asp-action="obterFornecedorDetalhes" 
+                       asp-route-fornecedorId="@item.Fornecedor_id" 
+                       class="btn btn-success btn-sm">DETALHES
+                    </a>
                 </td>
             </tr>
 
-         }
+        }
     </tbody>
 </table>
 <hr />
+
+<div>
+    <a asp-controller="Produto" 
+       asp-action="AdicionarFornecedorView" 
+       asp-route-produto_id="@Model.Produto_id" 
+       class="btn btn-info btn-sm"> NOVO FORNECEDOR
+    </a>
+</div>
+<hr />
+
 <div>
     <a href="" onClick="history.go(-1); return false;" class="btn btn-info btn-sm"> VOLTAR</a>
 </div>
