@@ -71,5 +71,12 @@
                                                             FROM tb_fornecedor_produto TBFP
                                                             WHERE TBFP.produto_id = @produtoId
                                                             AND TBFP.fornecedor_id = @fornecedorId";
+
+        public const string SELECT_OBTER_FORNECEDOR_POR_ID_PRODUTO = @"SELECT 
+                                                                        TBF.id AS Fornecedor_id, 
+                                                                        TBF.nome_empresa AS Descricao 
+                                                                        FROM tb_fornecedor TBF
+                                                                        INNER JOIN tb_fornecedor_produto TBFP ON TBFP.fornecedor_id = TBF.id 
+                                                                        WHERE TBFP.produto_id = @produto_id";
     }
 }
