@@ -250,11 +250,12 @@ namespace Comercio.Controllers
         }
 
         [Route("[controller]/adicionarFornecedorView")]
-        public async Task<IActionResult> AdicionarFornecedorView(ProdutoViewModel produto)// produto_id e busca cod e descricao p/ exibir a view junto c/ listta de fornecedores
+        public async Task<IActionResult> AdicionarFornecedorView(int produto_id)// produto_id e busca cod e descricao p/ exibir a view junto c/ listta de fornecedores
         {
             try
             {
-                var fornecedores = await _repositoryProduto.CarregarTodosFornecedores();
+                ProdutoViewModel produto = new();
+                var fornecedores = await _repositoryProduto.CarregarTodosFornecedores();// Criar metodo que retorna tds Fornecedores + id, cod, desc do produto
                 if (fornecedores is null)
                     return View("Error", new ErrorViewModel().ProdutoErroAoCarregarFornecedores());
 
