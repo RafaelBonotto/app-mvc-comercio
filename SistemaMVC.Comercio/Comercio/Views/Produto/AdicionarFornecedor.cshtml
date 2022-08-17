@@ -1,4 +1,4 @@
-﻿@model Comercio.Models.ProdutoViewModel
+﻿@model Comercio.Responses.Produto.AdicionarFornecedorProdutoViewResponse
 @{
     ViewData["Title"] = "produto/adicionarFornecedor";
 }
@@ -7,13 +7,13 @@
 
 <hr />
 
-<h5><strong>@Model.Codigo - @Model.Descricao</strong></h5>
+<h5><strong>@Model.Produto_codigo - @Model.Produto_descricao</strong></h5>
 
 <hr />
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="Produto" asp-action="AdicionarFornecedor" asp-route-produtoId="@Model.Id">
+        <form asp-controller="Produto" asp-action="AdicionarFornecedor" asp-route-produtoId="@Model.Produto_id">
             <div class="form-group">
                 <label><strong>CNPJ - NOME DO FORNECEDOR</strong></label>
                 <select place-holder="CNPJ - NOME DO FORNECEDOR" name="fornecedorDescricao" asp-items="@Model.FornecedoresBanco" class="form-control"></select>
