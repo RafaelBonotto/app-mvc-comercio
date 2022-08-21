@@ -255,7 +255,7 @@ namespace Comercio.Controllers
             try
             {
                 ProdutoViewModel produto = new();
-                var fornecedores = await _repositoryProduto.CarregarTodosFornecedores();// Criar metodo que retorna tds Fornecedores + id, cod, desc do produto
+                var fornecedores = await _repositoryProduto.ObterTodosFornecedoresEDadosDoProduto(produto_id);// Criar metodo que retorna tds Fornecedores + id, cod, desc do produto
                 if (fornecedores is null)
                     return View("Error", new ErrorViewModel().ProdutoErroAoCarregarFornecedores());
 
