@@ -136,9 +136,9 @@ namespace Comercio.Data.Repositories.Produtos
                                 },
                                 param: new { setor }).ToList();
 
-                if (response.Any())
-                    foreach (var produto in response)
-                        produto.FornecedoresBanco = await CarregarTodosFornecedores(connection);
+                //if (response.Any())
+                //    foreach (var produto in response)
+                //        produto.FornecedoresBanco = await CarregarTodosFornecedores(connection);
 
                 return response;
             }
@@ -167,7 +167,7 @@ namespace Comercio.Data.Repositories.Produtos
                             },
                             param: new { produto_id }).FirstOrDefault();
 
-                produto.FornecedoresBanco = await CarregarTodosFornecedores(connection);
+                //produto.FornecedoresBanco = await CarregarTodosFornecedores(connection);
                 return produto;
             }
             catch (Exception)
@@ -194,11 +194,11 @@ namespace Comercio.Data.Repositories.Produtos
                 {
                     foreach (var produto in produtos)
                     {
-                        produto.FornecedoresBanco = await this.CarregarTodosFornecedores(connection);
+                        //produto.FornecedoresBanco = await this.CarregarTodosFornecedores(connection);
                         //produto.FornecedorProduto = await this.ObterFornecedor(produto.Id, connection);
                     }
                 }
-                        
+
 
                 return produtos;
             }
@@ -229,7 +229,7 @@ namespace Comercio.Data.Repositories.Produtos
                                 new { descricao = produto.Setor.Descricao });
 
                 var produtoBanco = await connection.GetAsync<Produto>(produto.Id);
-                if(produtoBanco is not null)
+                if (produtoBanco is not null)
                 {
                     produtoBanco.Descricao = produto.Descricao;
                     produtoBanco.Preco_custo = double.Parse(produto.Preco_custo.ToString().Replace(".", ","));
@@ -274,7 +274,7 @@ namespace Comercio.Data.Repositories.Produtos
             {
                 using var conn = await _connection.GetConnectionAsync();
                 fornecedorBanco = await conn.QueryAsync<FornecedorDescricaoId>(
-                    sql: ProdutoQuerys.SELECT_OBTER_FORNECEDOR_POR_ID_PRODUTO, 
+                    sql: ProdutoQuerys.SELECT_OBTER_FORNECEDOR_POR_ID_PRODUTO,
                     param: new { produto_id });
 
                 if (fornecedorBanco.Any())
@@ -302,19 +302,23 @@ namespace Comercio.Data.Repositories.Produtos
             return fornecedor;
         }
 
-        public async Task<List<Fornecedor>> CarregarTodosFornecedores(MySqlConnection connection = null)
+        public async Task<List<Fornecedor>> ObterTodosFornecedoresEDadosDoProduto(int produto_id, MySqlConnection connection = null)
         {
             List<Fornecedor> ret = new();
-            IEnumerable<ListaFornecedorResponse> fornecedoresResponse;
+            List<ListaFornecedorResponse> fornecedoresResponse = new();
             if (connection is null)
             {
                 using var conn = await _connection.GetConnectionAsync();
-                fornecedoresResponse = await conn.QueryAsync<ListaFornecedorResponse>(
-                    sql: ProdutoQuerys.SELECT_LISTA_FORNECEDORES);
+                fornecedoresResponse = (await conn.QueryAsync<ListaFornecedorResponse>(
+                    sql: ProdutoQuerys.SELECT_LISTA_FORNECEDORES)).ToList();
+
+                var listaDadosProduto = await conn.QueryAsync<dynamic>(
+                    sql: ProdutoQuerys.SELECT_ID_COD_DESC_PRODUTO,
+                    param: new { produto_id });
             }
-            else
-                fornecedoresResponse = await connection.QueryAsync<ListaFornecedorResponse>(
-                        sql: ProdutoQuerys.SELECT_LISTA_FORNECEDORES);
+            //else
+            //    fornecedoresResponse = await connection.QueryAsync<ListaFornecedorResponse>(
+            //            sql: ProdutoQuerys.SELECT_LISTA_FORNECEDORES);
 
             if (fornecedoresResponse.Any())
             {
@@ -395,7 +399,7 @@ namespace Comercio.Data.Repositories.Produtos
                              },
                              param: new { produto_id }).FirstOrDefault();
 
-            produto.FornecedoresBanco = await CarregarTodosFornecedores(connection);
+            //produto.FornecedoresBanco = await CarregarTodosFornecedores(connection);
             return produto;
         }
     }
