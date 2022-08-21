@@ -78,5 +78,9 @@
                                                                         FROM tb_fornecedor TBF
                                                                         INNER JOIN tb_fornecedor_produto TBFP ON TBFP.fornecedor_id = TBF.id 
                                                                         WHERE TBFP.produto_id = @produto_id";
+
+        public const string SELECT_ID_COD_DESC_PRODUTO = @"SELECT id, codigo, descricao
+                                                            FROM tb_produto TBP
+                                                            WHERE TBP.id = @produto_id";
     }
 }
