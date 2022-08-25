@@ -98,7 +98,7 @@ namespace Comercio.Controllers
             try
             {
                 var produtos = await _repositoryProduto.FiltrarPorDescricao(descricao);
-                if(produtos.Count == 0)
+                if(produtos is null)
                     return View("Error", new ErrorViewModel().ErroFiltroNaoEncontrado());
 
                 var listaViewModel = new List<ProdutoViewModel>();
