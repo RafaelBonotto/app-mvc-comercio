@@ -137,25 +137,19 @@ namespace Comercio.Data.Repositories.Produtos
 
         public async Task<Produto> GetByIdAsync(int produto_id)
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                var produto = connection.Query<Produto, Setor, Produto>(
-                            sql: ProdutoQuerys.SELECT_POR_ID,
-                            (produto, setor) =>
-                            {
-                                produto.Setor = setor;
-                                return produto;
-                            },
-                            param: new { produto_id }).FirstOrDefault();
+            using var connection = await _connection.GetConnectionAsync();
+            var produto = connection.Query<Produto, Setor, Produto>(
+                        sql: ProdutoQuerys.SELECT_POR_ID,
+                        map: (produto, setor) =>
+                        {
+                            produto.Setor = setor;
+                            return produto;
+                        },
+                        param: new { produto_id }).FirstOrDefault();
+            if (produto is null)
+                return null;
 
-                //produto.FornecedoresBanco = await CarregarTodosFornecedores(connection);
-                return produto;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return produto;
         }
 
         public async Task<List<Produto>> GetByKeyAsync(string codigo)
