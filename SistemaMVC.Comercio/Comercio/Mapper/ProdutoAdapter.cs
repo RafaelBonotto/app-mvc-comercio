@@ -2,6 +2,7 @@
 using Comercio.Interfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Models;
+using Comercio.Responses.Produto;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,16 @@ namespace Comercio.Mapper
                     Nome_empresa = fornecedor.Nome_empresa
                 });
             }
+            return ret;
+        }
+
+        public AdicionarFornecedorProdutoViewResponse MontaAdicionarFornecedorViewModel(ObterFornecedoresEDadosDoProdutoResponse request)
+        {
+            AdicionarFornecedorProdutoViewResponse ret = new();
+            ret.Produto_id = request.IdProduto;
+            ret.Produto_codigo = request.CodigoProduto;
+            ret.Produto_descricao = request.DescircaoProduto;
+            ret.FornecedoresBanco = new SelectList(request.Fornecedores);
             return ret;
         }
     }
