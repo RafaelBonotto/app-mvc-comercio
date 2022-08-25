@@ -179,6 +179,30 @@ namespace Comercio.Data.Repositories.Produtos
             return setores.ToList();
         }
 
+        public async Task<ObterProdutoListagemSetoresResponse> ObterProdutoListagemSetores(int produto_id)
+        {
+            ObterProdutoListagemSetoresResponse ret = new();
+            using var connection = await _connection.GetConnectionAsync();
+            var produto = connection.Query<Produto, Setor, Produto>(
+                        sql: ProdutoQuerys.SELECT_POR_ID,
+                        map: (produto, setor) =>
+                        {
+                            produto.Setor = setor;
+                            return produto;
+                        },
+                        param: new { produto_id }).FirstOrDefault();
+            if (produto is null)
+                return null;
+
+            var setores = await connection.GetAllAsync<Setor>();
+            if (setores is null)
+                return null;
+
+            ret.Produto = produto;
+            ret.Setores = setores.ToList();
+            return ret;
+        }
+
         public async Task<Produto> UpdateAsync(Produto produto)
         {
             try
