@@ -178,40 +178,26 @@ namespace Comercio.Data.Repositories.Produtos
 
         public async Task<List<Produto>> GetByKeyAsync(string codigo)
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                List<Produto> ret = new();
-                var produtos = connection.Query<Produto, Setor, Produto>(
-                                    sql: ProdutoQuerys.SELECT_POR_CODIGO,
-                                    (produto, setor) =>
-                                    {
-                                        produto.Setor = setor;
-                                        return produto;
-                                    },
-                                    param: new { codigo }).ToList();
-                if (produtos.Any())
-                {
-                    foreach (var produto in produtos)
-                    {
-                        //produto.FornecedoresBanco = await this.CarregarTodosFornecedores(connection);
-                        //produto.FornecedorProduto = await this.ObterFornecedor(produto.Id, connection);
-                    }
-                }
-
-
+            using var connection = await _connection.GetConnectionAsync();
+            List<Produto> ret = new();
+            var produtos = connection.Query<Produto, Setor, Produto>(
+                                sql: ProdutoQuerys.SELECT_POR_CODIGO,
+                                map: (produto, setor) =>
+                                {
+                                    produto.Setor = setor;
+                                    return produto;
+                                },
+                                param: new { codigo }).ToList();
+            if (produtos.Any())
                 return produtos;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+
+            return null;
         }
 
         public async Task<List<Setor>> ObterSetores()
         {
             using var connection = await _connection.GetConnectionAsync();
-            var setores = await connection.QueryAsync<Setor>(ProdutoQuerys.SELECT_LISTAR_SETORES);
+            var setores = await connection.GetAllAsync<Setor>();
             if (setores is null)
                 return null;
             foreach (var setor in setores)
