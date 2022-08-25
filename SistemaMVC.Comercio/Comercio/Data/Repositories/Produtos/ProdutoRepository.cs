@@ -98,28 +98,19 @@ namespace Comercio.Data.Repositories.Produtos
 
         public async Task<List<Produto>> FiltrarPorDescricao(string descricao)
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                var response = connection.Query<Produto, Setor, Produto>(
-                                sql: ProdutoQuerys.SELECT_POR_DESCRICAO,
-                                (produto, setor) =>
-                                {
-                                    produto.Setor = setor;
-                                    return produto;
-                                },
-                                param: new { descricao }).ToList();
+            using var connection = await _connection.GetConnectionAsync();
+            var produtos = connection.Query<Produto, Setor, Produto>(
+                            sql: ProdutoQuerys.SELECT_POR_DESCRICAO,
+                            map:(produto, setor) =>
+                            {
+                                produto.Setor = setor;
+                                return produto;
+                            },
+                            param: new { descricao }).ToList();
+            if (produtos.Any())
+                return produtos;
 
-                //if (response.Any())
-                //    foreach (var produto in response)
-                //        produto.FornecedoresBanco = await CarregarTodosFornecedores(connection);
-
-                return response;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return null;
         }
 
         public async Task<List<Produto>> FiltrarPorSetor(string setor)
