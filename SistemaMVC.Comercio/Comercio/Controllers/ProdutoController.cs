@@ -255,15 +255,12 @@ namespace Comercio.Controllers
         {
             try
             {
-                AdicionarFornecedorProdutoViewResponse viewModel = new();
                 var response = await _repositoryProduto.ObterTodosFornecedoresEDadosDoProduto(produto_id);// Criar metodo que retorna tds Fornecedores + id, cod, desc do produto
                 if (response is null)
                     return View("Error", new ErrorViewModel().ProdutoErroAoCarregarFornecedores());
-                viewModel.Produto_id = response.IdProduto;
-                viewModel.Produto_codigo = response.CodigoProduto;
-                viewModel.Produto_descricao= response.DescircaoProduto;
-                viewModel.FornecedoresBanco = new SelectList(response.Fornecedores);
-                return View("AdicionarFornecedor", produto);
+
+                var viewModel = _mapper.MontaAdicionarFornecedorViewModel(response);
+                return View("AdicionarFornecedor", viewModel);
             }
             catch (System.Exception)
             {
