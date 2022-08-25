@@ -40,11 +40,11 @@ namespace Comercio.Controllers
         {
             try
             {
-                var setores = new SelectList(await _repositoryProduto.ObterSetores());
+                var setores = await _repositoryProduto.ObterSetores();
                 if(setores is null)
                     return View("Error", new ErrorViewModel().ProdutoErroAoCarregarSetores());
 
-                return View("Filtro", setores);
+                return View("Filtro", new SelectList(setores));
             }
             catch (System.Exception)
             {
@@ -58,11 +58,11 @@ namespace Comercio.Controllers
             try
             {
                 ProdutoViewModel produtoViewModel = new();
-                var setores = new SelectList(await _repositoryProduto.ObterSetores());
+                var setores = await _repositoryProduto.ObterSetores();
                 if (setores is null)
                     return View("Error", new ErrorViewModel().ProdutoErroAoCarregarSetores());
 
-                produtoViewModel.SetoresBanco = setores;
+                produtoViewModel.SetoresBanco = new SelectList(setores);
                 return View("Inserir", produtoViewModel);
             }
             catch (System.Exception)
