@@ -172,16 +172,13 @@ namespace Comercio.Controllers
         {
             try
             {
-                var produto = await _repositoryBase.GetByIdAsync(id);
-                if (produto is null)
+                var response = await _repositoryProduto.ObterProdutoListagemSetores(id);
+                if (response is null)
                     return View("Error", new ErrorViewModel().ErroAoCarregarDetalhes());
 
-                var produtoViewModel = _mapper.MontaProdutoViewModel(produto);
-                var setores = new SelectList(await _repositoryProduto.ObterSetores()); // AQUI EXCLUIR (CARREGA SETORES NO get by id da REPOSITORY)
-                if(setores is null)
-                    return View("Error", new ErrorViewModel().ErroAoTentarCarregarPagina());
-
-                produtoViewModel.SetoresBanco = setores;
+                var produtoViewModel = _mapper.MontaProdutoViewModel(response.Produto);
+                var setoresView = new SelectList(response.Setores);
+                produtoViewModel.SetoresBanco = setoresView;
                 return View("Editar", produtoViewModel);
             }
             catch (System.Exception)
