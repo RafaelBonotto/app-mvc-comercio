@@ -167,7 +167,7 @@ namespace Comercio.Data.Repositories.Produtos
         public async Task<List<Setor>> ObterSetores()
         {
             using var connection = await _connection.GetConnectionAsync();
-            var setores = await connection.GetAllAsync<Setor>();
+            var setores = await connection.QueryAsync<Setor>(sql: ProdutoQuerys.SELECT_LISTAR_SETORES);
             if (setores is null)
                 return null;
             return setores.ToList();
@@ -188,7 +188,9 @@ namespace Comercio.Data.Repositories.Produtos
             if (produto is null)
                 return null;
 
-            var setores = await connection.GetAllAsync<Setor>();
+            var setores = await connection.QueryAsync<Setor>(
+                sql: ProdutoQuerys.SELECT_LISTAR_SETORES);
+
             if (setores is null)
                 return null;
 
