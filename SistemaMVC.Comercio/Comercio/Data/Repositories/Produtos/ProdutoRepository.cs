@@ -176,8 +176,6 @@ namespace Comercio.Data.Repositories.Produtos
             var setores = await connection.GetAllAsync<Setor>();
             if (setores is null)
                 return null;
-            foreach (var setor in setores)
-                setor.Descricao = setor.Descricao.ToUpper();
             return setores.ToList();
         }
 
