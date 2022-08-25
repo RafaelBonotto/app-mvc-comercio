@@ -134,8 +134,7 @@ namespace Comercio.Controllers
         }
 
         [Route("[controller]/detalhes/{id}")]
-        public async Task<IActionResult> 
-            Detalhes(int id)
+        public async Task<IActionResult> Detalhes(int id)
         {
             try
             {
