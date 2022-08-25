@@ -44,10 +44,6 @@
                                                 WHERE 
                                                 tb_produto.id = @produto_id";
 
-        public const string SELECT_LISTAR_SETORES = @"SELECT * 
-                                                        FROM tb_setor 
-                                                        WHERE tb_setor.ativo = 1";
-
         public const string SELECT_ID_SETOR = @"SELECT id 
                                                     FROM
                                                     tb_setor
