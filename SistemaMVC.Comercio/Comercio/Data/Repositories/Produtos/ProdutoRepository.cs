@@ -302,7 +302,7 @@ namespace Comercio.Data.Repositories.Produtos
             return fornecedor;
         }
 
-        public async Task<List<Fornecedor>> ObterTodosFornecedoresEDadosDoProduto(int produto_id, MySqlConnection connection = null)
+        public async Task<ObterFornecedoresEDadosDoProdutoResponse> ObterTodosFornecedoresEDadosDoProduto(int produto_id)
         {
             List<Fornecedor> ret = new();
             List<ListaFornecedorResponse> fornecedoresResponse = new();
