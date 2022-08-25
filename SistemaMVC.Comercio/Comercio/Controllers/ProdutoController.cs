@@ -5,6 +5,7 @@ using Comercio.Interfaces.Base;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Models;
+using Comercio.Responses.Produto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
@@ -254,12 +255,14 @@ namespace Comercio.Controllers
         {
             try
             {
-                ProdutoViewModel produto = new();
-                var fornecedores = await _repositoryProduto.ObterTodosFornecedoresEDadosDoProduto(produto_id);// Criar metodo que retorna tds Fornecedores + id, cod, desc do produto
-                if (fornecedores is null)
+                AdicionarFornecedorProdutoViewResponse viewModel = new();
+                var response = await _repositoryProduto.ObterTodosFornecedoresEDadosDoProduto(produto_id);// Criar metodo que retorna tds Fornecedores + id, cod, desc do produto
+                if (response is null)
                     return View("Error", new ErrorViewModel().ProdutoErroAoCarregarFornecedores());
-
-                produto.FornecedoresBanco = new SelectList(fornecedores);
+                viewModel.Produto_id = response.IdProduto;
+                viewModel.Produto_codigo = response.CodigoProduto;
+                viewModel.Produto_descricao= response.DescircaoProduto;
+                viewModel.FornecedoresBanco = new SelectList(response.Fornecedores);
                 return View("AdicionarFornecedor", produto);
             }
             catch (System.Exception)
