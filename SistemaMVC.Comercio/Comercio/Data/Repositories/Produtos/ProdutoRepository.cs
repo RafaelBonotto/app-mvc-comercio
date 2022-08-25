@@ -304,27 +304,28 @@ namespace Comercio.Data.Repositories.Produtos
 
         public async Task<ObterFornecedoresEDadosDoProdutoResponse> ObterTodosFornecedoresEDadosDoProduto(int produto_id)
         {
-            List<Fornecedor> ret = new();
+            ObterFornecedoresEDadosDoProdutoResponse ret = new();
             List<ListaFornecedorResponse> fornecedoresResponse = new();
-            if (connection is null)
+
+            using var conn = await _connection.GetConnectionAsync();
+            fornecedoresResponse = (await conn.QueryAsync<ListaFornecedorResponse>(
+                sql: ProdutoQuerys.SELECT_LISTA_FORNECEDORES)).ToList();
+
+            var produto = await conn.QueryFirstOrDefaultAsync<DadosProdutoResponse>(
+                sql: ProdutoQuerys.SELECT_ID_COD_DESC_PRODUTO,
+                param: new { produto_id });
+
+            if(produto is not null)
             {
-                using var conn = await _connection.GetConnectionAsync();
-                fornecedoresResponse = (await conn.QueryAsync<ListaFornecedorResponse>(
-                    sql: ProdutoQuerys.SELECT_LISTA_FORNECEDORES)).ToList();
-
-                var listaDadosProduto = await conn.QueryAsync<dynamic>(
-                    sql: ProdutoQuerys.SELECT_ID_COD_DESC_PRODUTO,
-                    param: new { produto_id });
+                ret.IdProduto = produto.Id;
+                ret.CodigoProduto = produto.Codigo;
+                ret.DescircaoProduto = produto.Descricao;
             }
-            //else
-            //    fornecedoresResponse = await connection.QueryAsync<ListaFornecedorResponse>(
-            //            sql: ProdutoQuerys.SELECT_LISTA_FORNECEDORES);
-
             if (fornecedoresResponse.Any())
             {
                 foreach (var fornecedor in fornecedoresResponse)
                 {
-                    ret.Add(new Fornecedor()
+                    ret.Fornecedores.Add(new Fornecedor()
                     {
                         Id = fornecedor.Id,
                         Cnpj = fornecedor.Cnpj,
