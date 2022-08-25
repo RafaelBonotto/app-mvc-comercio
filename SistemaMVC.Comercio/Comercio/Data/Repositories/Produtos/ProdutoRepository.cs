@@ -36,43 +36,37 @@ namespace Comercio.Data.Repositories.Produtos
             try
             {
                 using var connection = await _connection.GetConnectionAsync();
-                var produtoBanco = await connection.GetAsync<Produto>(produto.Id);
-                if (produtoBanco is not null && produtoBanco.Ativo == 1)
-                    throw new CodigoInvalidoException();
-
-                if (produtoBanco is not null && produtoBanco.Ativo == 0)
-                {
-                    produtoBanco.Ativo = 1;
-                    produtoBanco.Data_alteracao = DateTime.Now;
-                    var update = await connection.UpdateAsync<Produto>(produtoBanco);
-                    if (!update)
-                        return null;
-
-                    //produtoBanco.Setor = connection.Get<Setor>(produtoBanco.Setor_id);
-
-                    //var fornecedorIds = await connection.QueryAsync<int>(
-                    //        sql: ProdutoQuerys.SELECT_ID_FORNECEDOR_POR_PRODUTO, 
-                    //        param: new { produto_id = produtoBanco.Id });
-
-                    //if (fornecedorIds.Any())
-                    //    foreach (var id in fornecedorIds)
-                    //        produtoBanco.Fornecedores.Add(await _fornecedorRepository.GetFornecedorAsync(id, connection));
-
-                    //return produtoBanco;
-
-                    return await GetProdutoAsync(produtoBanco.Id, connection);
-                }
                 produto.Setor_id = await connection.QueryFirstAsync<int>(
-                          sql: ProdutoQuerys.SELECT_ID_SETOR,
-                          param: new { descricao = produto.Setor.Descricao });
+                           sql: ProdutoQuerys.SELECT_ID_SETOR,
+                           param: new { descricao = produto.Setor.Descricao });
 
+                var codigoExiste = await GetByKeyAsync(produto.Codigo);
+                if (codigoExiste != null)
+                {
+                    var produtoBanco = codigoExiste.First();
+                    if (produtoBanco.Ativo == 1)
+                        throw new CodigoInvalidoException();
+
+                    if (produtoBanco.Ativo == 0)
+                    {
+                        produtoBanco.Ativo = 1;
+                        produtoBanco.Data_alteracao = DateTime.Now;
+                        produtoBanco.Descricao = produto.Descricao;
+                        produtoBanco.Preco_custo = produto.Preco_custo;
+                        produtoBanco.Preco_venda = produto.Preco_venda;
+                        produtoBanco.Setor_id = produto.Setor_id;
+                        var update = await connection.UpdateAsync<Produto>(produtoBanco);
+                        if (!update)
+                            return null;
+
+                        return await GetProdutoAsync(produtoBanco.Id, connection);
+                    }
+                }
                 var row = await connection.InsertAsync<Produto>(produto);
                 if (row > 0)
                     return await GetProdutoAsync(row, connection);
 
                 return null;
-
-
             }
             catch (Exception)
             {
@@ -383,8 +377,9 @@ namespace Comercio.Data.Repositories.Produtos
                                  return produto;
                              },
                              param: new { produto_id }).FirstOrDefault();
+            if (produto is null)
+                return null;
 
-            //produto.FornecedoresBanco = await CarregarTodosFornecedores(connection);
             return produto;
         }
     }
