@@ -33,45 +33,38 @@ namespace Comercio.Data.Repositories.Produtos
 
         public async Task<Produto> AddAsync(Produto produto)
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                produto.Setor_id = await connection.QueryFirstAsync<int>(
-                           sql: ProdutoQuerys.SELECT_ID_SETOR,
-                           param: new { descricao = produto.Setor.Descricao });
+            using var connection = await _connection.GetConnectionAsync();
+            produto.Setor_id = await connection.QueryFirstAsync<int>(
+                       sql: ProdutoQuerys.SELECT_ID_SETOR,
+                       param: new { descricao = produto.Setor.Descricao });
 
-                var codigoExiste = await GetByKeyAsync(produto.Codigo);
-                if (codigoExiste != null)
+            var codigoExiste = await GetByKeyAsync(produto.Codigo);
+            if (codigoExiste != null)
+            {
+                var produtoBanco = codigoExiste.First();
+                if (produtoBanco.Ativo == 1)
+                    throw new CodigoInvalidoException();
+
+                if (produtoBanco.Ativo == 0)
                 {
-                    var produtoBanco = codigoExiste.First();
-                    if (produtoBanco.Ativo == 1)
-                        throw new CodigoInvalidoException();
+                    produtoBanco.Ativo = 1;
+                    produtoBanco.Data_alteracao = DateTime.Now;
+                    produtoBanco.Descricao = produto.Descricao;
+                    produtoBanco.Preco_custo = produto.Preco_custo;
+                    produtoBanco.Preco_venda = produto.Preco_venda;
+                    produtoBanco.Setor_id = produto.Setor_id;
+                    var update = await connection.UpdateAsync<Produto>(produtoBanco);
+                    if (!update)
+                        return null;
 
-                    if (produtoBanco.Ativo == 0)
-                    {
-                        produtoBanco.Ativo = 1;
-                        produtoBanco.Data_alteracao = DateTime.Now;
-                        produtoBanco.Descricao = produto.Descricao;
-                        produtoBanco.Preco_custo = produto.Preco_custo;
-                        produtoBanco.Preco_venda = produto.Preco_venda;
-                        produtoBanco.Setor_id = produto.Setor_id;
-                        var update = await connection.UpdateAsync<Produto>(produtoBanco);
-                        if (!update)
-                            return null;
-
-                        return await GetProdutoAsync(produtoBanco.Id, connection);
-                    }
+                    return await GetProdutoAsync(produtoBanco.Id, connection);
                 }
-                var row = await connection.InsertAsync<Produto>(produto);
-                if (row > 0)
-                    return await GetProdutoAsync(row, connection);
+            }
+            var row = await connection.InsertAsync<Produto>(produto);
+            if (row > 0)
+                return await GetProdutoAsync(row, connection);
 
-                return null;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return null;
         }
 
         public async Task<Produto> DeleteAsync(int id)
@@ -95,7 +88,7 @@ namespace Comercio.Data.Repositories.Produtos
             using var connection = await _connection.GetConnectionAsync();
             var produtos = connection.Query<Produto, Setor, Produto>(
                             sql: ProdutoQuerys.SELECT_POR_DESCRICAO,
-                            map:(produto, setor) =>
+                            map: (produto, setor) =>
                             {
                                 produto.Setor = setor;
                                 return produto;
@@ -201,50 +194,36 @@ namespace Comercio.Data.Repositories.Produtos
 
         public async Task<Produto> UpdateAsync(Produto produto)
         {
-            try
+            using var connection = await _connection.GetConnectionAsync();
+            produto.Setor_id = await connection.QueryFirstAsync<int>(
+                            ProdutoQuerys.SELECT_ID_SETOR,
+                            new { descricao = produto.Setor.Descricao });
+
+            var produtoBanco = await connection.GetAsync<Produto>(produto.Id);
+            if (produtoBanco is not null)
             {
-                using var connection = await _connection.GetConnectionAsync();
-                produto.Setor_id = await connection.QueryFirstAsync<int>(
-                                ProdutoQuerys.SELECT_ID_SETOR,
-                                new { descricao = produto.Setor.Descricao });
+                produtoBanco.Descricao = produto.Descricao;
+                produtoBanco.Preco_custo = double.Parse(produto.Preco_custo.ToString().Replace(".", ","));
+                produtoBanco.Preco_venda = double.Parse(produto.Preco_venda.ToString().Replace(".", ","));
+                produtoBanco.Setor_id = produto.Setor_id;
+                produtoBanco.Ativo = 1;
+                produtoBanco.Data_alteracao = DateTime.Now;
 
-                var produtoBanco = await connection.GetAsync<Produto>(produto.Id);
-                if (produtoBanco is not null)
-                {
-                    produtoBanco.Descricao = produto.Descricao;
-                    produtoBanco.Preco_custo = double.Parse(produto.Preco_custo.ToString().Replace(".", ","));
-                    produtoBanco.Preco_venda = double.Parse(produto.Preco_venda.ToString().Replace(".", ","));
-                    produtoBanco.Setor_id = produto.Setor_id;
-                    produtoBanco.Ativo = 1;
-                    produtoBanco.Data_alteracao = DateTime.Now;
+                var update = await connection.UpdateAsync<Produto>(produtoBanco);
+                if (!update)
+                    return null;
 
-                    var update = await connection.UpdateAsync<Produto>(produtoBanco);
-                    if (!update)
-                        return null;
-
-                    return await GetProdutoAsync(produtoBanco.Id, connection);
-                }
-                return null;
+                return await GetProdutoAsync(produtoBanco.Id, connection);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            return null;
         }
 
         public async Task<int> ObterSetorId(string setor)
         {
-            try
-            {
-                using var connection = await _connection.GetConnectionAsync();
-                return connection.QueryFirst<int>(
-                                ProdutoQuerys.SELECT_ID_SETOR,
-                                new { descricao = setor });
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            using var connection = await _connection.GetConnectionAsync();
+            return connection.QueryFirst<int>(
+                            ProdutoQuerys.SELECT_ID_SETOR,
+                            new { descricao = setor });
         }
 
         public async Task<List<FornecedorDescricaoId>> ObterFornecedorDescricaoId(int produto_id, MySqlConnection connection = null)
@@ -282,10 +261,10 @@ namespace Comercio.Data.Repositories.Produtos
             return fornecedor;
         }
 
-        public async Task<ObterFornecedoresEDadosDoProdutoResponse> ObterTodosFornecedoresEDadosDoProduto(int produto_id)
+        public async Task<ObterFornecedoresDadosProdutoResponse> ObterListagemFornecedoresDadosProduto(int produto_id)
         {
-            ObterFornecedoresEDadosDoProdutoResponse ret = new();
-            List<ListaFornecedorResponse> fornecedoresResponse = new();
+            ObterFornecedoresDadosProdutoResponse ret = new();
+            List<ListaFornecedorResponse> fornecedoresResponse;
 
             using var conn = await _connection.GetConnectionAsync();
             fornecedoresResponse = (await conn.QueryAsync<ListaFornecedorResponse>(
@@ -349,7 +328,7 @@ namespace Comercio.Data.Repositories.Produtos
                 if (insert <= 0)
                     return null;
             }
-            return await this.GetProdutoAsync(produtoId, connection);
+            return await GetProdutoAsync(produtoId, connection);
         }
 
         public async Task<List<FornecedorDescricaoId>> ExcluirFornecedor(int fornecedorId, int produtoId)
