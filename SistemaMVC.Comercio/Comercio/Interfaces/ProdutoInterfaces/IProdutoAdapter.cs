@@ -12,6 +12,6 @@ namespace Comercio.Interfaces.ProdutoInterfaces
         ProdutoViewModel MontaProdutoViewModel(Produto produto);
         List<FornecedorViewModel> MontaListaFornecedorViewModel(List<Fornecedor> fornecedores);
         ObterFornecedorDetalhesViewModel CriarObterFornecedorDetalhesViewModel(Fornecedor fornecedor, int produto_id);
-        AdicionarFornecedorProdutoViewResponse MontaAdicionarFornecedorViewModel(ObterFornecedoresEDadosDoProdutoResponse req);
+        AdicionarFornecedorProdutoViewResponse MontaAdicionarFornecedorViewModel(ObterFornecedoresDadosProdutoResponse req);
     }
 }
