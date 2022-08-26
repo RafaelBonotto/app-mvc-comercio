@@ -33,6 +33,7 @@ namespace Comercio.Mapper
         {
             Produto produto = new()
             {
+                Id = produtoViewModel.Id,
                 Descricao = produtoViewModel.Descricao,
                 Preco_custo = double.Parse(produtoViewModel.Preco_custo.Replace(".", ",")),
                 Preco_venda = double.Parse(produtoViewModel.Preco_venda.Replace(".", ",")),
@@ -88,7 +89,7 @@ namespace Comercio.Mapper
             return ret;
         }
 
-        public AdicionarFornecedorProdutoViewResponse MontaAdicionarFornecedorViewModel(ObterFornecedoresEDadosDoProdutoResponse request)
+        public AdicionarFornecedorProdutoViewResponse MontaAdicionarFornecedorViewModel(ObterFornecedoresDadosProdutoResponse request)
         {
             AdicionarFornecedorProdutoViewResponse ret = new();
             ret.Produto_id = request.IdProduto;
