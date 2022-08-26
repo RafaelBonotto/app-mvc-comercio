@@ -5,11 +5,9 @@ using Comercio.Interfaces.Base;
 using Comercio.Interfaces.FornecedorInterfaces;
 using Comercio.Interfaces.ProdutoInterfaces;
 using Comercio.Models;
-using Comercio.Responses.Produto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Comercio.Controllers
@@ -247,11 +245,11 @@ namespace Comercio.Controllers
         }
 
         [Route("[controller]/adicionarFornecedorView")]
-        public async Task<IActionResult> AdicionarFornecedorView(int produto_id)// produto_id e busca cod e descricao p/ exibir a view junto c/ listta de fornecedores
+        public async Task<IActionResult> AdicionarFornecedorView(int produto_id)
         {
             try
             {
-                var response = await _repositoryProduto.ObterTodosFornecedoresEDadosDoProduto(produto_id);// Criar metodo que retorna tds Fornecedores + id, cod, desc do produto
+                var response = await _repositoryProduto.ObterListagemFornecedoresDadosProduto(produto_id);
                 if (response is null)
                     return View("Error", new ErrorViewModel().ProdutoErroAoCarregarFornecedores());
 
